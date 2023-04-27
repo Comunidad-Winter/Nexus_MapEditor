@@ -1,0 +1,1 @@
+Editor de mapas en DX8 fullscreen para Nexus AO. Programado desde 0 reutilizando algun que otro codigo.
