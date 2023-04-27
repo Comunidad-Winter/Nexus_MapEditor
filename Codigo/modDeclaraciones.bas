@@ -2,6 +2,7 @@ Attribute VB_Name = "modDeclaraciones"
 Option Explicit
 
 Public DirRecursos As String
+Public DirDats As String
 Public Form_Caption As String
 
 'Control
@@ -27,6 +28,9 @@ Public render_msg(3) As Long
 
 'Caminata fluida
 Public Movement_Speed As Single
+
+Public MapaCargado As Boolean
+Public bRefreshRadar As Boolean
 
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 

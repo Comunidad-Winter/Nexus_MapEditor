@@ -149,6 +149,18 @@ Public NumCascos As Integer
 Public NumEscudosAnims As Integer
 Private grhCount As Long
 
+Public Type NpcData
+
+    Name As String
+    Body As Integer
+    Head As Integer
+    Heading As Byte
+
+End Type
+
+Public NumNPCs   As Long
+Public NpcData() As NpcData
+
 Public Sub IniciarCabecera()
 
     With MiCabecera
@@ -168,6 +180,7 @@ Public Sub CargarConfiguracion()
     Call Lector.Initialize(App.Path & "\Config.ini")
     
     DirRecursos = Lector.GetValue("RUTAS", "Recursos")
+    DirDats = Lector.GetValue("RUTAS", "Dats")
     
     With ClientSetup
         ' VIDEO
@@ -576,6 +589,146 @@ errhandler:
 
 End Sub
 
+Sub CargarAnimArmas()
+'*************************************
+'Autor: Lorwik
+'Fecha: ???
+'Descripción: Carga el index de Armas
+'*************************************
+On Error GoTo errhandler:
+
+    Dim buffer()    As Byte
+    Dim dLen        As Long
+    Dim InfoHead    As INFOHEADER
+    Dim i As Long
+    Dim LaCabecera As tCabecera
+    Dim fileBuff  As clsByteBuffer
+    
+    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Armas.ind"))
+    
+    If InfoHead.lngFileSize <> 0 Then
+    
+        Extract_File_Memory Scripts, LCase$("Armas.ind"), buffer()
+        
+        Set fileBuff = New clsByteBuffer
+        
+        fileBuff.initializeReader buffer
+        
+        LaCabecera.Desc = fileBuff.getString(Len(LaCabecera.Desc))
+        LaCabecera.CRC = fileBuff.getLong
+        LaCabecera.MagicWord = fileBuff.getLong
+    
+        'num de armas
+        NumWeaponAnims = fileBuff.getInteger()
+        
+        'Resize array
+        ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
+        ReDim Weapons(1 To NumWeaponAnims) As tIndiceArmas
+        
+        For i = 1 To NumWeaponAnims
+            Weapons(i).weapon(1) = fileBuff.getLong()
+            Weapons(i).weapon(2) = fileBuff.getLong()
+            Weapons(i).weapon(3) = fileBuff.getLong()
+            Weapons(i).weapon(4) = fileBuff.getLong()
+            
+            If Weapons(i).weapon(1) Then
+            
+                Call InitGrh(WeaponAnimData(i).WeaponWalk(1), Weapons(i).weapon(1), 0)
+                Call InitGrh(WeaponAnimData(i).WeaponWalk(2), Weapons(i).weapon(2), 0)
+                Call InitGrh(WeaponAnimData(i).WeaponWalk(3), Weapons(i).weapon(3), 0)
+                Call InitGrh(WeaponAnimData(i).WeaponWalk(4), Weapons(i).weapon(4), 0)
+            
+            End If
+        Next i
+    
+        Erase buffer
+    End If
+    
+    Set fileBuff = Nothing
+
+errhandler:
+    
+    If Err.Number <> 0 Then
+        
+        If Err.Number = 53 Then
+            Call MsgBox("El archivo Armas.ind no existe. Por favor, reinstale el juego.", , Form_Caption)
+            Call CloseClient
+        End If
+        
+    End If
+
+End Sub
+
+Sub CargarAnimEscudos()
+'*************************************
+'Autor: Lorwik
+'Fecha: ???
+'Descripción: Carga el index de Escudos
+'*************************************
+On Error GoTo errhandler:
+
+    Dim buffer()    As Byte
+    Dim InfoHead    As INFOHEADER
+    Dim i As Long
+    Dim LaCabecera As tCabecera
+    Dim fileBuff  As clsByteBuffer
+    
+    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Escudos.ind"))
+    
+    If InfoHead.lngFileSize <> 0 Then
+    
+        Extract_File_Memory Scripts, LCase$("Escudos.ind"), buffer()
+        
+        Set fileBuff = New clsByteBuffer
+        
+        fileBuff.initializeReader buffer
+        
+        LaCabecera.Desc = fileBuff.getString(Len(LaCabecera.Desc))
+        LaCabecera.CRC = fileBuff.getLong
+        LaCabecera.MagicWord = fileBuff.getLong
+    
+        'num de escudos
+        NumEscudosAnims = fileBuff.getInteger()
+        
+        'Resize array
+        ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
+        ReDim Shields(1 To NumEscudosAnims) As tIndiceEscudos
+        
+        For i = 1 To NumEscudosAnims
+            Shields(i).shield(1) = fileBuff.getLong()
+            Shields(i).shield(2) = fileBuff.getLong()
+            Shields(i).shield(3) = fileBuff.getLong()
+            Shields(i).shield(4) = fileBuff.getLong()
+            
+            If Shields(i).shield(1) Then
+            
+                Call InitGrh(ShieldAnimData(i).ShieldWalk(1), Shields(i).shield(1), 0)
+                Call InitGrh(ShieldAnimData(i).ShieldWalk(2), Shields(i).shield(2), 0)
+                Call InitGrh(ShieldAnimData(i).ShieldWalk(3), Shields(i).shield(3), 0)
+                Call InitGrh(ShieldAnimData(i).ShieldWalk(4), Shields(i).shield(4), 0)
+            
+            End If
+        Next i
+    
+        Erase buffer
+    End If
+    
+    Set fileBuff = Nothing
+
+errhandler:
+    
+    If Err.Number <> 0 Then
+        
+        If Err.Number = 53 Then
+            Call MsgBox("El archivo Escudos.ind no existe. Por favor, reinstale el juego.", , Form_Caption)
+            Call CloseClient
+        End If
+        
+    End If
+    
+End Sub
+
+
 Public Sub CargarMinimapa()
 
     Dim fileBuff    As clsByteBuffer
@@ -617,3 +770,51 @@ Private Function Grh_Check(ByVal grh_index As Long) As Boolean
         Grh_Check = GrhData(grh_index).NumFrames
     End If
 End Function
+
+''
+' Carga los indices de NPCs
+'
+
+Public Sub CargarIndicesNPC()
+
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 27/04/2023
+    '*************************************************
+    On Error Resume Next
+
+    'On Error GoTo Fallo
+    If FileExist(DirDats & "\NPCs.dat", vbArchive) = False Then
+        MsgBox "Falta el archivo 'NPCs.dat' en " & DirDats, vbCritical
+        Call CloseClient
+
+    End If
+
+    Dim Trabajando As String
+
+    Dim NPC        As Integer
+
+    Set Lector = New clsIniManager
+
+    frmNpcs.lListado.Clear
+    Call Lector.Initialize(DirDats & "\NPCs.dat")
+    NumNPCs = Val(Lector.GetValue("INIT", "NumNPCs"))
+    
+    ReDim NpcData(NumNPCs) As NpcData
+    Trabajando = "Dats\NPCs.dat"
+
+    For NPC = 1 To NumNPCs
+        NpcData(NPC).Name = Lector.GetValue("NPC" & NPC, "Name")
+        
+        NpcData(NPC).Body = Val(Lector.GetValue("NPC" & NPC, "Body"))
+        NpcData(NPC).Head = Val(Lector.GetValue("NPC" & NPC, "Head"))
+        NpcData(NPC).Heading = Val(Lector.GetValue("NPC" & NPC, "Heading"))
+
+        If LenB(NpcData(NPC).Name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).Name & " - #" & NPC
+    Next
+
+    Exit Sub
+Fallo:
+    MsgBox "Error al intentar cargar el NPC " & NPC & " de " & Trabajando & " en " & DirDats & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+
+End Sub

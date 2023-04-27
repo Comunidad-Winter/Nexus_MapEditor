@@ -128,6 +128,7 @@ Public Sub Engine_DirectX8_Init()
     Call SpriteBatch.Initialise(2000)
     
     'Inicializamos el resto de sistemas.
+    frmCargando.lblCargando.Caption = "Cargando Recursos adicionales de DX8..."
     Call Engine_DirectX8_Aditional_Init
     
     EndTime = timeGetTime
@@ -255,6 +256,8 @@ On Error Resume Next
     Set DirectX = Nothing
     Set DirectDevice = Nothing
     Set SpriteBatch = Nothing
+    
+    End
 End Sub
 
 Public Sub Engine_DirectX8_Aditional_Init()

@@ -20,18 +20,25 @@ Sub Main()
     ' MOTOR GRAFICO
     
     'Iniciamos el Engine de DirectX 8
+    frmCargando.lblCargando.Caption = "Iniciando Motor Grafico..."
     Call mDx8_Engine.Engine_DirectX8_Init
           
     'Tile Engine
+    frmCargando.lblCargando.Caption = "Cargando Tile Engine..."
     Call InitTileEngine(frmMain.hWnd, 32, 32, 8, 8)
     
-    Call mDx8_Engine.Engine_DirectX8_Aditional_Init
+    '##############
+    ' Dats
+    
+    frmCargando.lblCargando.Caption = "Cargando NPC's..."
+    Call CargarIndicesNPC
     
     'Inicializacion de variables globales
     prgRun = True
     pausa = False
     
     Unload frmCargando
+    modMapIO.NuevoMapa
     frmMain.Show
     
     Do While prgRun
@@ -116,6 +123,38 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
     RandomNumber = (UpperBound - LowerBound) * Rnd + LowerBound
 End Function
 
+''
+' Nos dice si existe el archivo/directorio
+'
+' @param file Especifica el path
+' @param FileType Especifica el tipo de archivo/directorio
+' @return   Nos devuelve verdadero o falso
+
+Public Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    
+    On Error GoTo FileExist_Err
+    
+
+    '*************************************************
+    'Author: Unkwown
+    'Last modified: 26/05/06
+    '*************************************************
+    If LenB(Dir(File, FileType)) = 0 Then
+        FileExist = False
+    Else
+        FileExist = True
+
+    End If
+
+    
+    Exit Function
+
+FileExist_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.FileExist", Erl)
+    Resume Next
+    
+End Function
+
 Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
 '**********************************************************
 'Author: Jopi
@@ -145,3 +184,27 @@ Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Com
                 "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
                 
 End Sub
+
+Public Sub DibujarMinimapa()
+
+    Dim map_x, map_y, Capas As Byte
+    
+    'Primero limpiamos el minimapa anterior
+    frmMinimapa.Cls
+    
+    For map_y = YMinMapSize To YMaxMapSize
+        For map_x = XMinMapSize To XMaxMapSize
+        
+            For Capas = 1 To 2
+                If MapData(map_x, map_y).Graphic(Capas).GrhIndex > 0 Then
+                    SetPixel frmMinimapa.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(Capas).GrhIndex).mini_map_color
+                End If
+                
+            Next Capas
+        Next map_x
+    Next map_y
+   
+   'Refrescamos
+    frmMinimapa.Refresh
+End Sub
+

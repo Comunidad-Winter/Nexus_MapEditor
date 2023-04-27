@@ -170,16 +170,40 @@ Public Type MapBlock
     FxIndex As Integer
 End Type
 
-'Info de cada mapa
-Public Type mapInfo
+'Info del mapa
+Type MapInfo
+
+    NumUsers As Integer
     Music As String
-    name As String
-    StartPos As WorldPos
-    MapVersion As Integer
     ambient As String
-    Zona As String
+    Name As String
+    StartPos As WorldPos
+    OnDeathGoTo As WorldPos
+    
+    MapVersion As Integer
+    Pk As Boolean
+    MagiaSinEfecto As Byte
+    
+    ' Anti Magias/Habilidades
+    InviSinEfecto As Byte
+    ResuSinEfecto As Byte
+    OcultarSinEfecto As Byte
+    InvocarSinEfecto As Byte
+    
+    RoboNpcsPermitido As Byte
+    
     Terreno As String
+    Zona As String
+    Restringir As Byte
+    BackUp As Byte
+    
+    lvlMinimo As Byte
+    
+    NoTirarItems As Byte
+    
     LuzBase As Long
+    
+    Changed As Byte
 End Type
 
 'Bordes del mapa
@@ -242,7 +266,7 @@ Public CascoAnimData() As HeadData
 
 '?????????Mapa????????????
 Public MapData() As MapBlock ' Mapa
-Public mapInfo As mapInfo ' Info acerca del mapa en uso
+Public MapInfo As MapInfo ' Info acerca del mapa en uso
 '?????????????????????????
 
 Public Normal_RGBList(3) As Long
@@ -278,8 +302,8 @@ End Enum
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
 Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
-Public Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Public Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long) As Long
 
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
 '******************************************
@@ -361,6 +385,8 @@ On Error GoTo 0
     Call CargarCabezas
     Call CargarCascos
     Call CargarFxs
+    Call CargarAnimArmas
+    Call CargarAnimEscudos
     Call CargarMinimapa
     Call LoadGraphics
 
@@ -611,6 +637,28 @@ Public Function GetElapsedTime() As Single
     'Get next end time
     Call QueryPerformanceCounter(end_time)
 End Function
+
+Public Sub GrhUninitialize(Grh As Grh)
+        '*****************************************************************
+        'Author: Aaron Perkins
+        'Last Modify Date: 1/04/2003
+        'Resets a Grh
+        '*****************************************************************
+
+        With Grh
+        
+                'Copy of parameters
+                .GrhIndex = 0
+                .Started = False
+                .Loops = 0
+        
+                'Set frame counters
+                .FrameCounter = 0
+                .speed = 0
+                
+        End With
+
+End Sub
 
 Private Sub DesvanecimientoTechos()
  
