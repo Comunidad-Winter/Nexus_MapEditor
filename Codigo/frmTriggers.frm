@@ -127,3 +127,20 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Sub cverTriggers_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo cverTriggers_Click_Err
+    
+    frmMain.mnuVerTriggers.Checked = cVerTriggers.value
+    
+    Exit Sub
+
+cverTriggers_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmTriggers.cverTriggers_Click", Erl)
+    Resume Next
+    
+End Sub

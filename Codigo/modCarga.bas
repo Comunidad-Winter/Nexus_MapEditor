@@ -226,6 +226,20 @@ Public Sub CargarConfiguracion()
         tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
         UserPos.X = Val(ReadField(1, tStr, Asc("-")))
         UserPos.Y = Val(ReadField(2, tStr, Asc("-")))
+        frmMain.mnuVerAutomatico.Checked = Val(Lector.GetValue("MOSTRAR", "ControlAutomatico"))
+        frmMain.mnuVerCapa2.Checked = Val(Lector.GetValue("MOSTRAR", "Capa2"))
+        frmMain.mnuVerCapa3.Checked = Val(Lector.GetValue("MOSTRAR", "Capa3"))
+        frmMain.mnuVerCapa4.Checked = Val(Lector.GetValue("MOSTRAR", "Capa4"))
+        frmMain.mnuVerTranslados.Checked = Val(Lector.GetValue("MOSTRAR", "Translados"))
+        frmMain.mnuVerObjetos.Checked = Val(Lector.GetValue("MOSTRAR", "Objetos"))
+        frmMain.mnuVerNPCs.Checked = Val(Lector.GetValue("MOSTRAR", "NPCs"))
+        frmMain.mnuVerTriggers.Checked = Val(Lector.GetValue("MOSTRAR", "Triggers"))
+        frmMain.mnuVerGrilla.Checked = Val(Lector.GetValue("MOSTRAR", "Grilla")) ' Grilla
+        VerGrilla = frmMain.mnuVerGrilla.Checked
+        frmMain.mnuVerBloqueos.Checked = Val(Lector.GetValue("MOSTRAR", "Bloqueos"))
+        frmTriggers.cVerTriggers.value = frmMain.mnuVerTriggers.Checked
+        frmBloqueos.cVerBloqueos.value = frmMain.mnuVerBloqueos.Checked
+    
     End With
     
     Set Lector = Nothing

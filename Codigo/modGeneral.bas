@@ -364,3 +364,32 @@ Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Com
                 "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
                 
 End Sub
+
+Public Sub GenerarVista()
+    '*************************************************
+    'Author: Unknown
+    'Last modified: ????
+    '*************************************************
+    
+    On Error GoTo GenerarVista_Err
+    
+    VerBlockeados = frmMain.mnuVerBloqueos.Checked
+    VerTriggers = frmMain.mnuVerTriggers.Checked
+    VerCapa1 = frmMain.mnuVerCapa1.Checked
+    VerCapa2 = frmMain.mnuVerCapa2.Checked
+    VerCapa3 = frmMain.mnuVerCapa3.Checked
+    VerCapa4 = frmMain.mnuVerCapa4.Checked
+    VerTranslados = frmMain.mnuVerTranslados.Checked
+    VerObjetos = frmMain.mnuVerObjetos.Checked
+    VerNpcs = frmMain.mnuVerNPCs.Checked
+    VerParticulas = frmMain.mnuVerParticulas.Checked
+    VerLuces = frmMain.mnuVerParticulas.Checked
+    
+    
+    Exit Sub
+
+GenerarVista_Err:
+    Call LogError(Err.Number, Err.Description, "modGeneral.GenerarVista", Erl)
+    Resume Next
+    
+End Sub

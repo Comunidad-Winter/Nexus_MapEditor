@@ -40,6 +40,20 @@ Public vMostrando As Byte
 Public WalkMode As Boolean
 Public dLastWalk As Double
 
+Public VerBlockeados         As Boolean
+Public VerTriggers           As Boolean
+Public VerMarco              As Boolean ' Marco
+Public VerGrilla             As Boolean ' grilla
+Public VerCapa1              As Boolean
+Public VerCapa2              As Boolean
+Public VerCapa3              As Boolean
+Public VerCapa4              As Boolean
+Public VerTranslados         As Boolean
+Public VerObjetos            As Boolean
+Public VerNpcs               As Boolean
+Public VerParticulas         As Boolean
+Public VerLuces              As Boolean
+
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
 'para escribir y leer variables
