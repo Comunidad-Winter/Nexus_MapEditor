@@ -37,15 +37,16 @@ Begin VB.Form frmMiniMapa
       TabStop         =   0   'False
       Top             =   0
       Width           =   1455
-      Begin VB.Shape UserM 
-         BackColor       =   &H000000FF&
-         BackStyle       =   1  'Opaque
-         BorderColor     =   &H000000FF&
-         FillColor       =   &H000000FF&
-         Height          =   45
+      Begin VB.Shape ApuntadorRadar 
+         BackColor       =   &H00FFFFFF&
+         BorderColor     =   &H00FFFFFF&
+         BorderStyle     =   6  'Inside Solid
+         DrawMode        =   6  'Mask Pen Not
+         FillColor       =   &H00FFFFFF&
+         Height          =   330
          Left            =   750
-         Top             =   750
-         Width           =   45
+         Top             =   773
+         Width           =   375
       End
    End
 End

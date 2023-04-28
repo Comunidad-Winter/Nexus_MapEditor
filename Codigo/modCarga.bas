@@ -46,7 +46,7 @@ End Type
 Private Type tDatosGrh
     X As Integer
     Y As Integer
-    GrhIndex As Long
+    grhindex As Long
 End Type
 
 Private Type tDatosTrigger
@@ -151,7 +151,7 @@ Private grhCount As Long
 
 Public Type NpcData
 
-    name As String
+    Name As String
     Body As Integer
     Head As Integer
     Heading As Byte
@@ -161,14 +161,34 @@ End Type
 Public NumNPCs   As Long
 Public NpcData() As NpcData
 
+Public Type ObjData
+
+    Name As String 'Nombre del obj
+    ObjType As Integer 'Tipo enum que determina cuales son las caract del obj
+    grhindex As Long ' Indice del grafico que representa el obj
+    GrhSecundario As Integer
+    Info As String
+    Ropaje As Integer 'Indice del grafico del ropaje
+    WeaponAnim As Integer ' Apunta a una anim de armas
+    ShieldAnim As Integer ' Apunta a una anim de escudo
+    Texto As String
+    Cerrada As Byte
+    Subtipo As Byte
+
+End Type
+
+Public NumOBJs     As Long
+Public ObjData()   As ObjData
+
 Type SupData
-    name As String
+    Name As String
     Grh As Long
     Width As Byte
     Height As Byte
     Block As Boolean
     Capa As Byte
 End Type
+
 Public MaxSup As Long
 Public SupData() As SupData
 
@@ -185,6 +205,8 @@ End Sub
 Public Sub CargarConfiguracion()
     On Local Error GoTo fileErr:
     
+    Dim tStr As String
+    
     Call IniciarCabecera
 
     DirInit = App.Path & "\Init\"
@@ -199,6 +221,11 @@ Public Sub CargarConfiguracion()
         ' VIDEO
         .byMemory = Lector.GetValue("VIDEO", "DynamicMemory")
         .OverrideVertexProcess = CByte(Lector.GetValue("VIDEO", "VertexProcessingOverride"))
+        
+        ' MOSTRAR
+        tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
+        UserPos.X = Val(ReadField(1, tStr, Asc("-")))
+        UserPos.Y = Val(ReadField(2, tStr, Asc("-")))
     End With
     
     Set Lector = Nothing
@@ -812,13 +839,13 @@ On Error GoTo Fallo
     frmSuperficies.lListado.Clear
     
     For i = 0 To MaxSup
-        SupData(i).name = Lector.GetValue("REFERENCIA" & i, "Nombre")
+        SupData(i).Name = Lector.GetValue("REFERENCIA" & i, "Nombre")
         SupData(i).Grh = Val(Lector.GetValue("REFERENCIA" & i, "GrhIndice"))
         SupData(i).Width = Val(Lector.GetValue("REFERENCIA" & i, "Ancho"))
         SupData(i).Height = Val(Lector.GetValue("REFERENCIA" & i, "Alto"))
         SupData(i).Block = IIf(Val(Lector.GetValue("REFERENCIA" & i, "Bloquear")) = 1, True, False)
         SupData(i).Capa = Val(Lector.GetValue("REFERENCIA" & i, "Capa"))
-        frmSuperficies.lListado.AddItem SupData(i).name & " - #" & i
+        frmSuperficies.lListado.AddItem SupData(i).Name & " - #" & i
     Next
     
     DoEvents
@@ -827,6 +854,43 @@ On Error GoTo Fallo
     Exit Sub
 Fallo:
     MsgBox "Error al intentar cargar el indice " & i & " de " & DirInit & "Indices.ini" & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+End Sub
+
+''
+' Carga los indices de Triggers
+'
+
+Public Sub CargarIndicesTriggers()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 28/05/06
+    '*************************************************
+
+    On Error GoTo Fallo
+    
+    Dim NumT As Integer
+    Dim T    As Integer
+    Set Lector = New clsIniManager
+
+    If FileExist(DirInit & "Triggers.ini", vbArchive) = False Then
+        MsgBox "Falta el archivo '" & DirInit & "Triggers.ini'", vbCritical
+        End
+    End If
+    
+    Call Lector.Initialize(DirInit & "Triggers.ini")
+    frmTriggers.lListado.Clear
+    NumT = Val(Lector.GetValue("INIT", "NumTriggers"))
+
+    For T = 1 To NumT
+        frmTriggers.lListado.AddItem Lector.GetValue("Trig" & T, "Name") & " - #" & (T - 1)
+    Next T
+    
+    Set Lector = Nothing
+
+    Exit Sub
+Fallo:
+    MsgBox "Error al intentar cargar el Trigger " & T & " de Triggers.ini en " & DirInit & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+
 End Sub
 
 ''
@@ -862,17 +926,75 @@ Public Sub CargarIndicesNPC()
     Trabajando = "Dats\NPCs.dat"
 
     For NPC = 1 To NumNPCs
-        NpcData(NPC).name = Lector.GetValue("NPC" & NPC, "Name")
+        NpcData(NPC).Name = Lector.GetValue("NPC" & NPC, "Name")
         
         NpcData(NPC).Body = Val(Lector.GetValue("NPC" & NPC, "Body"))
         NpcData(NPC).Head = Val(Lector.GetValue("NPC" & NPC, "Head"))
         NpcData(NPC).Heading = Val(Lector.GetValue("NPC" & NPC, "Heading"))
 
-        If LenB(NpcData(NPC).name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).name & " - #" & NPC
+        If LenB(NpcData(NPC).Name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).Name & " - #" & NPC
     Next
+
+    Set Lector = Nothing
 
     Exit Sub
 Fallo:
     MsgBox "Error al intentar cargar el NPC " & NPC & " de " & Trabajando & " en " & DirDats & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+
+End Sub
+
+''
+' Carga los indices de Objetos
+'
+
+Public Sub CargarIndicesOBJ()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+
+    On Error GoTo Fallo
+
+    If FileExist(DirDats & "OBJ.dat", vbArchive) = False Then
+        MsgBox "Falta el archivo 'OBJ.dat' en " & DirDats, vbCritical
+        End
+
+    End If
+
+    Dim Obj As Integer
+
+    Set Lector = New clsIniManager
+    
+    Call Lector.Initialize(DirDats & "OBJ.dat")
+    frmObjetos.lListado.Clear
+    NumOBJs = Val(Lector.GetValue("INIT", "NumOBJs"))
+    ReDim ObjData(1 To NumOBJs) As ObjData
+
+    For Obj = 1 To NumOBJs
+        frmCargando.lblCargando.Caption = "Cargando Datos de Objetos..." & Obj & "/" & NumOBJs
+        DoEvents
+        ObjData(Obj).Name = Lector.GetValue("OBJ" & Obj, "Name")
+        
+        If LenB(ObjData(Obj).Name) > 0 Then
+            ObjData(Obj).grhindex = Val(Lector.GetValue("OBJ" & Obj, "GrhIndex"))
+            ObjData(Obj).ObjType = Val(Lector.GetValue("OBJ" & Obj, "ObjType"))
+            ObjData(Obj).Ropaje = Val(Lector.GetValue("OBJ" & Obj, "NumRopaje"))
+            ObjData(Obj).Info = Lector.GetValue("OBJ" & Obj, "Info")
+            ObjData(Obj).WeaponAnim = Val(Lector.GetValue("OBJ" & Obj, "Anim"))
+            ObjData(Obj).Texto = Lector.GetValue("OBJ" & Obj, "Texto")
+            ObjData(Obj).GrhSecundario = Val(Lector.GetValue("OBJ" & Obj, "GrhSec"))
+            ObjData(Obj).Cerrada = Val(Lector.GetValue("OBJ" & Obj, "Cerrada"))
+            ObjData(Obj).Subtipo = Val(Lector.GetValue("OBJ" & Obj, "Subtipo"))
+            frmObjetos.lListado.AddItem ObjData(Obj).Name & " - #" & Obj
+
+        End If
+
+    Next Obj
+    
+    Set Lector = Nothing
+
+    Exit Sub
+Fallo:
+    MsgBox "Error al intentar cargar el Objteto " & Obj & " de OBJ.dat en " & DirDats & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
 
 End Sub

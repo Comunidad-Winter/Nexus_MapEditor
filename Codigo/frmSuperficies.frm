@@ -290,3 +290,21 @@ Private Sub cQuitarEnTodasLasCapas_Click()
         
     End If
 End Sub
+
+Private Sub cFiltro_LostFocus()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo cFiltro_LostFocus_Err
+    
+    HotKeysAllow = True
+    
+    Exit Sub
+
+cFiltro_LostFocus_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.cFiltro_LostFocus", Erl)
+    Resume Next
+    
+End Sub

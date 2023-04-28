@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin VB.Form frmCargando 
    BorderStyle     =   0  'None
-   ClientHeight    =   1605
+   ClientHeight    =   6525
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5880
+   ClientWidth     =   8520
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -17,19 +17,30 @@ Begin VB.Form frmCargando
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1605
-   ScaleWidth      =   5880
+   Picture         =   "frmCargando.frx":0000
+   ScaleHeight     =   6525
+   ScaleWidth      =   8520
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Label lblCargando 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
+      Alignment       =   2  'Center
+      BackColor       =   &H80000012&
       Caption         =   "Cargando..."
-      Height          =   195
-      Left            =   2400
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000B&
+      Height          =   465
+      Left            =   0
       TabIndex        =   0
-      Top             =   630
-      Width           =   885
+      Top             =   6090
+      Width           =   8565
    End
 End
 Attribute VB_Name = "frmCargando"

@@ -91,24 +91,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   0
       Top             =   4530
       Width           =   1935
-      _ExtentX        =   3413
-      _ExtentY        =   609
-      Caption         =   "Quitar OBJ"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3413
+      _extenty        =   609
+      caption         =   "Quitar OBJ"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmObjetos.frx":0008
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cAgregarFuncalAzar 
       Height          =   375
@@ -116,24 +108,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   1
       Top             =   4110
       Width           =   1935
-      _ExtentX        =   3413
-      _ExtentY        =   661
-      Caption         =   "Insertar OBJ al azar"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3413
+      _extenty        =   661
+      caption         =   "Insertar OBJ al azar"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmObjetos.frx":0030
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cInsertarFunc 
       Height          =   765
@@ -141,24 +125,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   2
       Top             =   4110
       Width           =   1845
-      _ExtentX        =   3254
-      _ExtentY        =   1349
-      Caption         =   "Insertar OBJ"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3254
+      _extenty        =   1349
+      caption         =   "Insertar OBJ"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmObjetos.frx":0058
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin VB.Label lblFiltrar 
       BackStyle       =   0  'Transparent
@@ -190,3 +166,20 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Sub cFiltro_LostFocus()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo cFiltro_LostFocus_Err
+    
+    HotKeysAllow = True
+    
+    Exit Sub
+
+cFiltro_LostFocus_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.cFiltro_LostFocus", Erl)
+    Resume Next
+    
+End Sub

@@ -309,8 +309,8 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
 '******************************************
 'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
 '******************************************
-    tX = UserPos.X + viewPortX \ TilePixelWidth - WindowTileWidth \ 2
-    tY = UserPos.Y + viewPortY \ TilePixelHeight - WindowTileHeight \ 2
+    tX = UserPos.X + viewPortX \ 32 - frmMain.MainViewPic.ScaleWidth \ 64
+    tY = UserPos.Y + viewPortY \ 32 - frmMain.MainViewPic.ScaleHeight \ 64
 End Sub
 
 Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Started As Byte = 2)
@@ -456,7 +456,9 @@ On Error GoTo ErrorHandler:
 
         ' Calculamos los FPS y los mostramos
         Call Engine_Update_FPS
-        Call DrawText(30, 5, "FPS: " & mod_TileEngine.FPS, -1, True)
+        Call DrawText(5, 5, "FPS: " & mod_TileEngine.FPS, -1, False)
+        Call DrawText(5, 20, "X: " & UserPos.X & " Y: " & UserPos.Y, -1, False)
+        Call DrawText(5, 35, "Mouse X: " & frmMain.tX & " Y: " & frmMain.tY, -1, False)
     
         'Get timing info
         timerElapsedTime = GetElapsedTime()
@@ -561,6 +563,18 @@ Sub RenderScreen(ByVal tilex As Integer, _
     End If
     
     If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
+    
+    If screenmaxX > 100 Then screenmaxX = 100
+
+    If screenminX < XMinMapSize Then
+        ScreenX = XMinMapSize - screenminX
+        screenminX = XMinMapSize
+    End If
+
+    If screenminY < YMinMapSize Then
+        ScreenY = YMinMapSize - screenminY
+        screenminY = YMinMapSize
+    End If
     
     'Draw floor layer
     For Y = screenminY To screenmaxY
@@ -915,3 +929,39 @@ Public Sub renderMsgReset()
 
 End Sub
 
+Public Sub DibujarMinimapa(Optional ByVal Refrescar As Boolean = False)
+
+    Dim map_x As Byte
+
+    Dim map_y As Byte
+
+    Dim Capas As Byte
+    
+    If Not Refrescar Then
+    
+        'Primero limpiamos el minimapa anterior
+        frmMiniMapa.Render.Cls
+    
+        For map_y = YMinMapSize To YMaxMapSize
+            For map_x = XMinMapSize To XMaxMapSize
+            
+                For Capas = 1 To 2
+
+                    If MapData(map_x, map_y).Graphic(Capas).GrhIndex > 0 Then
+                        SetPixel frmMiniMapa.Render.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(Capas).GrhIndex).mini_map_color
+
+                    End If
+                    
+                Next Capas
+            Next map_x
+        Next map_y
+   
+        'Refrescamos
+        frmMiniMapa.Render.Refresh
+
+    End If
+    
+    frmMiniMapa.ApuntadorRadar.Left = (UserPos.X) - 9
+    frmMiniMapa.ApuntadorRadar.Top = (UserPos.Y) - 8
+
+End Sub

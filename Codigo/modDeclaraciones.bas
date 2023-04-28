@@ -33,7 +33,12 @@ Public Movement_Speed As Single
 Public MapaCargado As Boolean
 Public bRefreshRadar As Boolean
 
+Public HotKeysAllow As Boolean  ' Control Automatico de HotKeys
 Public vMostrando As Byte
+
+'Map editor variables
+Public WalkMode As Boolean
+Public dLastWalk As Double
 
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
@@ -43,3 +48,5 @@ Public Declare Function getprivateprofilestring Lib "kernel32" Alias "GetPrivate
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
+'For KeyInput
+Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer

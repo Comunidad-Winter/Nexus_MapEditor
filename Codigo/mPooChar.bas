@@ -203,3 +203,60 @@ NextOpenChar_Err:
     Resume Next
     
 End Function
+
+Sub Char_MovebyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+
+    Dim X        As Integer
+    Dim Y        As Integer
+    Dim addx     As Integer
+    Dim addy     As Integer
+    Dim nHeading As E_Heading
+    
+    If (CharIndex <= 0) Then Exit Sub
+
+    With charlist(CharIndex)
+        
+        X = .Pos.X
+        Y = .Pos.Y
+                
+        '// Miqueas : Agrego este parchesito para evitar un run time
+        If Not (Map_InBounds(X, Y)) Then Exit Sub
+
+        MapData(X, Y).CharIndex = 0
+        
+        addx = nX - X
+        addy = nY - Y
+        
+        If Sgn(addx) = 1 Then
+            nHeading = E_Heading.EAST
+        
+        ElseIf Sgn(addx) = -1 Then
+            nHeading = E_Heading.WEST
+        
+        ElseIf Sgn(addy) = -1 Then
+            nHeading = E_Heading.NORTH
+        
+        ElseIf Sgn(addy) = 1 Then
+            nHeading = E_Heading.SOUTH
+
+        End If
+        
+        MapData(nX, nY).CharIndex = CharIndex
+        
+        .Pos.X = nX
+        .Pos.Y = nY
+        
+        .MoveOffsetX = -1 * (TilePixelWidth * addx)
+        .MoveOffsetY = -1 * (TilePixelHeight * addy)
+        
+        .Moving = 1
+        .Heading = nHeading
+        
+        .scrollDirectionX = Sgn(addx)
+        .scrollDirectionY = Sgn(addy)
+
+    End With
+    
+End Sub
+
+

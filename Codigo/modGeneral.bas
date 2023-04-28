@@ -3,6 +3,117 @@ Option Explicit
 
 Private lFrameTimer As Long
 
+Public Sub CheckKeys()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+
+    'On Error GoTo CheckKeys_Err
+
+    If HotKeysAllow = False Then Exit Sub
+    '[Loopzer]
+    'If GetKeyState(vbKeyControl) < 0 Then
+    '    If Seleccionando Then
+    '        If GetKeyState(vbKeyC) < 0 Then CopiarSeleccion
+    '        If GetKeyState(vbKeyX) < 0 Then CortarSeleccion
+    '        If GetKeyState(vbKeyB) < 0 Then BlockearSeleccion
+    '        If GetKeyState(vbKeyD) < 0 Then AccionSeleccion
+    ''    Else
+    '        If GetKeyState(vbKeyS) < 0 Then DePegar ' GS
+    '        If GetKeyState(vbKeyV) < 0 Then PegarSeleccion
+    '    End If
+    'End If
+    '[/Loopzer]
+    
+    If GetKeyState(vbKeyUp) < 0 Then
+        If UserPos.Y < YMinMapSize Then Exit Sub ' 10
+        
+        If Map_LegalPos(UserPos.X, UserPos.Y - 1) And WalkMode = True Then
+            If dLastWalk + 50 > GetTickCount Then Exit Sub
+            UserPos.Y = UserPos.Y - 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            dLastWalk = GetTickCount
+        ElseIf WalkMode = False Then
+            UserPos.Y = UserPos.Y - 1
+
+        End If
+        
+        bRefreshRadar = True ' Radar
+        Call DibujarMinimapa(True)
+        frmMain.SetFocus
+        Exit Sub
+
+    End If
+
+    If GetKeyState(vbKeyRight) < 0 Then
+        If UserPos.X > XMaxMapSize Then Exit Sub ' 89
+        
+        If Map_LegalPos(UserPos.X + 1, UserPos.Y) And WalkMode = True Then
+            If dLastWalk + 50 > GetTickCount Then Exit Sub
+            UserPos.X = UserPos.X + 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            dLastWalk = GetTickCount
+            
+        ElseIf WalkMode = False Then
+            UserPos.X = UserPos.X + 1
+            
+        End If
+        
+        bRefreshRadar = True ' Radar
+        Call DibujarMinimapa(True)
+        frmMain.SetFocus
+        Exit Sub
+
+    End If
+
+    If GetKeyState(vbKeyDown) < 0 Then
+        If UserPos.Y > YMaxMapSize Then Exit Sub ' 92
+        
+        If Map_LegalPos(UserPos.X, UserPos.Y + 1) And WalkMode = True Then
+            If dLastWalk + 50 > GetTickCount Then Exit Sub
+            UserPos.Y = UserPos.Y + 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            dLastWalk = GetTickCount
+            
+        ElseIf WalkMode = False Then
+            UserPos.Y = UserPos.Y + 1
+            
+        End If
+        
+        bRefreshRadar = True ' Radar
+        Call DibujarMinimapa(True)
+        frmMain.SetFocus
+        Exit Sub
+        
+    End If
+
+    If GetKeyState(vbKeyLeft) < 0 Then
+        If UserPos.X < XMinMapSize Then Exit Sub ' 12
+        
+        If Map_LegalPos(UserPos.X - 1, UserPos.Y) And WalkMode = True Then
+            If dLastWalk + 50 > GetTickCount Then Exit Sub
+            UserPos.X = UserPos.X - 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            dLastWalk = GetTickCount
+        ElseIf WalkMode = False Then
+            UserPos.X = UserPos.X - 1
+
+        End If
+
+        bRefreshRadar = True ' Radar
+        Call DibujarMinimapa(True)
+        frmMain.SetFocus
+        Exit Sub
+
+    End If
+    
+'CheckKeys_Err:
+'    Call LogError(Err.Number, Err.Description, "modGeneral.CheckKeys", Erl)
+'    Resume Next
+    
+End Sub
+
 Sub Main()
     Static lastFlush As Long
     
@@ -33,8 +144,17 @@ Sub Main()
     frmCargando.lblCargando.Caption = "Cargando Superficies..."
     Call CargarIndicesSuperficie
     
+    frmCargando.lblCargando.Caption = "Cargando Triggers..."
+    Call CargarIndicesTriggers
+    
     frmCargando.lblCargando.Caption = "Cargando NPC's..."
     Call CargarIndicesNPC
+    
+    frmCargando.lblCargando.Caption = "Cargando OBJ's..."
+    Call CargarIndicesOBJ
+    
+    frmMiniMapa.Render.Width = XMaxMapSize
+    frmMiniMapa.Render.Height = YMaxMapSize
     
     'Inicializacion de variables globales
     prgRun = True
@@ -49,6 +169,10 @@ Sub Main()
         'Solo dibujamos si la ventana no esta minimizada
         If frmMain.WindowState <> vbMinimized And frmMain.Visible Then
             Call ShowNextFrame(frmMain.Top, frmMain.Left, frmMain.MouseX, frmMain.MouseY)
+            Call CheckKeys
+            
+        Else
+            Sleep 10&
             
         End If
         
@@ -62,6 +186,7 @@ Sub Main()
             ' If there is anything to be sent, we send it
             lastFlush = timeGetTime + 10
         End If
+        
         DoEvents
     Loop
 
@@ -158,6 +283,58 @@ FileExist_Err:
     
 End Function
 
+Public Function ReadField(Pos As Integer, Text As String, SepASCII As Integer) As String
+    '*************************************************
+    'Author: Unkwown
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo ReadField_Err
+    
+    Dim i         As Integer
+    Dim lastPos   As Integer
+    Dim CurChar   As String * 1
+    Dim FieldNum  As Integer
+    Dim Seperator As String
+
+    Seperator = Chr(SepASCII)
+    lastPos = 0
+    FieldNum = 0
+
+    For i = 1 To Len(Text)
+        CurChar = mid(Text, i, 1)
+
+        If CurChar = Seperator Then
+            FieldNum = FieldNum + 1
+
+            If FieldNum = Pos Then
+                ReadField = mid(Text, lastPos + 1, (InStr(lastPos + 1, Text, Seperator, vbTextCompare) - 1) - (lastPos))
+                Exit Function
+
+            End If
+
+            lastPos = i
+
+        End If
+
+    Next i
+
+    FieldNum = FieldNum + 1
+
+    If FieldNum = Pos Then
+        ReadField = mid(Text, lastPos + 1)
+
+    End If
+
+    
+    Exit Function
+
+ReadField_Err:
+    Call LogError(Err.Number, Err.Description, "modGeneral.ReadField", Erl)
+    Resume Next
+    
+End Function
+
 Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
 '**********************************************************
 'Author: Jopi
@@ -187,27 +364,3 @@ Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Com
                 "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
                 
 End Sub
-
-Public Sub DibujarMinimapa()
-
-    Dim map_x, map_y, Capas As Byte
-    
-    'Primero limpiamos el minimapa anterior
-    frmMiniMapa.Render.Cls
-    
-    For map_y = YMinMapSize To YMaxMapSize
-        For map_x = XMinMapSize To XMaxMapSize
-        
-            For Capas = 1 To 2
-                If MapData(map_x, map_y).Graphic(Capas).GrhIndex > 0 Then
-                    SetPixel frmMiniMapa.Render.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(Capas).GrhIndex).mini_map_color
-                End If
-                
-            Next Capas
-        Next map_x
-    Next map_y
-   
-   'Refrescamos
-    frmMiniMapa.Render.Refresh
-End Sub
-
