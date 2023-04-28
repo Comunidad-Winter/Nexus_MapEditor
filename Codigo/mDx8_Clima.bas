@@ -77,35 +77,35 @@ Public Sub Actualizar_Estado(ByVal Estado As Byte)
 'Last Modification: 09/08/2020
 'Actualiza el estado del clima y del dia
 '***************************************************
-    Dim X As Byte, Y As Byte
+    Dim X As Byte, y As Byte
 
     'Primero actualizamos la imagen del frmmain
     'Call ActualizarImgClima
 
     '¿El mapa tiene su propia luz?
-    If mapInfo.LuzBase <> -1 Then
-        
-        For X = XMinMapSize To XMaxMapSize
-            For Y = YMinMapSize To YMaxMapSize
-                Call Engine_Long_To_RGB_List(MapData(X, Y).Engine_Light(), mapInfo.LuzBase)
-            Next Y
-        Next X
-        
-        Call LightRenderAll
-        
-        Exit Sub
-    End If
+'    If MapInfo.LuzBase <> -1 Then
+'
+'        For X = XMinMapSize To XMaxMapSize
+'            For y = YMinMapSize To YMaxMapSize
+'                Call Engine_Long_To_RGB_List(MapData(X, y).Engine_Light(), MapInfo.LuzBase)
+'            Next y
+'        Next X
+'
+'        Call LightRenderAll
+'
+'        Exit Sub
+'    End If
 
     '¿Es un estado invalido?
-     Estado = e_estados.noche
+    Estado = e_estados.noche
         
     Estado_Actual = Estados(Estado)
     Estado_Actual_Date = Estado
         
     For X = XMinMapSize To XMaxMapSize
-        For Y = YMinMapSize To YMaxMapSize
-            Call Engine_D3DColor_To_RGB_List(MapData(X, Y).Engine_Light(), Estado_Actual)
-        Next Y
+        For y = YMinMapSize To YMaxMapSize
+            Call Engine_D3DColor_To_RGB_List(MapData(X, y).Engine_Light(), Estado_Actual)
+        Next y
     Next X
         
     Call LightRenderAll

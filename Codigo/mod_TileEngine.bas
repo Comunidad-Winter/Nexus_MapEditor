@@ -482,7 +482,211 @@ Sub RenderScreen(ByVal tilex As Integer, _
                  ByVal tiley As Integer, _
                  ByVal PixelOffsetX As Integer, _
                  ByVal PixelOffsetY As Integer)
+    '**************************************************************
+    'Author: Aaron Perkins
+    'Last Modify Date: 8/14/2007
+    'Last modified by: Juan Martin Sotuyo Dodero (Maraxus)
+    'Renders everything to the viewport
+    '**************************************************************
+    
+    On Error GoTo RenderScreen_Err
+    
+    Dim Y                As Long     'Keeps track of where on map we are
+    Dim X                As Long     'Keeps track of where on map we are
+    
+    Dim screenminY       As Integer  'Start Y pos on current screen
+    Dim screenmaxY       As Integer  'End Y pos on current screen
+    Dim screenminX       As Integer  'Start X pos on current screen
+    Dim screenmaxX       As Integer  'End X pos on current screen
+    
+    Dim minY             As Integer  'Start Y pos on current map
+    Dim maxY             As Integer  'End Y pos on current map
+    Dim minX             As Integer  'Start X pos on current map
+    Dim maxX             As Integer  'End X pos on current map
+    
+    Dim ScreenX          As Integer  'Keeps track of where to place tile on screen
+    Dim ScreenY          As Integer  'Keeps track of where to place tile on screen
+    
+    Dim minXOffset       As Integer
+    Dim minYOffset       As Integer
+    
+    Dim PixelOffsetXTemp As Integer 'For centering grhs
+    Dim PixelOffsetYTemp As Integer 'For centering grhs
+    
+    Dim ElapsedTime      As Single
+    
+    ElapsedTime = Engine_ElapsedTime()
+    
+    'Figure out Ends and Starts of screen
+    screenminY = tiley - HalfWindowTileHeight
+    screenmaxY = tiley + HalfWindowTileHeight
+    screenminX = tilex - HalfWindowTileWidth
+    screenmaxX = tilex + HalfWindowTileWidth
+    
+    minY = screenminY - TileBufferSize
+    maxY = screenmaxY + TileBufferSize * 2 ' WyroX: Parche para que no desaparezcan techos y arboles
+    minX = screenminX - TileBufferSize
+    maxX = screenmaxX + TileBufferSize
+    
+    'Make sure mins and maxs are allways in map bounds
+    If minY < XMinMapSize Then
+        minYOffset = YMinMapSize - minY
+        minY = YMinMapSize
+    End If
+    
+    If maxY > YMaxMapSize Then maxY = YMaxMapSize
+    
+    If minX < XMinMapSize Then
+        minXOffset = XMinMapSize - minX
+        minX = XMinMapSize
+    End If
+    
+    If maxX > XMaxMapSize Then maxX = XMaxMapSize
+    
+    'If we can, we render around the view area to make it smoother
+    If screenminY > YMinMapSize Then
+        screenminY = screenminY - 1
+    Else
+        screenminY = 1
+        ScreenY = 1
+    End If
+    
+    If screenmaxY < YMaxMapSize Then screenmaxY = screenmaxY + 1
+    
+    If screenminX > XMinMapSize Then
+        screenminX = screenminX - 1
+    Else
+        screenminX = 1
+        ScreenX = 1
+    End If
+    
+    If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
+    
+    'Draw floor layer
+    For Y = screenminY To screenmaxY
+        For X = screenminX To screenmaxX
+            
+            PixelOffsetXTemp = (ScreenX - 1) * TilePixelWidth + PixelOffsetX
+            PixelOffsetYTemp = (ScreenY - 1) * TilePixelHeight + PixelOffsetY
+            
+            'Layer 1 **********************************
+            If MapData(X, Y).Graphic(1).GrhIndex <> 0 Then
+                Call Draw_Grh(MapData(X, Y).Graphic(1), PixelOffsetXTemp, PixelOffsetYTemp, 1, MapData(X, Y).Engine_Light(), 1)
+            End If
+            '******************************************
+
+            'Layer 2 **********************************
+            If MapData(X, Y).Graphic(2).GrhIndex <> 0 Then
+                Call Draw_Grh(MapData(X, Y).Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, MapData(X, Y).Engine_Light(), 1)
+            End If
+            '******************************************
+            
+            ScreenX = ScreenX + 1
+        Next
+    
+        'Reset ScreenX to original value and increment ScreenY
+        ScreenX = ScreenX - X + screenminX
+        ScreenY = ScreenY + 1
+    Next
                  
+    '<----- Layer Obj, Char, 3 ----->
+    ScreenY = minYOffset - TileBufferSize
+    For Y = minY To maxY
+        
+        ScreenX = minXOffset - TileBufferSize
+        For X = minX To maxX
+            If Map_InBounds(X, Y) Then
+            
+                PixelOffsetXTemp = ScreenX * TilePixelWidth + PixelOffsetX
+                PixelOffsetYTemp = ScreenY * TilePixelHeight + PixelOffsetY
+                
+                With MapData(X, Y)
+                
+                    'Object Layer **********************************
+                    If .ObjGrh.GrhIndex <> 0 Then _
+                        Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, .Engine_Light(), 1)
+                    '***********************************************
+
+                    'Char layer********************************
+                    'If .CharIndex <> 0 Then Call CharRender(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp)
+                    '*************************************************
+
+                    'Layer 3 *****************************************
+                    If .Graphic(3).GrhIndex <> 0 Then _
+                        Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, .Engine_Light(), 1)
+                    '************************************************
+                    
+                    'Particulas
+                    If .Particle_Group_Index Then
+                    
+                        'Solo las renderizamos si estan cerca del area de vision.
+                        If EstaDentroDelArea(X, Y) Then
+                            'Call mDx8_Particulas.Particle_Group_Render(.Particle_Group_Index, PixelOffsetXTemp + 16, PixelOffsetYTemp + 16)
+                        End If
+                        
+                    End If
+
+                    If Not .FxIndex = 0 Then
+                        Call Draw_Grh(.fX, PixelOffsetXTemp + FxData(MapData(X, Y).FxIndex).OffsetX, PixelOffsetYTemp + FxData(.FxIndex).OffsetY, 1, .Engine_Light(), 1, True)
+                        If .fX.Started = 0 Then .FxIndex = 0
+                    End If
+                    
+                    
+                End With
+                
+            End If
+            
+            ScreenX = ScreenX + 1
+        Next X
+
+        ScreenY = ScreenY + 1
+    Next Y
+    
+    '<----- Layer 4 ----->
+    ScreenY = minYOffset - TileBufferSize
+
+    For Y = minY To maxY
+
+        ScreenX = minXOffset - TileBufferSize
+
+        For X = minX To maxX
+            
+            PixelOffsetXTemp = ScreenX * TilePixelWidth + PixelOffsetX
+            PixelOffsetYTemp = ScreenY * TilePixelHeight + PixelOffsetY
+            
+            'Layer 4
+            If MapData(X, Y).Graphic(4).GrhIndex Then
+            
+                If bTecho Then
+                    Call Draw_Grh(MapData(X, Y).Graphic(4), PixelOffsetXTemp, PixelOffsetYTemp, 1, temp_rgb(), 1)
+                Else
+                
+                    If ColorTecho = 250 Then
+                        Call Draw_Grh(MapData(X, Y).Graphic(4), PixelOffsetXTemp, PixelOffsetYTemp, 1, MapData(X, Y).Engine_Light(), 1)
+                    Else
+                        Call Draw_Grh(MapData(X, Y).Graphic(4), PixelOffsetXTemp, PixelOffsetYTemp, 1, temp_rgb(), 1)
+                    End If
+                    
+                End If
+                
+            End If
+            
+            ScreenX = ScreenX + 1
+            
+        Next X
+
+        ScreenY = ScreenY + 1
+    Next Y
+
+    '   Set Offsets
+    LastOffsetX = ParticleOffsetX
+    LastOffsetY = ParticleOffsetY
+    
+RenderScreen_Err:
+
+    If Err.Number Then
+        Call LogError(Err.Number, Err.Description, "Mod_TileEngine.RenderScreen")
+    End If
 End Sub
 
 Sub Draw_GrhIndex(ByVal GrhIndex As Long, ByVal X As Integer, ByVal Y As Integer, ByVal Center As Byte, ByRef Color_List() As Long, Optional ByVal angle As Single = 0, Optional ByVal Alpha As Boolean = False)

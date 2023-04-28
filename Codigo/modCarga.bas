@@ -151,7 +151,7 @@ Private grhCount As Long
 
 Public Type NpcData
 
-    Name As String
+    name As String
     Body As Integer
     Head As Integer
     Heading As Byte
@@ -160,6 +160,17 @@ End Type
 
 Public NumNPCs   As Long
 Public NpcData() As NpcData
+
+Type SupData
+    name As String
+    Grh As Long
+    Width As Byte
+    Height As Byte
+    Block As Boolean
+    Capa As Byte
+End Type
+Public MaxSup As Long
+Public SupData() As SupData
 
 Public Sub IniciarCabecera()
 
@@ -176,8 +187,10 @@ Public Sub CargarConfiguracion()
     
     Call IniciarCabecera
 
+    DirInit = App.Path & "\Init\"
+
     Set Lector = New clsIniManager
-    Call Lector.Initialize(App.Path & "\Config.ini")
+    Call Lector.Initialize(DirInit & "Config.ini")
     
     DirRecursos = Lector.GetValue("RUTAS", "Recursos")
     DirDats = Lector.GetValue("RUTAS", "Dats")
@@ -187,6 +200,8 @@ Public Sub CargarConfiguracion()
         .byMemory = Lector.GetValue("VIDEO", "DynamicMemory")
         .OverrideVertexProcess = CByte(Lector.GetValue("VIDEO", "VertexProcessingOverride"))
     End With
+    
+    Set Lector = Nothing
     
     Exit Sub
   
@@ -728,7 +743,6 @@ errhandler:
     
 End Sub
 
-
 Public Sub CargarMinimapa()
 
     Dim fileBuff    As clsByteBuffer
@@ -772,6 +786,50 @@ Private Function Grh_Check(ByVal grh_index As Long) As Boolean
 End Function
 
 ''
+' Carga los indices de Superficie
+'
+
+Public Sub CargarIndicesSuperficie()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 29/05/06
+'*************************************************
+
+On Error GoTo Fallo
+    Dim i As Integer
+    
+    Set Lector = New clsIniManager
+
+    If FileExist(DirInit & "Indices.ini", vbArchive) = False Then
+        MsgBox "Falta el archivo '" & DirInit & "Indices.ini'", vbCritical
+        End
+    End If
+
+    Call Lector.Initialize(DirInit & "Indices.ini")
+    MaxSup = Val(Lector.GetValue("INIT", "Referencias"))
+    
+    ReDim SupData(MaxSup) As SupData
+    frmSuperficies.lListado.Clear
+    
+    For i = 0 To MaxSup
+        SupData(i).name = Lector.GetValue("REFERENCIA" & i, "Nombre")
+        SupData(i).Grh = Val(Lector.GetValue("REFERENCIA" & i, "GrhIndice"))
+        SupData(i).Width = Val(Lector.GetValue("REFERENCIA" & i, "Ancho"))
+        SupData(i).Height = Val(Lector.GetValue("REFERENCIA" & i, "Alto"))
+        SupData(i).Block = IIf(Val(Lector.GetValue("REFERENCIA" & i, "Bloquear")) = 1, True, False)
+        SupData(i).Capa = Val(Lector.GetValue("REFERENCIA" & i, "Capa"))
+        frmSuperficies.lListado.AddItem SupData(i).name & " - #" & i
+    Next
+    
+    DoEvents
+    
+    Set Lector = Nothing
+    Exit Sub
+Fallo:
+    MsgBox "Error al intentar cargar el indice " & i & " de " & DirInit & "Indices.ini" & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+End Sub
+
+''
 ' Carga los indices de NPCs
 '
 
@@ -784,7 +842,7 @@ Public Sub CargarIndicesNPC()
     On Error Resume Next
 
     'On Error GoTo Fallo
-    If FileExist(DirDats & "\NPCs.dat", vbArchive) = False Then
+    If FileExist(DirDats & "NPCs.dat", vbArchive) = False Then
         MsgBox "Falta el archivo 'NPCs.dat' en " & DirDats, vbCritical
         Call CloseClient
 
@@ -797,20 +855,20 @@ Public Sub CargarIndicesNPC()
     Set Lector = New clsIniManager
 
     frmNpcs.lListado.Clear
-    Call Lector.Initialize(DirDats & "\NPCs.dat")
+    Call Lector.Initialize(DirDats & "NPCs.dat")
     NumNPCs = Val(Lector.GetValue("INIT", "NumNPCs"))
     
     ReDim NpcData(NumNPCs) As NpcData
     Trabajando = "Dats\NPCs.dat"
 
     For NPC = 1 To NumNPCs
-        NpcData(NPC).Name = Lector.GetValue("NPC" & NPC, "Name")
+        NpcData(NPC).name = Lector.GetValue("NPC" & NPC, "Name")
         
         NpcData(NPC).Body = Val(Lector.GetValue("NPC" & NPC, "Body"))
         NpcData(NPC).Head = Val(Lector.GetValue("NPC" & NPC, "Head"))
         NpcData(NPC).Heading = Val(Lector.GetValue("NPC" & NPC, "Heading"))
 
-        If LenB(NpcData(NPC).Name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).Name & " - #" & NPC
+        If LenB(NpcData(NPC).name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).name & " - #" & NPC
     Next
 
     Exit Sub

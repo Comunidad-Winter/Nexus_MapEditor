@@ -17,18 +17,18 @@ End Type
 
 Private Type tDatosBloqueados
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosGrh
     X As Integer
-    Y As Integer
+    y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
     X As Integer
-    Y As Integer
+    y As Integer
     Trigger As Integer
 End Type
 
@@ -38,31 +38,31 @@ Private Type tDatosLuces
     b As Integer
     range As Byte
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosParticulas
     X As Integer
-    Y As Integer
+    y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
     X As Integer
-    Y As Integer
+    y As Integer
     NpcIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
-    Y As Integer
+    y As Integer
     OBJIndex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
     X As Integer
-    Y As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -134,7 +134,7 @@ Public Sub NuevoMapa()
     On Error Resume Next
 
     Dim loopc As Integer
-    Dim Y     As Integer
+    Dim y     As Integer
     Dim X     As Integer
 
     frmMain.mnuReAbrirMapa.Enabled = False
@@ -147,43 +147,43 @@ Public Sub NuevoMapa()
 
     frmMain.MousePointer = 11
 
-    For Y = YMinMapSize To YMaxMapSize
+    For y = YMinMapSize To YMaxMapSize
         For X = XMinMapSize To XMaxMapSize
     
             ' Capa 1
-            MapData(X, Y).Graphic(1).GrhIndex = 1
+            MapData(X, y).Graphic(1).GrhIndex = 1
         
             ' Bloqueos
-            MapData(X, Y).Blocked = 0
+            MapData(X, y).Blocked = 0
 
             ' Capas 2, 3 y 4
-            MapData(X, Y).Graphic(2).GrhIndex = 0
-            MapData(X, Y).Graphic(3).GrhIndex = 0
-            MapData(X, Y).Graphic(4).GrhIndex = 0
+            MapData(X, y).Graphic(2).GrhIndex = 0
+            MapData(X, y).Graphic(3).GrhIndex = 0
+            MapData(X, y).Graphic(4).GrhIndex = 0
 
             ' NPCs
-            If MapData(X, Y).CharIndex > 0 Then
-                Call Char_Erase(MapData(X, Y).CharIndex)
-                MapData(X, Y).NpcIndex = 0
+            If MapData(X, y).CharIndex > 0 Then
+                Call Char_Erase(MapData(X, y).CharIndex)
+                MapData(X, y).NpcIndex = 0
 
             End If
 
             ' OBJs
-            MapData(X, Y).OBJInfo.OBJIndex = 0
-            MapData(X, Y).OBJInfo.Amount = 0
-            MapData(X, Y).ObjGrh.GrhIndex = 0
+            MapData(X, y).OBJInfo.OBJIndex = 0
+            MapData(X, y).OBJInfo.Amount = 0
+            MapData(X, y).ObjGrh.GrhIndex = 0
 
             ' Translados
-            MapData(X, Y).TileExit.Map = 0
-            MapData(X, Y).TileExit.X = 0
-            MapData(X, Y).TileExit.Y = 0
+            MapData(X, y).TileExit.Map = 0
+            MapData(X, y).TileExit.X = 0
+            MapData(X, y).TileExit.y = 0
         
             ' Triggers
-            MapData(X, Y).Trigger = 0
+            MapData(X, y).Trigger = 0
         
-            InitGrh MapData(X, Y).Graphic(1), 1
+            InitGrh MapData(X, y).Graphic(1), 1
         Next X
-    Next Y
+    Next y
 
     MapInfo.MapVersion = 0
     MapInfo.Name = "Nuevo Mapa"
@@ -263,7 +263,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim Blqs(1 To .NumeroBloqueados)
                 Get #fh, , Blqs
                 For i = 1 To .NumeroBloqueados
-                    MapData(Blqs(i).X, Blqs(i).Y).Blocked = 1
+                    MapData(Blqs(i).X, Blqs(i).y).Blocked = 1
                 Next i
             End If
             
@@ -271,7 +271,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim L2(1 To .NumeroLayers(2))
                 Get #fh, , L2
                 For i = 1 To .NumeroLayers(2)
-                    Call InitGrh(MapData(L2(i).X, L2(i).Y).Graphic(2), L2(i).GrhIndex)
+                    Call InitGrh(MapData(L2(i).X, L2(i).y).Graphic(2), L2(i).GrhIndex)
                 Next i
             End If
             
@@ -279,7 +279,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim L3(1 To .NumeroLayers(3))
                 Get #fh, , L3
                 For i = 1 To .NumeroLayers(3)
-                    Call InitGrh(MapData(L3(i).X, L3(i).Y).Graphic(3), L3(i).GrhIndex)
+                    Call InitGrh(MapData(L3(i).X, L3(i).y).Graphic(3), L3(i).GrhIndex)
                 Next i
             End If
             
@@ -287,7 +287,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim L4(1 To .NumeroLayers(4))
                 Get #fh, , L4
                 For i = 1 To .NumeroLayers(4)
-                    Call InitGrh(MapData(L4(i).X, L4(i).Y).Graphic(4), L4(i).GrhIndex)
+                    Call InitGrh(MapData(L4(i).X, L4(i).y).Graphic(4), L4(i).GrhIndex)
                 Next i
             End If
             
@@ -295,7 +295,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim Triggers(1 To .NumeroTriggers)
                 Get #fh, , Triggers
                 For i = 1 To .NumeroTriggers
-                    MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+                    MapData(Triggers(i).X, Triggers(i).y).Trigger = Triggers(i).Trigger
                 Next i
             End If
             
@@ -322,7 +322,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     
                     With Luces(i)
     
-                        Call Create_Light_To_Map(.X, .Y, .range, .r, .g, .b)
+                        Call Create_Light_To_Map(.X, .y, .range, .r, .g, .b)
     
                     End With
     
@@ -335,8 +335,8 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim Objetos(1 To .NumeroOBJs)
                 Get #fh, , Objetos
                 For i = 1 To .NumeroOBJs
-                    MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                    MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
+                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
                 Next i
             End If
                 
@@ -346,13 +346,13 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
 
                 For i = 1 To .NumeroNPCs
                 
-                    MapData(NPCs(i).X, NPCs(i).Y).NpcIndex = NPCs(i).NpcIndex
+                    MapData(NPCs(i).X, NPCs(i).y).NpcIndex = NPCs(i).NpcIndex
     
-                    If MapData(NPCs(i).X, NPCs(i).Y).NpcIndex > 0 Then
-                        Body = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NpcIndex).Body
-                        Head = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NpcIndex).Head
-                        Heading = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NpcIndex).Heading
-                        Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).Y, 2, 2, 2, 0, 0)
+                    If MapData(NPCs(i).X, NPCs(i).y).NpcIndex > 0 Then
+                        Body = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Body
+                        Head = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Head
+                        Heading = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Heading
+                        Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).y, 2, 2, 2, 0, 0)
                     End If
 
                 Next i
@@ -363,9 +363,9 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim TEs(1 To .NumeroTE)
                 Get #fh, , TEs
                 For i = 1 To .NumeroTE
-                    MapData(TEs(i).X, TEs(i).Y).TileExit.Map = TEs(i).DestM
-                    MapData(TEs(i).X, TEs(i).Y).TileExit.X = TEs(i).DestX
-                    MapData(TEs(i).X, TEs(i).Y).TileExit.Y = TEs(i).DestY
+                    MapData(TEs(i).X, TEs(i).y).TileExit.Map = TEs(i).DestM
+                    MapData(TEs(i).X, TEs(i).y).TileExit.X = TEs(i).DestX
+                    MapData(TEs(i).X, TEs(i).y).TileExit.y = TEs(i).DestY
                 Next i
             End If
             
@@ -382,6 +382,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
         Next i
     Next j
     
+    Call Actualizar_Estado(Estado_Actual_Date)
     Call DibujarMinimapa
     
     bRefreshRadar = True ' Radar

@@ -25,10 +25,13 @@ Sub Main()
           
     'Tile Engine
     frmCargando.lblCargando.Caption = "Cargando Tile Engine..."
-    Call InitTileEngine(frmMain.hWnd, 32, 32, 8, 8)
+    Call InitTileEngine(frmMain.hwnd, 32, 32, 8, 8)
     
     '##############
     ' Dats
+    
+    frmCargando.lblCargando.Caption = "Cargando Superficies..."
+    Call CargarIndicesSuperficie
     
     frmCargando.lblCargando.Caption = "Cargando NPC's..."
     Call CargarIndicesNPC
@@ -190,14 +193,14 @@ Public Sub DibujarMinimapa()
     Dim map_x, map_y, Capas As Byte
     
     'Primero limpiamos el minimapa anterior
-    frmMinimapa.Cls
+    frmMiniMapa.Render.Cls
     
     For map_y = YMinMapSize To YMaxMapSize
         For map_x = XMinMapSize To XMaxMapSize
         
             For Capas = 1 To 2
                 If MapData(map_x, map_y).Graphic(Capas).GrhIndex > 0 Then
-                    SetPixel frmMinimapa.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(Capas).GrhIndex).mini_map_color
+                    SetPixel frmMiniMapa.Render.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(Capas).GrhIndex).mini_map_color
                 End If
                 
             Next Capas
@@ -205,6 +208,6 @@ Public Sub DibujarMinimapa()
     Next map_y
    
    'Refrescamos
-    frmMinimapa.Refresh
+    frmMiniMapa.Render.Refresh
 End Sub
 
