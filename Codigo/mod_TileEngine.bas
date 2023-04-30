@@ -334,7 +334,6 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     
     tX = UserPos.X + viewPortX \ 32 - frmMain.MainViewPic.ScaleWidth \ 64
     tY = UserPos.y + viewPortY \ 32 - frmMain.MainViewPic.ScaleHeight \ 64
-    tX = tX - 1
     
     Exit Sub
     

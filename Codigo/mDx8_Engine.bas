@@ -50,7 +50,7 @@ Public MainScreenRect As RECT
 
 Public Type TLVERTEX
     X As Single
-    Y As Single
+    y As Single
     Z As Single
     rhw As Single
     Color As Long
@@ -144,8 +144,8 @@ End Sub
 Private Function Engine_Init_DirectDevice(D3DCREATEFLAGS As CONST_D3DCREATEFLAGS) As Boolean
 
     'Establecemos cual va a ser el tamano del render.
-    ScreenWidth = frmMain.MainViewPic.ScaleWidth
-    ScreenHeight = frmMain.MainViewPic.ScaleHeight
+    ScreenWidth = 6400
+    ScreenHeight = 6400
     
     ' Retrieve the information about your current display adapter.
     Call DirectD3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
@@ -164,7 +164,7 @@ Private Function Engine_Init_DirectDevice(D3DCREATEFLAGS As CONST_D3DCREATEFLAGS
         .BackBufferFormat = DispMode.Format
         .BackBufferWidth = ScreenWidth
         .BackBufferHeight = ScreenHeight
-        .hDeviceWindow = frmMain.MainViewPic.hWnd
+        .hDeviceWindow = frmMain.MainViewPic.hwnd
     End With
     
     If Not DirectDevice Is Nothing Then
@@ -276,7 +276,7 @@ Public Sub Engine_DirectX8_Aditional_Init()
     Engine_BaseSpeed = 0.018
     
     With MainScreenRect
-        .bottom = frmMain.MainViewPic.ScaleHeight
+        .Bottom = frmMain.MainViewPic.ScaleHeight
         .Right = frmMain.MainViewPic.ScaleWidth
     End With
 
@@ -362,13 +362,13 @@ Public Function Engine_PixelPosX(ByVal X As Integer) As Integer
     
 End Function
 
-Public Function Engine_PixelPosY(ByVal Y As Integer) As Integer
+Public Function Engine_PixelPosY(ByVal y As Integer) As Integer
 '*****************************************************************
 'Converts a tile position to a screen position
 'More info: http://www.vbgore.com/GameClient.TileEngine.Engine_PixelPosY
 '*****************************************************************
 
-    Engine_PixelPosY = (Y - 1) * 32
+    Engine_PixelPosY = (y - 1) * 32
     
 End Function
 
@@ -383,18 +383,18 @@ Public Function Engine_TPtoSPX(ByVal X As Byte) As Long
     
 End Function
 
-Public Function Engine_TPtoSPY(ByVal Y As Byte) As Long
+Public Function Engine_TPtoSPY(ByVal y As Byte) As Long
 '************************************************************
 'Tile Position to Screen Position
 'Takes the tile position and returns the pixel location on the screen
 'More info: http://www.vbgore.com/GameClient.TileEngine.Engine_TPtoSPY
 '************************************************************
 
-    Engine_TPtoSPY = Engine_PixelPosY(Y - ((UserPos.Y - HalfWindowTileHeight) - TileBufferSize)) + OffsetCounterY - 272 + ((10 - TileBufferSize) * 32)
+    Engine_TPtoSPY = Engine_PixelPosY(y - ((UserPos.y - HalfWindowTileHeight) - TileBufferSize)) + OffsetCounterY - 272 + ((10 - TileBufferSize) * 32)
     
 End Function
 
-Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal Y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long)
+Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long)
 '***************************************************
 'Author: Ezequiel Juarez (Standelf)
 'Last Modification: 29/12/10
@@ -404,7 +404,7 @@ Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal Y As Integer, ByVal Width A
     Call Engine_Long_To_RGB_List(temp_rgb(), Color)
 
     Call SpriteBatch.SetTexture(Nothing)
-    Call SpriteBatch.Draw(X, Y, Width, ByVal Height, temp_rgb())
+    Call SpriteBatch.Draw(X, y, Width, ByVal Height, temp_rgb())
     
 End Sub
 
@@ -414,7 +414,7 @@ Public Sub Engine_D3DColor_To_RGB_List(rgb_list() As Long, Color As D3DCOLORVALU
 'Last Modification: 14/05/10
 'Blisse-AO | Set a D3DColorValue to a RGB List
 '***************************************************
-    rgb_list(0) = D3DColorARGB(Color.a, Color.r, Color.g, Color.b)
+    rgb_list(0) = D3DColorARGB(Color.a, Color.R, Color.G, Color.B)
     rgb_list(1) = rgb_list(0)
     rgb_list(2) = rgb_list(0)
     rgb_list(3) = rgb_list(0)
@@ -601,7 +601,7 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWndDest As Long = 0)
+Public Sub Engine_EndScene(ByRef destRect As RECT, Optional ByVal hWndDest As Long = 0)
 '***************************************************
 'Author: Ezequiel Juarez (Standelf)
 'Last Modification: 29/12/10
@@ -614,10 +614,10 @@ On Error GoTo DeviceHandler:
     Call DirectDevice.EndScene
         
     If hWndDest = 0 Then
-        Call DirectDevice.Present(DestRect, ByVal 0&, ByVal 0&, ByVal 0&)
+        Call DirectDevice.Present(destRect, ByVal 0&, ByVal 0&, ByVal 0&)
     
     Else
-        Call DirectDevice.Present(DestRect, ByVal 0, hWndDest, ByVal 0)
+        Call DirectDevice.Present(destRect, ByVal 0, hWndDest, ByVal 0)
     
     End If
     
@@ -644,7 +644,7 @@ Public Sub Engine_ZoomIn()
     With MainScreenRect
         .Top = 0
         .Left = 0
-        .bottom = IIf(.bottom - 1 <= 367, .bottom, .bottom - 1)
+        .Bottom = IIf(.Bottom - 1 <= 367, .Bottom, .Bottom - 1)
         .Right = IIf(.Right - 1 <= 491, .Right, .Right - 1)
     End With
     
@@ -659,7 +659,7 @@ Public Sub Engine_ZoomOut()
     With MainScreenRect
         .Top = 0
         .Left = 0
-        .bottom = IIf(.bottom + 1 >= 459, .bottom, .bottom + 1)
+        .Bottom = IIf(.Bottom + 1 >= 459, .Bottom, .Bottom + 1)
         .Right = IIf(.Right + 1 >= 583, .Right, .Right + 1)
     End With
     
@@ -674,7 +674,7 @@ Public Sub Engine_ZoomNormal()
     With MainScreenRect
         .Top = 0
         .Left = 0
-        .bottom = ScreenHeight
+        .Bottom = ScreenHeight
         .Right = ScreenWidth
     End With
     
@@ -686,7 +686,7 @@ Public Function ZoomOffset(ByVal offset As Byte) As Single
 'Last Modify Date: 30/01/2011
 '**************************************************************
 
-    ZoomOffset = IIf((offset = 1), (ScreenHeight - MainScreenRect.bottom) / 2, (ScreenWidth - MainScreenRect.Right) / 2)
+    ZoomOffset = IIf((offset = 1), (ScreenHeight - MainScreenRect.Bottom) / 2, (ScreenWidth - MainScreenRect.Right) / 2)
     
 End Function
 
@@ -803,7 +803,7 @@ Public Sub Engine_Get_ARGB(Color As Long, Data As D3DCOLORVALUE)
 'Last Modify Date: 18/10/2012
 '**************************************************************
     
-    Dim a As Long, r As Long, g As Long, b As Long
+    Dim a As Long, R As Long, G As Long, B As Long
         
     If Color < 0 Then
         a = ((Color And (&H7F000000)) / (2 ^ 24)) Or &H80&
@@ -811,15 +811,15 @@ Public Sub Engine_Get_ARGB(Color As Long, Data As D3DCOLORVALUE)
         a = Color / (2 ^ 24)
     End If
     
-    r = (Color And &HFF0000) / (2 ^ 16)
-    g = (Color And &HFF00&) / (2 ^ 8)
-    b = (Color And &HFF&)
+    R = (Color And &HFF0000) / (2 ^ 16)
+    G = (Color And &HFF00&) / (2 ^ 8)
+    B = (Color And &HFF&)
     
     With Data
         .a = a
-        .r = r
-        .g = g
-        .b = b
+        .R = R
+        .G = G
+        .B = B
     End With
         
 End Sub
