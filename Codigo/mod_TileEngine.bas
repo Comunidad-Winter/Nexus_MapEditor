@@ -208,6 +208,26 @@ Type MapInfo
     Changed As Byte
 End Type
 
+Public SeleccionIX           As Integer
+Public SeleccionFX           As Integer
+Public SeleccionIY           As Integer
+Public SeleccionFY           As Integer
+Public SeleccionAncho        As Integer
+Public SeleccionAlto         As Integer
+Public Seleccionando         As Boolean
+Public SeleccionMap()        As MapBlock
+
+Public DeSeleccionOX         As Integer
+Public DeSeleccionOY         As Integer
+Public DeSeleccionIX         As Integer
+Public DeSeleccionFX         As Integer
+Public DeSeleccionIY         As Integer
+Public DeSeleccionFY         As Integer
+Public DeSeleccionAncho      As Integer
+Public DeSeleccionAlto       As Integer
+Public DeSeleccionando       As Boolean
+Public DeSeleccionMap()      As MapBlock
+
 'Bordes del mapa
 Public MinXBorder As Byte
 Public MaxXBorder As Byte
@@ -542,6 +562,10 @@ Sub RenderScreen(ByVal tilex As Integer, _
     
     Dim Grh              As Grh
     
+    Dim Sobre            As Long
+    
+    Dim bCapa            As Byte
+    
     ElapsedTime = Engine_ElapsedTime()
     
     'Figure out Ends and Starts of screen
@@ -593,9 +617,16 @@ Sub RenderScreen(ByVal tilex As Integer, _
     
     If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
     
+    If Val(frmSuperficies.cCapas.Text) >= 1 And (frmSuperficies.cCapas.Text) <= 4 Then
+        bCapa = Val(frmSuperficies.cCapas.Text)
+    Else
+        bCapa = 1
+
+    End If
+    
     Call GenerarVista
     
-    If screenmaxX > 100 Then screenmaxX = 100
+    If screenmaxX > XMaxMapSize Then screenmaxX = XMaxMapSize
 
     If screenminX < XMinMapSize Then
         ScreenX = XMinMapSize - screenminX
@@ -615,6 +646,69 @@ Sub RenderScreen(ByVal tilex As Integer, _
             
             PixelOffsetXTemp = (ScreenX - 1) * TilePixelWidth + PixelOffsetX
             PixelOffsetYTemp = (ScreenY - 1) * TilePixelHeight + PixelOffsetY
+            
+            If SobreX = X And SobreY = y Then
+
+                ' Pone Grh !
+                Sobre = -1
+
+                If frmSuperficies.cSeleccionarSuperficie.value = True Then
+                    Sobre = MapData(X, y).Graphic(bCapa).GrhIndex
+
+                    If frmConfigSup.MOSAICO.value = vbChecked Then
+
+                        Dim aux As Long
+
+                        Dim dy  As Integer
+
+                        Dim dX  As Integer
+
+                        If frmConfigSup.DespMosaic.value = vbChecked Then
+                            dy = Val(frmConfigSup.DMLargo.Text)
+                            dX = Val(frmConfigSup.DMAncho.Text)
+                        Else
+                            dy = 0
+                            dX = 0
+
+                        End If
+
+                        If frmMain.mnuAutoCompletarSuperficies.Checked = False Then
+                            aux = Val(frmSuperficies.cGrh.Text) + (((y + dy) Mod frmConfigSup.mLargo.Text) * frmConfigSup.mAncho.Text) + ((X + dX) Mod frmConfigSup.mAncho.Text)
+
+                            If MapData(X, y).Graphic(bCapa).GrhIndex <> aux Then
+                                MapData(X, y).Graphic(bCapa).GrhIndex = aux
+                                InitGrh MapData(X, y).Graphic(bCapa), aux
+
+                            End If
+
+                        Else
+                            aux = Val(frmSuperficies.cGrh.Text) + (((y + dy) Mod frmConfigSup.mLargo.Text) * frmConfigSup.mAncho.Text) + ((X + dX) Mod frmConfigSup.mAncho.Text)
+
+                            If MapData(X, y).Graphic(bCapa).GrhIndex <> aux Then
+                                MapData(X, y).Graphic(bCapa).GrhIndex = aux
+                                InitGrh MapData(X, y).Graphic(bCapa), aux
+
+                            End If
+
+                        End If
+
+                    Else
+
+                        If MapData(X, y).Graphic(bCapa).GrhIndex <> Val(frmSuperficies.cGrh.Text) Then
+                            MapData(X, y).Graphic(bCapa).GrhIndex = Val(frmSuperficies.cGrh.Text)
+                            InitGrh MapData(X, y).Graphic(bCapa), Val(frmSuperficies.cGrh.Text)
+
+                        End If
+
+                    End If
+
+                End If
+
+            Else
+            
+                Sobre = -1
+            
+            End If
             
             'Layer 1 **********************************
             If MapData(X, y).Graphic(1).GrhIndex <> 0 And VerCapa1 Then Call Draw_Grh(MapData(X, y).Graphic(1), PixelOffsetXTemp, PixelOffsetYTemp, 1, MapData(X, y).Engine_Light(), 1)
@@ -653,8 +747,7 @@ Sub RenderScreen(ByVal tilex As Integer, _
                     '***********************************************
 
                     'Char layer********************************
-                    If .CharIndex <> 0 And VerNpcs Then _
-                        Call CharRender(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp)
+                    If .CharIndex <> 0 And VerNpcs Then Call CharRender(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp)
                     '*************************************************
 
                     'Layer 3 *****************************************
@@ -746,11 +839,21 @@ Sub RenderScreen(ByVal tilex As Integer, _
                         
             End If
 
-            If VerTriggers Then '4978
-                If MapData(X, y).Trigger > 0 Then Call DrawText(PixelOffsetXTemp + 5, PixelOffsetYTemp - 13, MapData(X, y).Trigger, -1, False, 2)
+            If VerTriggers Then If MapData(X, y).Trigger > 0 Then Call DrawText(PixelOffsetXTemp + 5, PixelOffsetYTemp - 13, MapData(X, y).Trigger, -1, False, 2)
+
+            If Seleccionando Then
+          
+                If X >= SeleccionIX And y >= SeleccionIY Then
+                    If X <= SeleccionFX And y <= SeleccionFY Then
+                   
+                        Engine_Draw_Box PixelOffsetXTemp, PixelOffsetYTemp, 30, 30, D3DColorARGB(75, 0, 200, 100)
+    
+                    End If
+
+                End If
 
             End If
-                    
+            
             ScreenX = ScreenX + 1
             
         Next X
@@ -1124,6 +1227,8 @@ Public Sub DibujarMinimapa(Optional ByVal Refrescar As Boolean = False)
     Dim map_y As Byte
 
     Dim Capas As Byte
+    
+    If Working Then Exit Sub
     
     If Not Refrescar Then
     

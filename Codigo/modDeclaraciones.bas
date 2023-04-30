@@ -104,6 +104,8 @@ Public SobreY                As Byte   ' Posicion Y bajo el Cursor
 
 Public NoSobreescribir       As Boolean
 
+Public Working               As Boolean
+
 Public Const OFFSET_HEAD     As Integer = 0
 
 Public Const MSGMod          As String = "Este mapa há sido modificado." & vbCrLf & "Si no lo guardas perderas todos los cambios ¿Deseas guardarlo?"

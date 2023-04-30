@@ -202,6 +202,12 @@ Sub DobleClick(tX As Integer, tY As Integer)
     
     On Error GoTo DobleClick_Err
     
+    Seleccionando = False ' GS
+    SeleccionIX = 0
+    SeleccionIY = 0
+    SeleccionFX = 0
+    SeleccionFY = 0
+    
     ' Translados
     Dim tTrans As WorldPos
     tTrans = MapData(tX, tY).TileExit
@@ -1419,6 +1425,262 @@ Public Sub Borrar_Mapa()
 
 Borrar_Mapa_Err:
     Call LogError(Err.Number, Err.Description, "modEdicion.Borrar_Mapa", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub CopiarSeleccion()
+    '*************************************************
+    'Author: Loopzer
+    'Last modified: 21/11/07
+    '*************************************************
+    'podria usar copy mem , pero por las dudas no XD
+    
+    On Error GoTo CopiarSeleccion_Err
+    
+    Dim X As Integer
+    Dim y As Integer
+    Debug.Print
+    Seleccionando = False
+    SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
+    SeleccionAlto = Abs(SeleccionIY - SeleccionFY) + 1
+    
+    Debug.Print SeleccionIX
+    Debug.Print SeleccionFX
+    
+    Debug.Print SeleccionIY
+    Debug.Print SeleccionFY
+    
+    ReDim SeleccionMap(SeleccionAncho, SeleccionAlto) As MapBlock
+
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            SeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+        Next
+    Next
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+CopiarSeleccion_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.CopiarSeleccion", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub CortarSeleccion()
+    '*************************************************
+    'Author: Loopzer
+    'Last modified: 21/11/07
+    '*************************************************
+    
+    On Error GoTo CortarSeleccion_Err
+    
+    CopiarSeleccion
+    Dim X     As Integer
+    Dim y     As Integer
+    Dim Vacio As MapBlock
+    DeSeleccionAncho = SeleccionAncho
+    DeSeleccionAlto = SeleccionAlto
+    DeSeleccionOX = SeleccionIX
+    DeSeleccionOY = SeleccionIY
+    ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
+    
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+        Next
+    Next
+
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            MapData(X + SeleccionIX, y + SeleccionIY) = Vacio
+        Next
+    Next
+    Seleccionando = False
+    Call DibujarMinimapa
+
+    Exit Sub
+
+CortarSeleccion_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.CortarSeleccion", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub BlockearSeleccion()
+    '*************************************************
+    'Author: Loopzer
+    'Last modified: 21/11/07
+    '*************************************************
+    
+    On Error GoTo BlockearSeleccion_Err
+    
+    Dim X     As Integer
+    Dim y     As Integer
+    Dim Vacio As MapBlock
+    SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
+    SeleccionAlto = Abs(SeleccionIY - SeleccionFY) + 1
+    DeSeleccionAncho = SeleccionAncho
+    DeSeleccionAlto = SeleccionAlto
+    DeSeleccionOX = SeleccionIX
+    DeSeleccionOY = SeleccionIY
+    ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
+    
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+        Next
+    Next
+
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+
+            If MapData(X + SeleccionIX, y + SeleccionIY).Blocked > 0 Then
+                MapData(X + SeleccionIX, y + SeleccionIY).Blocked = 0
+            Else
+                MapData(X + SeleccionIX, y + SeleccionIY).Blocked = &HF
+
+            End If
+
+        Next
+    Next
+    Seleccionando = False
+
+    Exit Sub
+
+BlockearSeleccion_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.BlockearSeleccion", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub AccionSeleccion()
+
+    Working = True
+
+    '*************************************************
+    'Author: Loopzera
+    'Last modified: 21/11/07
+    '*************************************************
+    On Error Resume Next
+
+    Dim X As Integer
+    Dim y As Integer
+    SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
+    SeleccionAlto = Abs(SeleccionIY - SeleccionFY) + 1
+    DeSeleccionAncho = SeleccionAncho
+    DeSeleccionAlto = SeleccionAlto
+    DeSeleccionOX = SeleccionIX
+    DeSeleccionOY = SeleccionIY
+    ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
+    
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+        Next
+    Next
+
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+            ClickEdit vbLeftButton, SeleccionIX + X, SeleccionIY + y, False
+        Next
+    Next
+    Seleccionando = False
+    Call AddtoRichTextBox(frmConsola.StatTxt, "Tarea finalizada.", 255, 0, 0, False, True, False)
+    Working = False
+    Call DibujarMinimapa
+
+End Sub
+
+Public Sub PegarSeleccion() '(mx As Integer, my As Integer)
+    '*************************************************
+    'Author: Loopzer
+    'Last modified: 21/11/07
+    '*************************************************
+    'podria usar copy mem , pero por las dudas no XD
+    
+    On Error GoTo PegarSeleccion_Err
+    
+    Static UltimoX As Integer
+    Static UltimoY As Integer
+    'If UltimoX = SobreX And UltimoY = SobreY Then Exit Sub
+    UltimoX = SobreX
+    UltimoY = SobreY
+    Dim X As Integer
+    Dim y As Integer
+    DeSeleccionAncho = SeleccionAncho
+    DeSeleccionAlto = SeleccionAlto
+    DeSeleccionOX = SobreX
+    DeSeleccionOY = SobreY
+    
+    Debug.Print SobreX
+    Debug.Print SobreY
+    ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
+    
+    For X = 0 To DeSeleccionAncho - 1
+        For y = 0 To DeSeleccionAlto - 1
+
+            If y + SobreY > 100 Then Exit For
+            If X + SobreX > 100 Then Exit For
+            'NO copia tile exit - LADDER
+  
+            DeSeleccionMap(X, y).TileExit.Map = MapData(X + SobreX, y + SobreY).TileExit.Map
+            DeSeleccionMap(X, y).TileExit.X = MapData(X + SobreX, y + SobreY).TileExit.X
+            DeSeleccionMap(X, y).TileExit.y = MapData(X + SobreX, y + SobreY).TileExit.y
+            DeSeleccionMap(X, y) = MapData(X + SobreX, y + SobreY)
+
+            MapData(X + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
+        Next
+    Next
+
+    For X = 0 To SeleccionAncho - 1
+        For y = 0 To SeleccionAlto - 1
+
+            If y + SobreY > 100 Then Exit For
+            If X + SobreX > 100 Then Exit For
+            'NO copia tile exit - LADDER
+            SeleccionMap(X, y).TileExit.Map = MapData(X + SobreX, y + SobreY).TileExit.Map
+            SeleccionMap(X, y).TileExit.X = MapData(X + SobreX, y + SobreY).TileExit.X
+            SeleccionMap(X, y).TileExit.y = MapData(X + SobreX, y + SobreY).TileExit.y
+        
+            MapData(X + SobreX, y + SobreY) = SeleccionMap(X, y)
+            MapData(X + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
+
+        Next
+    Next
+    Seleccionando = False
+    Call DibujarMinimapa
+    
+    Exit Sub
+
+PegarSeleccion_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.PegarSeleccion", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub DePegar()
+    '*************************************************
+    'Author: Loopzer
+    'Last modified: 21/11/07
+    '*************************************************
+    
+    On Error GoTo DePegar_Err
+    
+    Dim X As Integer
+    Dim y As Integer
+
+    For X = 0 To DeSeleccionAncho - 1
+        For y = 0 To DeSeleccionAlto - 1
+            MapData(X + DeSeleccionOX, y + DeSeleccionOY) = DeSeleccionMap(X, y)
+        Next
+    Next
+    
+    Exit Sub
+
+DePegar_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.DePegar", Erl)
     Resume Next
     
 End Sub

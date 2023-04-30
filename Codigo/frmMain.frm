@@ -28,23 +28,15 @@ Begin VB.Form frmMain
       TabIndex        =   21
       Top             =   60
       Width           =   375
-      _ExtentX        =   661
-      _ExtentY        =   873
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Times New Roman"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Mode            =   0
-      Value           =   0   'False
-      Image           =   "frmMain.frx":0000
-      cBack           =   -2147483643
+      _extentx        =   661
+      _extenty        =   873
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":0000
+      mode            =   0
+      value           =   0   'False
+      image           =   "frmMain.frx":0030
+      cback           =   -2147483643
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -53,25 +45,17 @@ Begin VB.Form frmMain
       TabIndex        =   12
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Super."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":30052
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Super."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":30082
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":300AA
+      cback           =   -2147483633
    End
    Begin VB.PictureBox MainViewPic 
       Appearance      =   0  'Flat
@@ -108,25 +92,17 @@ Begin VB.Form frmMain
       TabIndex        =   13
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Trasl."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":30CA4
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Trasl."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":30CFC
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":30D24
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -135,25 +111,17 @@ Begin VB.Form frmMain
       TabIndex        =   14
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Bloq."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":318F6
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Bloq."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":31976
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":3199E
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -162,25 +130,17 @@ Begin VB.Form frmMain
       TabIndex        =   15
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "NPC's"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":32548
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "NPC's"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":325F0
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":32618
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -189,25 +149,17 @@ Begin VB.Form frmMain
       TabIndex        =   16
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Obj."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":3319A
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Obj."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":3326A
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":33292
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -216,25 +168,17 @@ Begin VB.Form frmMain
       TabIndex        =   17
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Trigg."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":33DEC
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Trigg."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":33EE4
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":33F0C
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -243,25 +187,17 @@ Begin VB.Form frmMain
       TabIndex        =   18
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Partic."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":34A3E
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Partic."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":34B5E
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":34B86
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -270,25 +206,17 @@ Begin VB.Form frmMain
       TabIndex        =   19
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Luces"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":350C0
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Luces"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":35208
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":35230
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -297,25 +225,17 @@ Begin VB.Form frmMain
       TabIndex        =   20
       Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   873
-      Caption         =   "Bordes"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":35562
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Bordes"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":356D2
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":356FA
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   495
@@ -324,23 +244,15 @@ Begin VB.Form frmMain
       TabIndex        =   22
       Top             =   60
       Width           =   375
-      _ExtentX        =   661
-      _ExtentY        =   873
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Times New Roman"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Mode            =   0
-      Value           =   0   'False
-      Image           =   "frmMain.frx":361B4
-      cBack           =   -2147483643
+      _extentx        =   661
+      _extenty        =   873
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":3634C
+      mode            =   0
+      value           =   0   'False
+      image           =   "frmMain.frx":3637C
+      cback           =   -2147483643
    End
    Begin VB.Line Line1 
       BorderColor     =   &H80000010&
@@ -654,6 +566,33 @@ Begin VB.Form frmMain
    End
    Begin VB.Menu mnuEditar 
       Caption         =   "&Editar"
+      Begin VB.Menu mnuCortar 
+         Caption         =   "C&ortar Selección"
+         Shortcut        =   ^X
+      End
+      Begin VB.Menu mnuCopiar 
+         Caption         =   "&Copiar Selección"
+         Shortcut        =   ^C
+      End
+      Begin VB.Menu mnuPegar 
+         Caption         =   "&Pegar Selección"
+         Shortcut        =   ^V
+      End
+      Begin VB.Menu mnuBloquearS 
+         Caption         =   "&Bloquear Selección"
+         Shortcut        =   ^B
+      End
+      Begin VB.Menu mnuRealizarOperacion 
+         Caption         =   "&Realizar Operación en Selección"
+         Shortcut        =   ^D
+      End
+      Begin VB.Menu mnuDeshacerPegado 
+         Caption         =   "Deshacer P&egado de Selección"
+         Shortcut        =   ^S
+      End
+      Begin VB.Menu mnuLineEdicion5 
+         Caption         =   "-"
+      End
       Begin VB.Menu mnuFunciones 
          Caption         =   "&Funciones"
          Begin VB.Menu mnuQuitarFunciones 
@@ -843,6 +782,8 @@ Option Explicit
 
 Public tX                  As Integer
 Public tY                  As Integer
+Public LastX               As Byte
+Public LastY               As Byte
 Public MouseX              As Long
 Public MouseY              As Long
 Public MouseBoton          As Long
@@ -1156,6 +1097,62 @@ Private Sub mnuConsola_Click()
 
 End Sub
 
+Private Sub mnuCopiar_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuCopiar_Click_Err
+    
+    Call CopiarSeleccion
+
+    Exit Sub
+
+mnuCopiar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuCopiar_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuCortar_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuCortar_Click_Err
+    
+    Call modEdicion.Deshacer_Add("Cortar Selección")
+    Call CortarSeleccion
+
+    Exit Sub
+
+mnuCortar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuCortar_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuPegar_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuPegar_Click_Err
+    
+    Call modEdicion.Deshacer_Add("Pegar Selección")
+    Call PegarSeleccion
+
+    Exit Sub
+
+mnuPegar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuPegar_Click", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub mnuDeshacer_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1170,6 +1167,66 @@ Private Sub mnuDeshacer_Click()
 
 mnuDeshacer_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuDeshacer_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuBloquearS_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuBloquearS_Click_Err
+    
+    Call modEdicion.Deshacer_Add("Bloquear Selección")
+    Call BlockearSeleccion
+
+    Exit Sub
+
+mnuBloquearS_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuBloquearS_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuRealizarOperacion_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuRealizarOperacion_Click_Err
+    
+
+    Call modEdicion.Deshacer_Add("Realizar Operación en Selección")
+    mnuAutoCompletarSuperficies.Checked = False
+
+    Call AccionSeleccion
+
+    Exit Sub
+
+mnuRealizarOperacion_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuRealizarOperacion_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuDeshacerPegado_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuDeshacerPegado_Click_Err
+    
+    Call modEdicion.Deshacer_Add("Deshacer Pegado de Selección")
+    Call DePegar
+
+    Exit Sub
+
+mnuDeshacerPegado_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuDeshacerPegado_Click", Erl)
     Resume Next
     
 End Sub
@@ -1684,7 +1741,10 @@ MainViewPic_DblClick_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub MainViewPic_MouseMove(Button As Integer, _
+                                  Shift As Integer, _
+                                  X As Single, _
+                                  y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
@@ -1697,10 +1757,28 @@ Private Sub MainViewPic_MouseMove(Button As Integer, Shift As Integer, X As Sing
     
     Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
     
+    If Shift = 1 And Button = 1 Then
+        Seleccionando = True
+        SeleccionFX = tX '+ TileX
+        SeleccionFY = tY '+ TileY
+    Else
+
+        If tX = 0 Then Exit Sub
+        If tY = 0 Then Exit Sub
+        If tX = LastX And tY = LastY Then Exit Sub
+        
+        ClickEdit Button, tX, tY
+        
+        LastX = tX
+        LastY = tY
+
+    End If
+    
     Exit Sub
 
 MainViewPic_MouseMove_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseMove", Erl)
+
     Resume Next
     
 End Sub
@@ -1716,10 +1794,9 @@ Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Sing
 
     'If Shift = 1 And Button = 2 Then PegarSeleccion tX, tY: Exit Sub
     If Shift = 1 And Button = 1 Then
-        'TODO
-        'Seleccionando = True
-        'SeleccionIX = tX '+ UserPos.X
-        'SeleccionIY = tY '+ UserPos.Y
+        Seleccionando = True
+        SeleccionIX = tX '+ UserPos.X
+        SeleccionIY = tY '+ UserPos.Y
     Else
         ClickEdit Button, tX, tY
 
