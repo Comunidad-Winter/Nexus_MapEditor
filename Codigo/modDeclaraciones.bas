@@ -94,9 +94,9 @@ Public VerLuces              As Boolean
 
 Public Cfg_TrOBJ             As Integer
 
-Public UltimoClickX          As Byte
+Public UltimoClickX          As Integer
 
-Public UltimoClickY          As Byte
+Public UltimoClickY          As Integer
 
 Public SobreX                As Byte   ' Posicion X bajo el Cursor
 

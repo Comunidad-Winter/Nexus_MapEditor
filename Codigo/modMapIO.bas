@@ -229,6 +229,9 @@ Public Sub NuevoMapa()
     Call DibujarMinimapa
     bRefreshRadar = True ' Radar
     
+    ' Vacio deshacer
+    Call modEdicion.Deshacer_Clear
+    
     Estado_Actual = Estados(e_estados.MedioDia)
     Call Actualizar_Estado
 
@@ -418,6 +421,9 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     Call CSMInfoCargar
     
     bRefreshRadar = True ' Radar
+    
+    ' Vacio deshacer
+    modEdicion.Deshacer_Clear
     
     'Set changed flag
     MapInfo.Changed = 0

@@ -300,6 +300,9 @@ Public Sub RenderPreview(Optional ByVal SinMosaico As Boolean = False)
 
     End With
     
+    'Si el Render no esta activo, salimos
+    If Not frmPreview Then Exit Sub
+    
     'Clear the inventory window
     Call Engine_BeginScene
     
@@ -354,8 +357,7 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
     Dim Leer    As New clsIniManager
     i = n
 
-    'TODO
-    'modEdicion.Deshacer_Add "Aplicar " & IIf(T = 0, "Objetos", "NPCs") & " al Azar" ' Hago deshacer
+    modEdicion.Deshacer_Add "Aplicar " & IIf(T = 0, "Objetos", "NPCs") & " al Azar" ' Hago deshacer
 
     Do While i > 0
         X = CInt(RandomNumber(XMinMapSize, XMaxMapSize - 1))

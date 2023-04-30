@@ -75,7 +75,7 @@ Begin VB.Form frmMain
    End
    Begin VB.PictureBox MainViewPic 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H80000007&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   10965
@@ -668,6 +668,17 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuLineEdicion1 
          Caption         =   "-"
       End
+      Begin VB.Menu mnuDeshacer 
+         Caption         =   "&Deshacer"
+         Shortcut        =   ^Z
+      End
+      Begin VB.Menu mnuUtilizarDeshacer 
+         Caption         =   "&Utilizar Deshacer"
+         Checked         =   -1  'True
+      End
+      Begin VB.Menu mnuLineEdicion0 
+         Caption         =   "-"
+      End
       Begin VB.Menu mnuInsertar 
          Caption         =   "&Insertar"
          Begin VB.Menu mnuNpcAzar 
@@ -830,8 +841,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public tX                  As Byte
-Public tY                  As Byte
+Public tX                  As Integer
+Public tY                  As Integer
 Public MouseX              As Long
 Public MouseY              As Long
 Public MouseBoton          As Long
@@ -907,6 +918,28 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 Form_QueryUnload_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.Form_QueryUnload", Erl)
     Resume Next
+    
+End Sub
+
+Private Sub Form_Resize()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: ????
+    '*************************************************
+    
+    With MainViewPic
+    
+        .Height = Me.ScaleHeight - 40
+        .Width = Me.ScaleWidth
+    
+    End With
+    
+    With MainScreenRect
+        .Bottom = frmMain.MainViewPic.ScaleHeight
+        .Right = frmMain.MainViewPic.ScaleWidth
+    End With
+    
+    Call ChangeView
     
 End Sub
 
@@ -1123,6 +1156,32 @@ Private Sub mnuConsola_Click()
 
 End Sub
 
+Private Sub mnuDeshacer_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 15/10/06
+    '*************************************************
+    
+    On Error GoTo mnuDeshacer_Click_Err
+    
+    Call modEdicion.Deshacer_Recover
+
+    Exit Sub
+
+mnuDeshacer_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuDeshacer_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuUtilizarDeshacer_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 16/10/06
+'*************************************************
+    mnuUtilizarDeshacer.Checked = (mnuUtilizarDeshacer.Checked = False)
+End Sub
+
 Private Sub mnuGRHaBMP_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1319,8 +1378,8 @@ Private Sub mnuNpcAzar_Click()
             NPCIndex = frmNpcs.cNPC.Text
                 
             If NPCIndex <> MapData(X, y).NPCIndex Then
-                'TODO
-                'modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
+                
+                modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
              
                 Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, y, 0, 0, 0, 0, 0)

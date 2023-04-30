@@ -178,7 +178,7 @@ Type MapInfo
     NumUsers As Integer
     Music As String
     ambient As String
-    Name As String
+    name As String
     StartPos As WorldPos
     OnDeathGoTo As WorldPos
     
@@ -252,9 +252,8 @@ Public NumChars As Integer
 Public LastChar As Integer
 Public NumWeaponAnims As Integer
 
-Private MouseTileX As Byte
-Private MouseTileY As Byte
-
+Private MouseTileX As Integer
+Private MouseTileY As Integer
 
 '?????????Graficos???????????
 Public GrhData() As GrhData 'Guarda todos los grh
@@ -307,13 +306,21 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal y As Long, ByVal crColor As Long) As Long
 Public Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal y As Long) As Long
 
-Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
+Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Integer, ByRef tY As Integer)
 '******************************************
 'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
 '******************************************
+    On Error GoTo ConverCPtoTP_Err
+    
     tX = UserPos.X + viewPortX \ 32 - frmMain.MainViewPic.ScaleWidth \ 64
     tY = UserPos.y + viewPortY \ 32 - frmMain.MainViewPic.ScaleHeight \ 64
     tX = tX - 1
+    
+    Exit Sub
+    
+ConverCPtoTP_Err:
+    Call LogError(Err.Number, Err.Description, "mod_TileEngine.ConvertCPtoTP(", Erl)
+    Resume Next
 End Sub
 
 Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Started As Byte = 2)
@@ -357,11 +364,8 @@ On Error GoTo ErrorHandler:
 
     TilePixelWidth = setTilePixelWidth
     TilePixelHeight = setTilePixelHeight
-    WindowTileHeight = Round(frmMain.MainViewPic.Height / 32, 0)
-    WindowTileWidth = Round(frmMain.MainViewPic.Width / 32, 0)
-
-    HalfWindowTileHeight = WindowTileHeight \ 2
-    HalfWindowTileWidth = WindowTileWidth \ 2
+    
+    Call ChangeView
 
     MinXBorder = XMinMapSize + (WindowTileWidth \ 2)
     MaxXBorder = XMaxMapSize - (WindowTileWidth \ 2)
@@ -370,6 +374,8 @@ On Error GoTo ErrorHandler:
 
     'Resize mapdata array
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
+    
+    Call modEdicion.InitDeshacer
     
     'Set intial user position
     UserPos.X = MinXBorder
@@ -1146,4 +1152,12 @@ Public Sub DibujarMinimapa(Optional ByVal Refrescar As Boolean = False)
     frmMiniMapa.ApuntadorRadar.Left = (UserPos.X) - 9
     frmMiniMapa.ApuntadorRadar.Top = (UserPos.y) - 8
 
+End Sub
+
+Public Sub ChangeView()
+    WindowTileHeight = Round(frmMain.MainViewPic.Height / 32, 0)
+    WindowTileWidth = Round(frmMain.MainViewPic.Width / 32, 0)
+
+    HalfWindowTileHeight = WindowTileHeight \ 2
+    HalfWindowTileWidth = WindowTileWidth \ 2
 End Sub

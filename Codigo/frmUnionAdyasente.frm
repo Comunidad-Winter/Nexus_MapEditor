@@ -20,16 +20,24 @@ Begin VB.Form frmUnionAdyacente
       TabIndex        =   40
       Top             =   4080
       Width           =   1215
-      _extentx        =   2143
-      _extenty        =   714
-      caption         =   "Cancelar"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmUnionAdyasente.frx":000C
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   2143
+      _ExtentY        =   714
+      Caption         =   "Cancelar"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin VB.CheckBox AutoMapeo 
       BackColor       =   &H00E0E0E0&
@@ -427,16 +435,24 @@ Begin VB.Form frmUnionAdyacente
       TabIndex        =   41
       Top             =   4080
       Width           =   1215
-      _extentx        =   2143
-      _extenty        =   714
-      caption         =   "Aplicar"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmUnionAdyasente.frx":0038
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   2143
+      _ExtentY        =   714
+      Caption         =   "Aplicar"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cmdDefault 
       Height          =   405
@@ -444,16 +460,24 @@ Begin VB.Form frmUnionAdyacente
       TabIndex        =   42
       Top             =   4080
       Width           =   1215
-      _extentx        =   2143
-      _extenty        =   714
-      caption         =   "Default"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmUnionAdyasente.frx":0064
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   2143
+      _ExtentY        =   714
+      Caption         =   "Default"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin VB.Label lblMapaAct 
       Alignment       =   2  'Center
@@ -1046,8 +1070,8 @@ Private Sub cmdAplicar_Click()
         Exit Sub
 
     End If
-    'TODO
-    'modEdicion.Deshacer_Add "Insertar Translados a mapas Adyasentes" ' Hago deshacer
+    
+    modEdicion.Deshacer_Add "Insertar Translados a mapas Adyasentes" ' Hago deshacer
 
     ' ARRIBA
     If Mapa(0).Text > -1 And Aplicar(0).value = 1 Then
