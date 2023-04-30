@@ -736,6 +736,9 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuActualizarIndices 
          Caption         =   "Actualizar indices"
       End
+      Begin VB.Menu mnuInformes 
+         Caption         =   "Informes"
+      End
    End
 End
 Attribute VB_Name = "frmMain"
@@ -1051,6 +1054,24 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
 
     End With
 
+End Sub
+
+Private Sub mnuInformes_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuInformes_Click_Err
+    
+    frmInformes.Show
+
+    Exit Sub
+
+mnuInformes_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuInformes_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuMinimapa_Click()

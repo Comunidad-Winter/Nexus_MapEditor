@@ -46,6 +46,7 @@ Form=Codigo\frmConfigSup.frm
 Form=Codigo\frmConsola.frm
 Form=Codigo\frmRemplazo.frm
 Form=Codigo\frmActualizarIndices.frm
+Form=Codigo\frmInformes.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
