@@ -922,7 +922,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     
     ConfigFile = DirInit & "Config.ini"
 
-    WriteVar ConfigFile, "PATH", "UltimoMapa", Dialog.FileName
+    WriteVar ConfigFile, "RUTAS", "UltimoMapa", Dialog.FileName
     WriteVar ConfigFile, "MOSTRAR", "ControlAutomatico", IIf(frmMain.mnuVerAutomatico.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Capa2", IIf(frmMain.mnuVerCapa2.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Capa3", IIf(frmMain.mnuVerCapa3.Checked = True, "1", "0")

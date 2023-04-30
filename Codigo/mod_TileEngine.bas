@@ -20,10 +20,10 @@ Public LastOffsetX As Integer
 Public LastOffsetY As Integer
 
 'Map sizes in tiles
-Public Const XMaxMapSize As Byte = 100
-Public Const XMinMapSize As Byte = 1
-Public Const YMaxMapSize As Byte = 100
-Public Const YMinMapSize As Byte = 1
+Public XMaxMapSize As Byte
+Public XMinMapSize As Byte
+Public YMaxMapSize As Byte
+Public YMinMapSize As Byte
 
 Private Const GrhFogata As Long = 1521
 

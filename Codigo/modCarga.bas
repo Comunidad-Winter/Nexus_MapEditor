@@ -59,9 +59,9 @@ Private Type tDatosTrigger
 End Type
 
 Private Type tDatosLuces
-    r As Integer
-    g As Integer
-    b As Integer
+    R As Integer
+    G As Integer
+    B As Integer
     range As Byte
     X As Integer
     y As Integer
@@ -154,7 +154,7 @@ Public grhCount As Long
 
 Public Type NpcData
 
-    Name As String
+    name As String
     Body As Integer
     Head As Integer
     Heading As Byte
@@ -166,7 +166,7 @@ Public NpcData() As NpcData
 
 Public Type ObjData
 
-    Name As String 'Nombre del obj
+    name As String 'Nombre del obj
     ObjType As Integer 'Tipo enum que determina cuales son las caract del obj
     GrhIndex As Long ' Indice del grafico que representa el obj
     GrhSecundario As Integer
@@ -184,7 +184,7 @@ Public NumOBJs     As Long
 Public ObjData()   As ObjData
 
 Type SupData
-    Name As String
+    name As String
     Grh As Long
     Width As Byte
     Height As Byte
@@ -243,6 +243,12 @@ Public Sub CargarConfiguracion()
         frmTriggers.cVerTriggers.value = frmMain.mnuVerTriggers.Checked
         frmBloqueos.cVerBloqueos.value = frmMain.mnuVerBloqueos.Checked
         .Preview = Val(Lector.GetValue("MOSTRAR", "Preview"))
+        
+        'MAPA
+        XMaxMapSize = Val(Lector.GetValue("MAPA", "XMaxMapSize"))
+        XMinMapSize = Val(Lector.GetValue("MAPA", "XMinMapSize"))
+        YMaxMapSize = Val(Lector.GetValue("MAPA", "yMaxMapSize"))
+        YMinMapSize = Val(Lector.GetValue("MAPA", "yMinMapSize"))
         
     End With
     
@@ -857,13 +863,13 @@ On Error GoTo Fallo
     frmSuperficies.lListado.Clear
     
     For i = 0 To MaxSup
-        SupData(i).Name = Lector.GetValue("REFERENCIA" & i, "Nombre")
+        SupData(i).name = Lector.GetValue("REFERENCIA" & i, "Nombre")
         SupData(i).Grh = Val(Lector.GetValue("REFERENCIA" & i, "GrhIndice"))
         SupData(i).Width = Val(Lector.GetValue("REFERENCIA" & i, "Ancho"))
         SupData(i).Height = Val(Lector.GetValue("REFERENCIA" & i, "Alto"))
         SupData(i).Block = IIf(Val(Lector.GetValue("REFERENCIA" & i, "Bloquear")) = 1, True, False)
         SupData(i).Capa = Val(Lector.GetValue("REFERENCIA" & i, "Capa"))
-        frmSuperficies.lListado.AddItem SupData(i).Name & " - #" & i
+        frmSuperficies.lListado.AddItem SupData(i).name & " - #" & i
     Next
     
     DoEvents
@@ -944,13 +950,13 @@ Public Sub CargarIndicesNPC()
     Trabajando = "Dats\NPCs.dat"
 
     For NPC = 1 To NumNPCs
-        NpcData(NPC).Name = Lector.GetValue("NPC" & NPC, "Name")
+        NpcData(NPC).name = Lector.GetValue("NPC" & NPC, "Name")
         
         NpcData(NPC).Body = Val(Lector.GetValue("NPC" & NPC, "Body"))
         NpcData(NPC).Head = Val(Lector.GetValue("NPC" & NPC, "Head"))
         NpcData(NPC).Heading = Val(Lector.GetValue("NPC" & NPC, "Heading"))
 
-        If LenB(NpcData(NPC).Name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).Name & " - #" & NPC
+        If LenB(NpcData(NPC).name) <> 0 Then frmNpcs.lListado.AddItem NpcData(NPC).name & " - #" & NPC
     Next
 
     Set Lector = Nothing
@@ -991,9 +997,9 @@ Public Sub CargarIndicesOBJ()
     For obj = 1 To NumOBJs
         frmCargando.lblCargando.Caption = "Cargando Datos de Objetos..." & obj & "/" & NumOBJs
         DoEvents
-        ObjData(obj).Name = Lector.GetValue("OBJ" & obj, "Name")
+        ObjData(obj).name = Lector.GetValue("OBJ" & obj, "Name")
         
-        If LenB(ObjData(obj).Name) > 0 Then
+        If LenB(ObjData(obj).name) > 0 Then
             ObjData(obj).GrhIndex = Val(Lector.GetValue("OBJ" & obj, "GrhIndex"))
             ObjData(obj).ObjType = Val(Lector.GetValue("OBJ" & obj, "ObjType"))
             ObjData(obj).Ropaje = Val(Lector.GetValue("OBJ" & obj, "NumRopaje"))
@@ -1003,7 +1009,7 @@ Public Sub CargarIndicesOBJ()
             ObjData(obj).GrhSecundario = Val(Lector.GetValue("OBJ" & obj, "GrhSec"))
             ObjData(obj).Cerrada = Val(Lector.GetValue("OBJ" & obj, "Cerrada"))
             ObjData(obj).Subtipo = Val(Lector.GetValue("OBJ" & obj, "Subtipo"))
-            frmObjetos.lListado.AddItem ObjData(obj).Name & " - #" & obj
+            frmObjetos.lListado.AddItem ObjData(obj).name & " - #" & obj
 
         End If
 
