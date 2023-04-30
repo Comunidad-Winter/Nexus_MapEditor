@@ -6,7 +6,7 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
     
 Private Type CharVA
     X As Integer
-    Y As Integer
+    y As Integer
     W As Integer
     h As Integer
     
@@ -18,7 +18,7 @@ End Type
 
 Private Type POINTAPI
     X As Long
-    Y As Long
+    y As Long
 End Type
 
 Private Type VFH
@@ -55,7 +55,7 @@ Private cfonts(1 To 2) As CustomFont ' _Default2 As CustomFont
 
 Public Function ColorToDX8(ByVal long_color As Long) As Long
     Dim TEMP_COLOR As String
-    Dim Red As Integer, Blue As Integer, Green As Integer
+    Dim red As Integer, blue As Integer, green As Integer
     
     TEMP_COLOR = Hex$(long_color)
     If Len(TEMP_COLOR) < 6 Then
@@ -63,11 +63,11 @@ Public Function ColorToDX8(ByVal long_color As Long) As Long
         TEMP_COLOR = String$(6 - Len(TEMP_COLOR), "0") + TEMP_COLOR
     End If
     
-    Red = CLng("&H" + mid$(TEMP_COLOR, 1, 2))
-    Green = CLng("&H" + mid$(TEMP_COLOR, 3, 2))
-    Blue = CLng("&H" + mid$(TEMP_COLOR, 5, 2))
+    red = CLng("&H" + mid$(TEMP_COLOR, 1, 2))
+    green = CLng("&H" + mid$(TEMP_COLOR, 3, 2))
+    blue = CLng("&H" + mid$(TEMP_COLOR, 5, 2))
     
-    ColorToDX8 = D3DColorXRGB(Red, Green, Blue)
+    ColorToDX8 = D3DColorXRGB(red, green, blue)
 
 End Function
 
@@ -100,7 +100,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
                                 ByRef UseFont As CustomFont, _
                                 ByVal Text As String, _
                                 ByVal X As Long, _
-                                ByVal Y As Long, _
+                                ByVal y As Long, _
                                 ByRef Color() As Long, _
                                 Optional ByVal Center As Boolean = False, _
                                 Optional ByVal Alpha As Byte = 255, _
@@ -179,7 +179,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
                 Call CopyMemory(TempVA, UseFont.HeaderInfo.CharVA(ascii(j - 1)), 24) 'this number represents the size of "CharVA" struct
                 
                 TempVA.X = X + Count
-                TempVA.Y = Y + yOffset
+                TempVA.y = y + yOffset
                 
                 'Set the colors
                 If Es_Emoticon(ascii(j - 1)) Then ' GSZAO los colores no afectan a los emoticones!
@@ -190,7 +190,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
                     
                 End If
                 Call Batch.SetAlpha(False)
-                Call Batch.Draw(TempVA.X, TempVA.Y, TempVA.W, TempVA.h, Color, TempVA.Tx1, TempVA.Ty1, TempVA.Tx2, TempVA.Ty2)
+                Call Batch.Draw(TempVA.X, TempVA.y, TempVA.W, TempVA.h, Color, TempVA.Tx1, TempVA.Ty1, TempVA.Tx2, TempVA.Ty2)
 
                 'Shift over the the position to render the next character
                 Count = Count + UseFont.HeaderInfo.CharWidth(ascii(j - 1))
@@ -206,31 +206,38 @@ Public Function ARGBtoD3DCOLORVALUE(ByVal ARGB As Long, ByRef Color As D3DCOLORV
     Dim dest(3) As Byte
     CopyMemory dest(0), ARGB, 4
     Color.a = dest(3)
-    Color.r = dest(2)
-    Color.g = dest(1)
-    Color.b = dest(0)
+    Color.R = dest(2)
+    Color.G = dest(1)
+    Color.B = dest(0)
 End Function
 
-Public Function ARGB(ByVal r As Long, ByVal g As Long, ByVal b As Long, ByVal a As Long) As Long
+Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal a As Long) As Long
         
     Dim c As Long
         
     If a > 127 Then
         a = a - 128
         c = a * 2 ^ 24 Or &H80000000
-        c = c Or r * 2 ^ 16
-        c = c Or g * 2 ^ 8
-        c = c Or b
+        c = c Or R * 2 ^ 16
+        c = c Or G * 2 ^ 8
+        c = c Or B
     Else
         c = a * 2 ^ 24
-        c = c Or r * 2 ^ 16
-        c = c Or g * 2 ^ 8
-        c = c Or b
+        c = c Or R * 2 ^ 16
+        c = c Or G * 2 ^ 8
+        c = c Or B
     End If
     
     ARGB = c
 
 End Function
+
+Sub ConvertLongToRGB(ByVal value As Long, R As Byte, G As Byte, B As Byte)
+    R = value Mod 256
+    G = Int(value / 256) Mod 256
+    B = Int(value / 256 / 256) Mod 256
+
+End Sub
 
 Private Function Engine_GetTextWidth(ByRef UseFont As CustomFont, ByVal Text As String) As Integer
 '***************************************************
@@ -311,7 +318,7 @@ Sub Engine_Init_FontTextures()
         
         'Store the size of the texture
         cfonts(i).TextureSize.X = TexInfo.Width
-        cfonts(i).TextureSize.Y = TexInfo.Height
+        cfonts(i).TextureSize.y = TexInfo.Height
     Next
     
     Exit Sub
@@ -387,7 +394,7 @@ Sub Engine_Init_FontSettings()
                 'Set the verticies
                 With cfonts(i).HeaderInfo.CharVA(LoopChar)
                     .X = 0
-                    .Y = 0
+                    .y = 0
                     .W = cfonts(i).HeaderInfo.CellWidth
                     .h = cfonts(i).HeaderInfo.CellHeight
                     .Tx1 = u
@@ -406,7 +413,7 @@ Sub Engine_Init_FontSettings()
 End Sub
 
 Public Sub DrawText(ByVal X As Integer, _
-                    ByVal Y As Integer, _
+                    ByVal y As Integer, _
                     ByVal Text As String, _
                     ByVal Color As Long, _
                     Optional Center As Boolean = False, _
@@ -415,7 +422,7 @@ Public Sub DrawText(ByVal X As Integer, _
     Dim aux(3) As Long
 
     Call Engine_Long_To_RGB_List(aux(), Color)
-    Call Engine_Render_Text(SpriteBatch, cfonts(Font), Text, X, Y, aux(), Center, , , Font)
+    Call Engine_Render_Text(SpriteBatch, cfonts(Font), Text, X, y, aux(), Center, , , Font)
 
 End Sub
 

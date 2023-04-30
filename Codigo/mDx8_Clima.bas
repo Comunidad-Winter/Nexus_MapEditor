@@ -13,15 +13,11 @@ Public Enum e_estados
     Amanecer = 0
     MedioDia
     Tarde
-    noche
-    Lluvia
-    Niebla
-    FogLluvia 'Niebla mas lluvia
+    Noche
 End Enum
 
 Public Estados(0 To 8) As D3DCOLORVALUE
 Public Estado_Actual As D3DCOLORVALUE
-Public Estado_Actual_Date As Byte
 
 Private m_Hora_Actual As Long
 Private m_Last_Hora_Actual As Long
@@ -34,44 +30,35 @@ Public Sub Init_MeteoEngine()
 '***************************************************
     With Estados(e_estados.Amanecer)
         .a = 255
-        .b = 230
-        .r = 200
-        .g = 200
+        .B = 230
+        .R = 200
+        .G = 200
     End With
     
     With Estados(e_estados.MedioDia)
         .a = 255
-        .r = 255
-        .g = 255
-        .b = 255
+        .R = 255
+        .G = 255
+        .B = 255
     End With
     
     With Estados(e_estados.Tarde)
         .a = 255
-        .b = 200
-        .r = 230
-        .g = 200
+        .B = 200
+        .R = 230
+        .G = 200
     End With
   
-    With Estados(e_estados.noche)
+    With Estados(e_estados.Noche)
         .a = 255
-        .b = 170
-        .r = 170
-        .g = 170
+        .B = 170
+        .R = 170
+        .G = 170
     End With
-    
-    With Estados(e_estados.Lluvia)
-        .a = 255
-        .r = 200
-        .g = 200
-        .b = 200
-    End With
-    
-    Estado_Actual_Date = 1
     
 End Sub
 
-Public Sub Actualizar_Estado(ByVal Estado As Byte)
+Public Sub Actualizar_Estado()
 '***************************************************
 'Author: Lorwik
 'Last Modification: 09/08/2020
@@ -95,12 +82,6 @@ Public Sub Actualizar_Estado(ByVal Estado As Byte)
 '
 '        Exit Sub
 '    End If
-
-    '¿Es un estado invalido?
-    Estado = e_estados.noche
-        
-    Estado_Actual = Estados(Estado)
-    Estado_Actual_Date = Estado
         
     For X = XMinMapSize To XMaxMapSize
         For y = YMinMapSize To YMaxMapSize

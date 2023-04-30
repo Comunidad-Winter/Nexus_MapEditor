@@ -45,16 +45,24 @@ Begin VB.Form frmMapInfo
       TabIndex        =   29
       Top             =   5640
       Width           =   1305
-      _extentx        =   2302
-      _extenty        =   661
-      caption         =   "Vista Previa"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmMapInfo.frx":004D
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   2302
+      _ExtentY        =   661
+      Caption         =   "Vista Previa"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cmdCerrar 
       Height          =   375
@@ -62,16 +70,24 @@ Begin VB.Form frmMapInfo
       TabIndex        =   28
       Top             =   5670
       Width           =   1575
-      _extentx        =   2778
-      _extenty        =   661
-      caption         =   "Cerrar"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmMapInfo.frx":0079
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   2778
+      _ExtentY        =   661
+      Caption         =   "Cerrar"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cmdMusica 
       Height          =   315
@@ -79,18 +95,26 @@ Begin VB.Form frmMapInfo
       TabIndex        =   27
       Top             =   840
       Width           =   765
-      _extentx        =   1349
-      _extenty        =   556
-      caption         =   "Más"
-      capalign        =   2
-      backstyle       =   2
-      font            =   "frmMapInfo.frx":00A5
-      cgradient       =   0
-      mode            =   0
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   1349
+      _ExtentY        =   556
+      Caption         =   "Más"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   0
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
-   Begin VB.CheckBox Check1 
+   Begin VB.CheckBox chkLuzClimatica 
       Caption         =   "Desactivado"
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -263,9 +287,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":00D1
+      ItemData        =   "frmMapInfo.frx":004D
       Left            =   1650
-      List            =   "frmMapInfo.frx":00DE
+      List            =   "frmMapInfo.frx":005A
       TabIndex        =   9
       Top             =   1950
       Width           =   2655
@@ -281,9 +305,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":00FB
+      ItemData        =   "frmMapInfo.frx":0077
       Left            =   1650
-      List            =   "frmMapInfo.frx":0108
+      List            =   "frmMapInfo.frx":0084
       TabIndex        =   8
       Top             =   1590
       Width           =   2655
@@ -629,33 +653,33 @@ Attribute VB_Exposed = False
 '**************************************************************
 Option Explicit
 
-Private Sub Check1_Click()
+Private Sub chkLuzClimatica_Click()
     
     On Error GoTo Check1_Click_Err
 
-    If Check1.value = 0 Then
+    If chkLuzClimatica.value = 0 Then
         r1.Enabled = True
         G1.Enabled = True
         b1.Enabled = True
         txtColor.Enabled = True
         cPrevia.Enabled = True
         Picture1.Enabled = True
-        Check1.value = 0
+        chkLuzClimatica.value = 0
         Exit Sub
 
     End If
 
-    If Check1.value = 1 Then
+    If chkLuzClimatica.value = 1 Then
         r1.Enabled = False
         G1.Enabled = False
         b1.Enabled = False
         txtColor.Enabled = False
         cPrevia.Enabled = False
         Picture1.Enabled = False
-        Check1.value = 1
+        chkLuzClimatica.value = 1
         MapInfo.LuzBase = 0
         MapInfo.Changed = 1
-        Call Actualizar_Estado(Estado_Actual_Date)
+        Call Actualizar_Estado
         Exit Sub
 
     End If
@@ -663,7 +687,7 @@ Private Sub Check1_Click()
     Exit Sub
 
 Check1_Click_Err:
-    Call LogError(Err.Number, Err.Description, "frmMapInfo.Check1_Click", Erl)
+    Call LogError(Err.Number, Err.Description, "frmMapInfo.chkLuzClimatica_Click", Erl)
     Resume Next
     
 End Sub
@@ -778,7 +802,7 @@ Private Sub cmdCerrar_Click()
     End If
 
     MapInfo.LuzBase = txtColor
-    Call Actualizar_Estado(Estado_Actual_Date)
+    Call Actualizar_Estado
     Me.Hide
     MapInfo.Changed = 1
 
@@ -841,7 +865,7 @@ Private Sub cPrevia_Click()
 
     MapInfo.LuzBase = Out
 
-    Call Actualizar_Estado(Estado_Actual_Date)
+    Call Actualizar_Estado
     
     Exit Sub
 
@@ -857,9 +881,9 @@ Public Function Selected_Color()
 
     Dim c   As Long
   
-    Dim r   As Integer ' Red component value   (0 to 255)
-    Dim g   As Integer ' Green component value (0 to 255)
-    Dim b   As Integer ' Blue component value  (0 to 255)
+    Dim R   As Integer ' Red component value   (0 to 255)
+    Dim G   As Integer ' Green component value (0 to 255)
+    Dim B   As Integer ' Blue component value  (0 to 255)
   
     Dim Out As String  ' Function output string
     
@@ -878,12 +902,12 @@ Public Function Selected_Color()
                       
     End With
 
-    r = c And 255              ' Get lowest 8 bits  - Red
-    g = Int(c / 256) And 255   ' Get middle 8 bits  - Green
-    b = Int(c / 65536) And 255 ' Get highest 8 bits - Blue
+    R = c And 255              ' Get lowest 8 bits  - Red
+    G = Int(c / 256) And 255   ' Get middle 8 bits  - Green
+    B = Int(c / 65536) And 255 ' Get highest 8 bits - Blue
   
     ' If H mode is selected, replace default with hex RGB values.
-    Out = "&H" & Format(Hex(r), "0#") & Format(Hex(g), "0#") & Format(Hex(b), "0#")
+    Out = "&H" & Format(Hex(R), "0#") & Format(Hex(G), "0#") & Format(Hex(B), "0#")
     'frmMain.Picture3.BackColor = RGB(r, g, b)
 
     Selected_Color = Out
@@ -960,7 +984,7 @@ Private Sub txtMapNombre_LostFocus()
     
     On Error GoTo txtMapNombre_LostFocus_Err
     
-    MapInfo.Name = txtMapNombre.Text
+    MapInfo.name = txtMapNombre.Text
     'FrmMain.lblMapNombre.Caption = MapInfo.name
     MapInfo.Changed = 1
     

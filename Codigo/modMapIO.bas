@@ -33,9 +33,9 @@ Private Type tDatosTrigger
 End Type
 
 Private Type tDatosLuces
-    r As Integer
-    g As Integer
-    b As Integer
+    R As Integer
+    G As Integer
+    B As Integer
     range As Byte
     X As Integer
     y As Integer
@@ -215,7 +215,7 @@ Public Sub NuevoMapa()
     Next y
 
     MapInfo.MapVersion = 0
-    MapInfo.Name = "Nuevo Mapa"
+    MapInfo.name = "Nuevo Mapa"
     MapInfo.Music = 0
     MapInfo.Pk = True
     MapInfo.MagiaSinEfecto = 0
@@ -227,8 +227,10 @@ Public Sub NuevoMapa()
 
     'Call MapInfo_Actualizar
     Call DibujarMinimapa
-
     bRefreshRadar = True ' Radar
+    
+    Estado_Actual = Estados(e_estados.MedioDia)
+    Call Actualizar_Estado
 
     'Set changed flag
     MapInfo.Changed = 0
@@ -351,7 +353,7 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     
                     With Luces(i)
     
-                        Call Create_Light_To_Map(.X, .y, .range, .r, .g, .b)
+                        Call Create_Light_To_Map(.X, .y, .range, .R, .G, .B)
     
                     End With
     
@@ -411,8 +413,9 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
         Next i
     Next j
     
-    Call Actualizar_Estado(Estado_Actual_Date)
+    Call Actualizar_Estado
     Call DibujarMinimapa
+    Call CSMInfoCargar
     
     bRefreshRadar = True ' Radar
     
@@ -568,7 +571,7 @@ On Error GoTo ErrorHandler
         Next i
     Next j
     
-    'Call CSMInfoSaveIAC
+    Call CSMInfoSave
               
     fh = FreeFile
     Open RutaMapa For Binary As fh
@@ -696,18 +699,146 @@ Public Sub DeseaGuardarMapa(Optional Path As String)
     
 
     If MapInfo.Changed = 1 Then
-        If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then
+        If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then _
             GuardarMapa Path
-
-        End If
 
     End If
 
-    
     Exit Sub
 
 DeseaGuardarMapa_Err:
     Call LogError(Err.Number, Err.Description, "modMapIO.DeseaGuardarMapa", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub CSMInfoSave()
+'**********************************
+'Autor: Lorwik
+'Fecha: 14/03/2021
+'**********************************
+
+    On Error GoTo CSMInfoSave_Err
+
+    MapDat.map_name = MapInfo.name
+    MapDat.music_number = MapInfo.Music
+    
+    MapDat.lvlMinimo = MapInfo.lvlMinimo
+    
+    If frmMapInfo.chkLuzClimatica = Checked Then
+        MapDat.LuzBase = MapInfo.LuzBase
+        
+    Else
+        MapDat.LuzBase = 0
+        
+    End If
+    
+    MapDat.version = MapInfo.MapVersion
+    
+    If MapInfo.Pk = True Then
+        MapDat.battle_mode = True
+    Else
+        MapDat.battle_mode = False
+    End If
+    
+    MapDat.ambient = MapInfo.ambient
+    MapDat.terrain = MapInfo.Terreno
+    MapDat.zone = MapInfo.Zona
+    MapDat.restrict_mode = MapInfo.Restringir
+    MapDat.backup_mode = MapInfo.BackUp
+    
+CSMInfoSave_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.CSMInfoSave", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub CSMInfoCargar()
+'**********************************
+'Autor: Lorwik
+'Fecha: 14/03/2021
+'**********************************
+
+    On Error GoTo CSMInfoCargar_Err:
+
+    Dim tR As Byte
+    Dim tG As Byte
+    Dim tB As Byte
+    
+    MapInfo.name = MapDat.map_name
+    MapInfo.Music = MapDat.music_number
+    
+    MapInfo.lvlMinimo = Val(MapDat.lvlMinimo)
+    MapInfo.LuzBase = MapDat.LuzBase
+    
+    If MapDat.LuzBase <> 0 Then
+        frmMapInfo.chkLuzClimatica = Checked
+        Call ConvertLongToRGB(MapDat.LuzBase, tR, tG, tB)
+        
+        frmMapInfo.r1.Text = tR
+        frmMapInfo.G1.Text = tG
+        frmMapInfo.b1.Text = tB
+    Else
+        frmMapInfo.chkLuzClimatica = Unchecked
+    End If
+    
+    MapInfo.MapVersion = MapDat.version
+    
+    If MapDat.battle_mode = True Then
+        MapInfo.Pk = True
+    Else
+        MapInfo.Pk = False
+    End If
+    
+    MapInfo.ambient = MapDat.ambient
+    
+    MapInfo.Terreno = MapDat.terrain
+    MapInfo.Zona = MapDat.zone
+    MapInfo.Restringir = MapDat.restrict_mode
+    MapInfo.BackUp = MapDat.backup_mode
+    
+    Call MapInfo_Actualizar
+    
+    Exit Sub
+    
+CSMInfoCargar_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.CSMInfoCargar", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Actualiza el formulario de MapInfo
+'
+
+Public Sub MapInfo_Actualizar()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 02/06/06
+'*************************************************
+
+On Error GoTo MapInfo_Actualizar_Err
+
+    With frmMapInfo
+        .txtMapNombre.Text = MapInfo.name
+        .txtMapMusica.Text = MapInfo.Music
+        .txtMapTerreno.Text = MapInfo.Terreno
+        .txtMapZona.Text = MapInfo.Zona
+        .txtMapRestringir.Text = MapInfo.Restringir
+    '   .chkMapBackup.value = MapInfo.BackUp
+        .chkMapPK.value = IIf(MapInfo.Pk = True, 1, 0)
+        .TxtAmbient.Text = MapInfo.ambient
+        .TxtlvlMinimo = MapInfo.lvlMinimo
+        .chkMapMagiaSinEfecto.value = MapInfo.MagiaSinEfecto
+        .chkMapInviSinEfecto.value = IIf(MapInfo.InviSinEfecto, vbChecked, vbUnchecked)
+        .chkMapResuSinEfecto.value = IIf(MapInfo.ResuSinEfecto, vbChecked, vbUnchecked)
+        .txtMapVersion = MapInfo.MapVersion
+    End With
+
+    Exit Sub
+    
+MapInfo_Actualizar_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.MapInfo_Actualizar", Erl)
     Resume Next
     
 End Sub

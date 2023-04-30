@@ -9,7 +9,7 @@ Attribute VB_Name = "mDx8_Luces"
 Option Base 0
 
 Private Type tLight
-    RGBcolor As D3DCOLORVALUE
+    RGBCOLOR As D3DCOLORVALUE
     active As Boolean
     map_x As Byte
     map_y As Byte
@@ -19,15 +19,15 @@ End Type
 Private Light_List() As tLight
 Private NumLights As Integer
 
-Public Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Optional range As Byte = 3, Optional ByVal Red As Byte = 255, Optional ByVal Green = 255, Optional ByVal Blue As Byte = 255)
+Public Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Optional range As Byte = 3, Optional ByVal red As Byte = 255, Optional ByVal green = 255, Optional ByVal blue As Byte = 255)
     NumLights = NumLights + 1
    
     ReDim Preserve Light_List(1 To NumLights) As tLight
    
-    Light_List(NumLights).RGBcolor.r = Red
-    Light_List(NumLights).RGBcolor.g = Green
-    Light_List(NumLights).RGBcolor.b = Blue
-    Light_List(NumLights).RGBcolor.a = 255
+    Light_List(NumLights).RGBCOLOR.R = red
+    Light_List(NumLights).RGBCOLOR.G = green
+    Light_List(NumLights).RGBCOLOR.B = blue
+    Light_List(NumLights).RGBCOLOR.a = 255
     Light_List(NumLights).range = range
     Light_List(NumLights).active = True
     Light_List(NumLights).map_x = map_x
@@ -36,12 +36,12 @@ Public Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Op
     Call LightRender(NumLights)
 End Function
 
-Public Function Delete_Light_To_Map(ByVal X As Byte, ByVal Y As Byte)
+Public Function Delete_Light_To_Map(ByVal X As Byte, ByVal y As Byte)
    
     Dim i As Long
    
     For i = 1 To NumLights
-        If Light_List(i).map_x = X And Light_List(i).map_y = Y Then
+        If Light_List(i).map_x = X And Light_List(i).map_y = y Then
             Delete_Light_To_Index i
             
             Exit Function
@@ -64,7 +64,7 @@ Public Function Delete_Light_To_Index(ByVal light_index As Integer)
         Do Until Light_List(NumLights).active
             NumLights = NumLights - 1
             If NumLights = 0 Then
-                Call Actualizar_Estado(Estado_Actual_Date)
+                Call Actualizar_Estado
                 Call LightRenderAll
                 Exit Function
                 
@@ -74,7 +74,7 @@ Public Function Delete_Light_To_Index(ByVal light_index As Integer)
     
     End If
  
-    Call Actualizar_Estado(Estado_Actual_Date)
+    Call Actualizar_Estado
     Call LightRenderAll
 End Function
 
@@ -101,11 +101,11 @@ Private Sub LightRender(ByVal light_index As Integer)
     Dim YCoord As Integer
    
     AmbientColor.a = Estado_Actual.a
-    AmbientColor.r = Estado_Actual.r
-    AmbientColor.g = Estado_Actual.g
-    AmbientColor.b = Estado_Actual.b
+    AmbientColor.R = Estado_Actual.R
+    AmbientColor.G = Estado_Actual.G
+    AmbientColor.B = Estado_Actual.B
 
-    LightColor = Light_List(light_index).RGBcolor
+    LightColor = Light_List(light_index).RGBCOLOR
        
     min_x = Light_List(light_index).map_x - Light_List(light_index).range
     max_x = Light_List(light_index).map_x + Light_List(light_index).range
@@ -161,7 +161,7 @@ Private Function LightCalculate(ByVal cRadio As Integer, ByVal LightX As Integer
    
     If VertexDist <= pRadio Then
         Call D3DXColorLerp(CurrentColor, LightColor, AmbientColor, VertexDist / pRadio) 'aca hay algo mal ;) Ambient color ;)
-        LightCalculate = D3DColorXRGB(Round(CurrentColor.r), Round(CurrentColor.g), Round(CurrentColor.b))
+        LightCalculate = D3DColorXRGB(Round(CurrentColor.R), Round(CurrentColor.G), Round(CurrentColor.B))
     Else
         LightCalculate = TileLight
     End If
@@ -176,7 +176,7 @@ Private Sub LightRender(ByVal light_index As Integer)
     Dim max_x As Integer
     Dim max_y As Integer
     Dim X As Integer
-    Dim Y As Integer
+    Dim y As Integer
     Dim ia As Single
     Dim i As Integer
     Dim Color(3) As Long
@@ -188,7 +188,7 @@ Private Sub LightRender(ByVal light_index As Integer)
     
     With Light_List(light_index)
     
-        Color(0) = D3DColorARGB(255, .RGBcolor.r, .RGBcolor.g, .RGBcolor.b)
+        Color(0) = D3DColorARGB(255, .RGBCOLOR.R, .RGBCOLOR.G, .RGBCOLOR.B)
         Color(1) = Color(0)
         Color(2) = Color(0)
         Color(3) = Color(0)
@@ -242,31 +242,31 @@ Private Sub LightRender(ByVal light_index As Integer)
     Next X
     
     'Left border
-    For Y = min_y + 1 To max_y - 1
-        If InMapBounds(min_x, Y) Then
-            MapData(min_x, Y).Engine_Light(2) = Color(2)
-            MapData(min_x, Y).Engine_Light(3) = Color(3)
+    For y = min_y + 1 To max_y - 1
+        If InMapBounds(min_x, y) Then
+            MapData(min_x, y).Engine_Light(2) = Color(2)
+            MapData(min_x, y).Engine_Light(3) = Color(3)
         End If
-    Next Y
+    Next y
     
     'Right border
-    For Y = min_y + 1 To max_y - 1
-        If InMapBounds(max_x, Y) Then
-            MapData(max_x, Y).Engine_Light(0) = Color(0)
-            MapData(max_x, Y).Engine_Light(1) = Color(1)
+    For y = min_y + 1 To max_y - 1
+        If InMapBounds(max_x, y) Then
+            MapData(max_x, y).Engine_Light(0) = Color(0)
+            MapData(max_x, y).Engine_Light(1) = Color(1)
         End If
-    Next Y
+    Next y
     
     'Set the inner part of the light
     For X = min_x + 1 To max_x - 1
-        For Y = min_y + 1 To max_y - 1
-            If InMapBounds(X, Y) Then
-                MapData(X, Y).Engine_Light(0) = Color(0)
-                MapData(X, Y).Engine_Light(1) = Color(1)
-                MapData(X, Y).Engine_Light(2) = Color(2)
-                MapData(X, Y).Engine_Light(3) = Color(3)
+        For y = min_y + 1 To max_y - 1
+            If InMapBounds(X, y) Then
+                MapData(X, y).Engine_Light(0) = Color(0)
+                MapData(X, y).Engine_Light(1) = Color(1)
+                MapData(X, y).Engine_Light(2) = Color(2)
+                MapData(X, y).Engine_Light(3) = Color(3)
             End If
-        Next Y
+        Next y
     Next X
     
     
