@@ -2,67 +2,76 @@ VERSION 5.00
 Begin VB.Form frmMapInfo 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Información del Mapa"
-   ClientHeight    =   5415
+   ClientHeight    =   6165
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   4425
+   ClientWidth     =   4440
    Icon            =   "frmMapInfo.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5415
-   ScaleWidth      =   4425
+   ScaleHeight     =   6165
+   ScaleWidth      =   4440
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox TxtlvlMinimo 
+      Height          =   285
+      Left            =   1650
+      TabIndex        =   33
+      Text            =   "0"
+      Top             =   2700
+      Width           =   2655
+   End
+   Begin VB.TextBox TxtAmbient 
+      Height          =   285
+      Left            =   1680
+      TabIndex        =   31
+      Text            =   "0"
+      Top             =   1230
+      Width           =   2655
+   End
+   Begin VB.ComboBox txtMapRestringir 
+      Height          =   315
+      ItemData        =   "frmMapInfo.frx":000C
+      Left            =   1650
+      List            =   "frmMapInfo.frx":001F
+      TabIndex        =   30
+      Top             =   2310
+      Width           =   2655
+   End
    Begin Nexus_MapEditor.lvButtons_H cPrevia 
       Height          =   375
-      Left            =   120
+      Left            =   150
       TabIndex        =   29
-      Top             =   4950
-      Width           =   1185
-      _ExtentX        =   2090
-      _ExtentY        =   661
-      Caption         =   "Vista Previa"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   0
-      Value           =   0   'False
-      cBack           =   -2147483633
+      Top             =   5640
+      Width           =   1305
+      _extentx        =   2302
+      _extenty        =   661
+      caption         =   "Vista Previa"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMapInfo.frx":004D
+      cgradient       =   0
+      mode            =   0
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cmdCerrar 
       Height          =   375
-      Left            =   2580
+      Left            =   2730
       TabIndex        =   28
-      Top             =   4920
-      Width           =   1725
-      _ExtentX        =   3043
-      _ExtentY        =   661
-      Caption         =   "Cerrar"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   0
-      Value           =   0   'False
-      cBack           =   -2147483633
+      Top             =   5670
+      Width           =   1575
+      _extentx        =   2778
+      _extenty        =   661
+      caption         =   "Cerrar"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMapInfo.frx":0079
+      cgradient       =   0
+      mode            =   0
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cmdMusica 
       Height          =   315
@@ -70,24 +79,16 @@ Begin VB.Form frmMapInfo
       TabIndex        =   27
       Top             =   840
       Width           =   765
-      _ExtentX        =   1349
-      _ExtentY        =   556
-      Caption         =   "Más"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   0
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   1349
+      _extenty        =   556
+      caption         =   "Más"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMapInfo.frx":00A5
+      cgradient       =   0
+      mode            =   0
+      value           =   0   'False
+      cback           =   -2147483633
    End
    Begin VB.CheckBox Check1 
       Caption         =   "Desactivado"
@@ -101,9 +102,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   150
       TabIndex        =   26
-      Top             =   3480
+      Top             =   4170
       Value           =   1  'Checked
       Width           =   1335
    End
@@ -119,10 +120,10 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3360
+      Left            =   3390
       TabIndex        =   25
       Text            =   "255"
-      Top             =   4440
+      Top             =   5130
       Width           =   495
    End
    Begin VB.TextBox G1 
@@ -137,10 +138,10 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2520
+      Left            =   2550
       TabIndex        =   23
       Text            =   "255"
-      Top             =   4440
+      Top             =   5130
       Width           =   495
    End
    Begin VB.TextBox r1 
@@ -155,10 +156,10 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   1680
+      Left            =   1710
       TabIndex        =   21
       Text            =   "255"
-      Top             =   4440
+      Top             =   5130
       Width           =   495
    End
    Begin VB.TextBox txtColor 
@@ -173,10 +174,10 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   390
-      Left            =   1440
+      Left            =   1470
       TabIndex        =   18
       Text            =   "&HFFFFFF"
-      Top             =   3960
+      Top             =   4650
       Width           =   2415
    End
    Begin VB.PictureBox Picture1 
@@ -185,27 +186,27 @@ Begin VB.Form frmMapInfo
       FillColor       =   &H00FFFFFF&
       ForeColor       =   &H00FFFFFF&
       Height          =   975
-      Left            =   120
+      Left            =   150
       ScaleHeight     =   915
       ScaleWidth      =   1035
       TabIndex        =   16
-      Top             =   3720
+      Top             =   4410
       Width           =   1095
    End
    Begin VB.CheckBox chkMapResuSinEfecto 
       Caption         =   "ResuSinEfecto"
       Height          =   255
-      Left            =   2400
+      Left            =   2430
       TabIndex        =   15
-      Top             =   2400
+      Top             =   3090
       Width           =   1815
    End
    Begin VB.CheckBox chkMapInviSinEfecto 
       Caption         =   "InviSinEfecto"
       Height          =   255
-      Left            =   120
+      Left            =   150
       TabIndex        =   14
-      Top             =   2400
+      Top             =   3090
       Width           =   2055
    End
    Begin VB.TextBox txtMapVersion 
@@ -246,9 +247,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   150
       TabIndex        =   10
-      Top             =   2880
+      Top             =   3570
       Width           =   1575
    End
    Begin VB.ComboBox txtMapTerreno 
@@ -262,11 +263,11 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":000C
-      Left            =   1680
-      List            =   "frmMapInfo.frx":0019
+      ItemData        =   "frmMapInfo.frx":00D1
+      Left            =   1650
+      List            =   "frmMapInfo.frx":00DE
       TabIndex        =   9
-      Top             =   1560
+      Top             =   1950
       Width           =   2655
    End
    Begin VB.ComboBox txtMapZona 
@@ -280,11 +281,11 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":0036
-      Left            =   1680
-      List            =   "frmMapInfo.frx":0043
+      ItemData        =   "frmMapInfo.frx":00FB
+      Left            =   1650
+      List            =   "frmMapInfo.frx":0108
       TabIndex        =   8
-      Top             =   1200
+      Top             =   1590
       Width           =   2655
    End
    Begin VB.TextBox txtMapMusica 
@@ -333,9 +334,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   2400
+      Left            =   2430
       TabIndex        =   3
-      Top             =   2640
+      Top             =   3330
       Width           =   1575
    End
    Begin VB.CheckBox chkMapMagiaSinEfecto 
@@ -350,10 +351,48 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   150
       TabIndex        =   2
-      Top             =   2640
+      Top             =   3330
       Width           =   1575
+   End
+   Begin VB.Label Label13 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nivel Minimo:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   195
+      Left            =   90
+      TabIndex        =   34
+      Top             =   2700
+      Width           =   930
+   End
+   Begin VB.Label Label12 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Sonido Ambiental:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   195
+      Left            =   120
+      TabIndex        =   32
+      Top             =   1230
+      Width           =   1290
    End
    Begin VB.Label Label11 
       Caption         =   "B:"
@@ -367,9 +406,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   3120
+      Left            =   3150
       TabIndex        =   24
-      Top             =   4485
+      Top             =   5175
       Width           =   255
    End
    Begin VB.Label Label9 
@@ -384,9 +423,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   2280
+      Left            =   2310
       TabIndex        =   22
-      Top             =   4485
+      Top             =   5175
       Width           =   255
    End
    Begin VB.Label Label8 
@@ -401,9 +440,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   1440
+      Left            =   1470
       TabIndex        =   20
-      Top             =   4485
+      Top             =   5175
       Width           =   255
    End
    Begin VB.Label Label7 
@@ -419,9 +458,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   1440
+      Left            =   1470
       TabIndex        =   19
-      Top             =   3720
+      Top             =   4410
       Width           =   1170
    End
    Begin VB.Label Label10 
@@ -438,9 +477,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   1440
+      Left            =   1470
       TabIndex        =   17
-      Top             =   3240
+      Top             =   3930
       Width           =   1215
    End
    Begin VB.Label Label6 
@@ -464,10 +503,10 @@ Begin VB.Form frmMapInfo
       BorderColor     =   &H00808080&
       BorderStyle     =   6  'Inside Solid
       Index           =   1
-      X1              =   135
-      X2              =   4315
-      Y1              =   3240
-      Y2              =   3240
+      X1              =   165
+      X2              =   4345
+      Y1              =   3930
+      Y2              =   3930
    End
    Begin VB.Label Label5 
       Caption         =   "Restringir:"
@@ -481,9 +520,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   90
       TabIndex        =   11
-      Top             =   1920
+      Top             =   2310
       Width           =   1455
    End
    Begin VB.Label Label4 
@@ -498,9 +537,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   90
       TabIndex        =   5
-      Top             =   1560
+      Top             =   1950
       Width           =   1455
    End
    Begin VB.Label Label3 
@@ -515,9 +554,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
+      Left            =   90
       TabIndex        =   4
-      Top             =   1200
+      Top             =   1590
       Width           =   1455
    End
    Begin VB.Label Label2 
@@ -558,10 +597,10 @@ Begin VB.Form frmMapInfo
       BorderColor     =   &H00FFFFFF&
       BorderWidth     =   2
       Index           =   0
-      X1              =   120
-      X2              =   4315
-      Y1              =   3240
-      Y2              =   3240
+      X1              =   150
+      X2              =   4345
+      Y1              =   3930
+      Y2              =   3930
    End
 End
 Attribute VB_Name = "frmMapInfo"

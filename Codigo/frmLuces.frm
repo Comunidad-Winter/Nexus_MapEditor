@@ -1,5 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmLuces 
+   BackColor       =   &H80000006&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Luces"
    ClientHeight    =   3015

@@ -775,3 +775,481 @@ ClickEdit_Err:
         Resume Next
     
     End Sub
+
+''
+' Bloquea los Bordes del Mapa
+'
+
+Public Sub Bloquear_Bordes()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Bloquear_Bordes_Err
+    
+    Dim y As Integer
+    Dim X As Integer
+
+    If Not MapaCargado Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Bloquear los bordes" ' Hago deshacer
+
+    For y = 1 To 100
+        For X = 1 To 100
+
+            If X < 13 Or X > 88 Or y < 10 Or y > 91 Then
+                MapData(X, y).Blocked = &HF
+            MapInfo.Changed = 1
+            End If
+
+        Next X
+    Next y
+
+    ' Bloqueo las 4 esquinitas ReyarB
+    If MapData(13, 10).TileExit.Map = 0 Then
+       MapData(13, 10).Blocked = &HF
+       MapInfo.Changed = 1
+    End If
+    
+    If MapData(13, 91).TileExit.Map = 0 Then
+        MapData(13, 91).Blocked = &HF
+        MapInfo.Changed = 1
+    End If
+    
+    If MapData(88, 10).TileExit.Map = 0 Then
+        MapData(88, 10).Blocked = &HF
+        MapInfo.Changed = 1
+    End If
+    
+    If MapData(88, 91).TileExit.Map = 0 Then
+        MapData(88, 91).Blocked = &HF
+        MapInfo.Changed = 1
+    End If
+
+    Call DibujarMinimapa
+
+    Exit Sub
+
+Bloquear_Bordes_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Bloquear_Bordes", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Modifica los bloqueos de todo mapa
+'
+' @param Valor Especifica el estado de Bloqueo que se asignara
+
+Public Sub Bloqueo_Todo(ByVal Valor As Byte)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Bloqueo_Todo_Err
+
+    Dim y As Integer
+    Dim X As Integer
+
+    If Not MapaCargado Then
+        Exit Sub
+
+    End If
+
+    'TODO
+    'modEdicion.Deshacer_Add "Bloquear todo el mapa" ' Hago deshacer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+            MapData(X, y).Blocked = Valor
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Bloqueo_Todo_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Bloqueo_Todo", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimita todos los translados del mapa
+'
+
+Public Sub Quitar_Translados()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 16/10/06
+    '*************************************************
+    
+    On Error GoTo Quitar_Translados_Err
+
+    If EditWarning Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar todos los Translados" ' Hago deshacer
+
+    Dim y As Integer
+    Dim X As Integer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If MapData(X, y).TileExit.Map <> 0 Then
+                MapData(X, y).TileExit.Map = 0
+                MapData(X, y).TileExit.X = 0
+                MapData(X, y).TileExit.y = 0
+
+            End If
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    
+    Exit Sub
+
+Quitar_Translados_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_Translados", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimina todos los Triggers del mapa
+'
+
+Public Sub Quitar_Triggers()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Quitar_Triggers_Err
+    
+
+    If EditWarning Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar todos los Triggers" ' Hago deshacer
+
+    Dim y As Integer
+    Dim X As Integer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If MapData(X, y).Trigger > 0 Then
+                MapData(X, y).Trigger = 0
+
+            End If
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Quitar_Triggers_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_Triggers", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimita los NPCs del mapa
+'
+' @param Hostiles Indica si elimita solo hostiles o solo npcs no hostiles
+
+Public Sub Quitar_NPCs(ByVal Hostiles As Boolean)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Quitar_NPCs_Err
+    
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar todos los NPCs" & IIf(Hostiles = True, " Hostiles", "") ' Hago deshacer
+
+    Dim y As Integer
+    Dim X As Integer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If MapData(X, y).NPCIndex > 0 Then
+                Call Char_Erase(MapData(X, y).CharIndex)
+                MapData(X, y).NPCIndex = 0
+
+            End If
+        
+        Next X
+    Next y
+
+    bRefreshRadar = True ' Radar
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Quitar_NPCs_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_NPCs", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimita todos los Objetos del mapa
+'
+
+Public Sub Quitar_Objetos()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Quitar_Objetos_Err
+    
+
+    If EditWarning Then Exit Sub
+    
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar todos los Objetos" ' Hago deshacer
+
+    Dim y As Integer
+    Dim X As Integer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If MapData(X, y).OBJInfo.objindex > 0 Then
+                If MapData(X, y).Graphic(3).GrhIndex = MapData(X, y).ObjGrh.GrhIndex Then MapData(X, y).Graphic(3).GrhIndex = 0
+                MapData(X, y).OBJInfo.objindex = 0
+                MapData(X, y).OBJInfo.Amount = 0
+
+            End If
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Quitar_Objetos_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_Objetos", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimita todo lo que se encuentre en los bordes del mapa
+'
+
+Public Sub Quitar_Bordes()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Quitar_Bordes_Err
+
+    If EditWarning Then Exit Sub
+
+    '*****************************************************************
+    'Clears a border in a room with current GRH
+    '*****************************************************************
+
+    Dim y As Integer
+    Dim X As Integer
+
+    If Not MapaCargado Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar todos los Bordes" ' Hago deshacer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If X < MinXBorder Or X > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
+        
+                MapData(X, y).Graphic(1).GrhIndex = 1
+                InitGrh MapData(X, y).Graphic(1), 1
+                MapData(X, y).Blocked = 0
+            
+                'Erase NPCs
+                If MapData(X, y).NPCIndex > 0 Then
+                    Char_Erase MapData(X, y).CharIndex
+                    MapData(X, y).NPCIndex = 0
+
+                End If
+
+                'Erase Objs
+                MapData(X, y).OBJInfo.objindex = 0
+                MapData(X, y).OBJInfo.Amount = 0
+                MapData(X, y).ObjGrh.GrhIndex = 0
+
+                'Clear exits
+                MapData(X, y).TileExit.Map = 0
+                MapData(X, y).TileExit.X = 0
+                MapData(X, y).TileExit.y = 0
+            
+                ' Triggers
+                MapData(X, y).Trigger = 0
+
+            End If
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Quitar_Bordes_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_Bordes", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Elimita una capa completa del mapa
+'
+' @param Capa Especifica la capa
+
+Public Sub Quitar_Capa(ByVal Capa As Byte)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Quitar_Capa_Err
+
+    If EditWarning Then Exit Sub
+
+    '*****************************************************************
+    'Clears one layer
+    '*****************************************************************
+
+    Dim y As Integer
+    Dim X As Integer
+
+    If Not MapaCargado Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Quitar Capa " & Capa ' Hago deshacer
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+
+            If Capa = 1 Then
+                MapData(X, y).Graphic(Capa).GrhIndex = 1
+            Else
+                MapData(X, y).Graphic(Capa).GrhIndex = 0
+
+            End If
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Quitar_Capa_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Quitar_Capa", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Borra todo el Mapa menos los Triggers
+'
+
+Public Sub Borrar_Mapa()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo Borrar_Mapa_Err
+    
+    If EditWarning Then Exit Sub
+
+    Dim y As Integer
+    Dim X As Integer
+
+    If Not MapaCargado Then Exit Sub
+
+    'TODO
+    'modEdicion.Deshacer_Add "Borrar todo el mapa" ' Hago deshacer
+    '
+    'Call engine.Light_Remove_All
+    'LightA.Delete_All_LigthRound
+    
+    'engine.Particle_Group_Remove_All
+
+    For y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+            MapData(X, y).Graphic(1).GrhIndex = 1
+            'Change blockes status
+            MapData(X, y).Blocked = 0
+
+            'Erase layer 2 and 3
+            MapData(X, y).Graphic(2).GrhIndex = 0
+            MapData(X, y).Graphic(3).GrhIndex = 0
+            MapData(X, y).Graphic(4).GrhIndex = 0
+
+            'Erase NPCs
+            If MapData(X, y).NPCIndex > 0 Then
+                Char_Erase MapData(X, y).CharIndex
+                MapData(X, y).NPCIndex = 0
+            End If
+
+            'Erase Objs
+            MapData(X, y).OBJInfo.objindex = 0
+            MapData(X, y).OBJInfo.Amount = 0
+            MapData(X, y).ObjGrh.GrhIndex = 0
+
+            'Clear exits
+            MapData(X, y).TileExit.Map = 0
+            MapData(X, y).TileExit.X = 0
+            MapData(X, y).TileExit.y = 0
+        
+            InitGrh MapData(X, y).Graphic(1), 1
+            
+            'MapData(X, y).luz.Rango = 0
+            'MapData(X, y).particle_Index = 0
+            'MapData(X, y).Particle_Group = 0
+            
+            MapData(X, y).Trigger = 0
+
+        Next X
+    Next y
+
+    'Set changed flag
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+Borrar_Mapa_Err:
+    Call LogError(Err.Number, Err.Description, "modEdicion.Borrar_Mapa", Erl)
+    Resume Next
+    
+End Sub

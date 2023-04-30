@@ -335,6 +335,47 @@ ReadField_Err:
     
 End Function
 
+Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = False)
+    '******************************************
+    'Adds text to a Richtext box at the bottom.
+    'Automatically scrolls to new text.
+    'Text box MUST be multiline and have a 3D
+    'apperance!
+    'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
+    'Juan Martín Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
+    '******************************************r
+    On Error GoTo AddtoRichTextBox_Err
+    
+    With RichTextBox
+
+        If Len(.Text) > 1000 Then
+            'Get rid of first line
+            .SelStart = InStr(1, .Text, vbCrLf) + 1
+            .SelLength = Len(.Text) - .SelStart + 2
+            .TextRTF = .SelRTF
+
+        End If
+        
+        .SelStart = Len(RichTextBox.Text)
+        .SelLength = 0
+        .SelBold = bold
+        .SelItalic = italic
+        
+        If Not red = -1 Then .SelColor = RGB(red, green, blue)
+        
+        .SelText = IIf(bCrLf, Text, Text & vbCrLf)
+        
+    End With
+
+    
+    Exit Sub
+
+AddtoRichTextBox_Err:
+    Call LogError(Err.Number, Err.Description, "ModGeneral.AddtoRichTextBox", Erl)
+    Resume Next
+    
+End Sub
+
 Public Sub LogError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
 '**********************************************************
 'Author: Jopi

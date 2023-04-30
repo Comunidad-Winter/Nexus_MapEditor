@@ -199,6 +199,14 @@ Public Sub VerFuncion(ByVal Numero As Byte)
 
             End If
             
+        Case 10 'Preview
+            If Not frmPreview.Visible Then
+                frmPreview.Show
+            Else
+                frmPreview.Visible = False
+                
+            End If
+            
     End Select
     
     Exit Sub

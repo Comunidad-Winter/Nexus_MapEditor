@@ -22,56 +22,40 @@ Begin VB.Form frmMain
    ScaleWidth      =   1280
    StartUpPosition =   2  'CenterScreen
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   9
-      Left            =   8430
+      Left            =   8400
       TabIndex        =   21
-      Top             =   90
+      Top             =   60
       Width           =   375
-      _ExtentX        =   661
-      _ExtentY        =   661
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Times New Roman"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Mode            =   0
-      Value           =   0   'False
-      Image           =   "frmMain.frx":0000
-      cBack           =   -2147483643
+      _extentx        =   661
+      _extenty        =   873
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":0000
+      mode            =   0
+      value           =   0   'False
+      image           =   "frmMain.frx":0030
+      cback           =   -2147483643
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   0
       Left            =   60
       TabIndex        =   12
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Super."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":30052
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Super."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":30082
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":300AA
+      cback           =   -2147483633
    End
    Begin VB.PictureBox MainViewPic 
       Appearance      =   0  'Flat
@@ -87,6 +71,12 @@ Begin VB.Form frmMain
       TabStop         =   0   'False
       Top             =   600
       Width           =   19125
+      Begin VB.Timer TimAutoGuardarMapa 
+         Enabled         =   0   'False
+         Interval        =   40000
+         Left            =   690
+         Top             =   180
+      End
       Begin MSComDlg.CommonDialog Dialog 
          Left            =   90
          Top             =   180
@@ -96,220 +86,173 @@ Begin VB.Form frmMain
       End
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   1
       Left            =   975
       TabIndex        =   13
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Trasl."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":30CA4
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Trasl."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":30CFC
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":30D24
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   2
       Left            =   1890
       TabIndex        =   14
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Bloq."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":318F6
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Bloq."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":31976
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":3199E
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   3
       Left            =   2820
       TabIndex        =   15
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "NPC's"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":32548
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "NPC's"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":325F0
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":32618
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   4
       Left            =   3750
       TabIndex        =   16
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Obj."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":3319A
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Obj."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":3326A
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":33292
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   5
       Left            =   4680
       TabIndex        =   17
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Trigg."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":33DEC
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Trigg."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":33EE4
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":33F0C
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   6
       Left            =   5610
       TabIndex        =   18
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Partic."
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":34A3E
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Partic."
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":34B5E
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":34B86
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   7
       Left            =   6540
       TabIndex        =   19
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Luces"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":350C0
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Luces"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":35208
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":35230
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
-      Height          =   375
+      Height          =   495
       Index           =   8
       Left            =   7470
       TabIndex        =   20
-      Top             =   90
+      Top             =   60
       Width           =   915
-      _ExtentX        =   1614
-      _ExtentY        =   661
-      Caption         =   "Bordes"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      Image           =   "frmMain.frx":35562
-      cBack           =   -2147483633
+      _extentx        =   1614
+      _extenty        =   873
+      caption         =   "Bordes"
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":356D2
+      cgradient       =   0
+      mode            =   1
+      value           =   0   'False
+      image           =   "frmMain.frx":356FA
+      cback           =   -2147483633
+   End
+   Begin Nexus_MapEditor.lvButtons_H SelectPanel 
+      Height          =   495
+      Index           =   10
+      Left            =   8790
+      TabIndex        =   22
+      Top             =   60
+      Width           =   375
+      _extentx        =   661
+      _extenty        =   873
+      capalign        =   2
+      backstyle       =   2
+      font            =   "frmMain.frx":3634C
+      mode            =   0
+      value           =   0   'False
+      image           =   "frmMain.frx":3637C
+      cback           =   -2147483643
    End
    Begin VB.Line Line1 
       BorderColor     =   &H80000010&
@@ -602,6 +545,9 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
       End
+      Begin VB.Menu mnuAbrirMapaN 
+         Caption         =   "&Abrir Mapa Nº"
+      End
       Begin VB.Menu mnuArchivoLine1 
          Caption         =   "-"
       End
@@ -636,6 +582,9 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuInsertar 
          Caption         =   "&Insertar"
+         Begin VB.Menu mnuNpcAzar 
+            Caption         =   "&NPC's al Azar"
+         End
          Begin VB.Menu mnuInsertarSuperficieAlAzar 
             Caption         =   "Superficie al &Azar"
          End
@@ -644,6 +593,45 @@ Begin VB.Form frmMain
          End
          Begin VB.Menu mnuInsertarSuperficieEnTodo 
             Caption         =   "Superficie en Todo el Mapa"
+         End
+         Begin VB.Menu mnuBloquearBordes 
+            Caption         =   "&Bloqueos en Bordes del Mapa"
+         End
+         Begin VB.Menu mnuBloquearMapa 
+            Caption         =   "&Bloqueos en Todo el Mapa"
+         End
+      End
+      Begin VB.Menu mnuQuitar 
+         Caption         =   "&Quitar"
+         Begin VB.Menu mnuQuitarTranslados 
+            Caption         =   "Todos los &Translados"
+         End
+         Begin VB.Menu mnuQuitarBloqueos 
+            Caption         =   "Todos los &Bloqueos"
+         End
+         Begin VB.Menu mnuQuitarNPCs 
+            Caption         =   "Todos los &NPC's"
+         End
+         Begin VB.Menu mnuQuitarNPCsHostiles 
+            Caption         =   "Todos los NPC's &Hostiles"
+         End
+         Begin VB.Menu mnuQuitarObjetos 
+            Caption         =   "Todos los &Objetos"
+         End
+         Begin VB.Menu mnuQuitarTriggers 
+            Caption         =   "Todos los Tri&gger's"
+         End
+         Begin VB.Menu mnuQuitarSuperficieBordes 
+            Caption         =   "Superficie de los B&ordes"
+         End
+         Begin VB.Menu mnuQuitarSuperficieDeCapa 
+            Caption         =   "Superficie de la &Capa Seleccionada"
+         End
+         Begin VB.Menu mnuLineEdicion4 
+            Caption         =   "-"
+         End
+         Begin VB.Menu mnuQuitarTODO 
+            Caption         =   "TODO"
          End
       End
       Begin VB.Menu mnuLineEdicion2 
@@ -666,6 +654,9 @@ Begin VB.Form frmMain
          Caption         =   "Auto-&Capturar información de los Translados"
          Checked         =   -1  'True
       End
+      Begin VB.Menu mnuAutoGuardarMapas 
+         Caption         =   "Configuración de Auto-&Guardar Mapas"
+      End
    End
    Begin VB.Menu mnuHerramientas 
       Caption         =   "&Herramientas"
@@ -674,9 +665,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuConsola 
          Caption         =   "&Consola"
-      End
-      Begin VB.Menu mnuPreview 
-         Caption         =   "&Preview"
       End
    End
    Begin VB.Menu mnuVer 
@@ -738,6 +726,12 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuInformes 
          Caption         =   "Informes"
+      End
+      Begin VB.Menu mnuGRHaBMP 
+         Caption         =   "GRH -> BMP"
+      End
+      Begin VB.Menu mnuOptimizar 
+         Caption         =   "Optimizar Mapa"
       End
    End
 End
@@ -907,6 +901,42 @@ ErrHandler:
 
 End Sub
 
+Private Sub mnuAbrirMapaN_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 30/04/2023
+    '*************************************************
+    
+    On Error GoTo abrirmapn_Click_Err
+    
+    Dim Mapa As Integer
+    Mapa = Val(InputBox("Ingresa el numero de mapa que quieres abrir."))
+
+    If Mapa <> 0 Then
+        If MapInfo.Changed = 1 Then
+            If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then
+                modMapIO.GuardarMapa Dialog.FileName
+            End If
+        End If
+
+        Dialog.FileName = PATH_Save & NameMap_Save & Mapa & ".csm"
+
+        If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
+        Call modMapIO.NuevoMapa
+        DoEvents
+        modMapIO.AbrirMapa Dialog.FileName
+        EngineRun = True
+        Exit Sub
+
+    End If
+
+    Exit Sub
+
+abrirmapn_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.abrirmapn_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub mnuActualizarIndices_Click()
     
     On Error GoTo mnuActualizarIndices_Click_Err
@@ -917,6 +947,58 @@ Private Sub mnuActualizarIndices_Click()
 
 mnuActualizarIndices_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuActualizarIndices_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuAutoGuardarMapas_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuAutoGuardarMapas_Click_Err
+    
+    frmAutoGuardarMapa.Show
+
+    Exit Sub
+
+mnuAutoGuardarMapas_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuAutoGuardarMapas_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub mnuBloquearBordes_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuBloquearBordes_Click_Err
+    
+    Call modEdicion.Bloquear_Bordes
+
+    Exit Sub
+
+mnuBloquearBordes_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuBloquearBordes_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub mnuBloquearMapa_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuBloquearMapa_Click_Err
+    
+    Call modEdicion.Bloqueo_Todo(&HF)
+
+    Exit Sub
+
+mnuBloquearMapa_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuBloquearMapa_Click", Erl)
     Resume Next
     
 End Sub
@@ -951,6 +1033,24 @@ Private Sub mnuConsola_Click()
         frmConsola.Visible = False
     End If
 
+End Sub
+
+Private Sub mnuGRHaBMP_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 01/11/08
+    '*************************************************
+    
+    On Error GoTo mnuGRHaBMP_Click_Err
+    
+    frmGRHaBMP.Show
+    
+    Exit Sub
+
+mnuGRHaBMP_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuGRHaBMP_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub mnuGuardarMapa_Click()
@@ -1105,6 +1205,53 @@ mnuModoCaminata_Click_Err:
     
 End Sub
 
+Private Sub mnuNpcAzar_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 30/04/2023
+    '*************************************************
+    On Error GoTo NpcAzar_Click_Err
+    
+    Dim NPCIndex As Long
+    Dim X        As Byte
+    Dim tmp      As String
+    Dim y        As Byte
+    Dim i        As Byte
+
+    tmp = InputBox("¿Cuantos npcs?", "Ingresar npcs al azar por todo el mapa.")
+
+    If tmp = "" Then Exit Sub
+
+    For i = 1 To CLng(tmp)
+        X = RandomNumber(15, 87)
+        y = RandomNumber(15, 87)
+            
+        If (MapData(X, y).Blocked And &HF) <> &HF Then
+
+            NPCIndex = frmNpcs.cNPC.Text
+                
+            If NPCIndex <> MapData(X, y).NPCIndex Then
+                'TODO
+                'modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
+                MapInfo.Changed = 1 'Set changed flag
+             
+                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, y, 0, 0, 0, 0, 0)
+                MapData(X, y).NPCIndex = NPCIndex
+
+            End If
+
+        End If
+
+    Next i
+
+    
+    Exit Sub
+
+NpcAzar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuNpcAzar_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub mnuNuevoMapa_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1141,17 +1288,195 @@ mnuNuevoMapa_Click_Err:
     
 End Sub
 
-Private Sub mnuPreview_Click()
+Private Sub mnuOptimizar_Click()
     '*************************************************
-    'Author: Lorwik
-    'Last modified: 29/04/2023
+    'Author: ^[GS]^
+    'Last modified: 22/09/06
     '*************************************************
     
-    If Not frmPreview.Visible Then
-        frmPreview.Show , Me
-    Else
-        frmPreview.Visible = False
+    On Error GoTo mnuOptimizar_Click_Err
+    
+    frmOptimizar.Show
+    
+    Exit Sub
+
+mnuOptimizar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuOptimizar_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarTranslados_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 16/10/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarTranslados_Click_Err
+    
+    Call modEdicion.Quitar_Translados
+
+    Exit Sub
+
+mnuQuitarTranslados_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarTranslados_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarTriggers_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarTriggers_Click_Err
+    
+    Call modEdicion.Quitar_Triggers
+
+    Exit Sub
+
+mnuQuitarTriggers_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarTriggers_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarBloqueos_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarBloqueos_Click_Err
+    
+    Call modEdicion.Bloqueo_Todo(0)
+
+    Exit Sub
+
+mnuQuitarBloqueos_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarBloqueos_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarNPCs_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarNPCs_Click_Err
+    
+    Call modEdicion.Quitar_NPCs(False)
+    
+    Exit Sub
+
+mnuQuitarNPCs_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarNPCs_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarObjetos_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarObjetos_Click_Err
+    
+    Call modEdicion.Quitar_Objetos
+
+    Exit Sub
+
+mnuQuitarObjetos_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarObjetos_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarSuperficieBordes_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarSuperficieBordes_Click_Err
+    
+    Call modEdicion.Quitar_Bordes
+    
+    Exit Sub
+
+mnuQuitarSuperficieBordes_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarSuperficieBordes_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarSuperficieDeCapa_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarSuperficieDeCapa_Click_Err
+    
+    Call modEdicion.Quitar_Capa(frmSuperficies.cCapas.Text)
+
+    Exit Sub
+
+mnuQuitarSuperficieDeCapa_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarSuperficieDeCapa_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarTODO_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuQuitarTODO_Click_Err
+    
+    Call modEdicion.Borrar_Mapa
+    
+    Exit Sub
+
+mnuQuitarTODO_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarTODO_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuReAbrirMapa_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo ErrHandler
+
+    If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
+    If MapInfo.Changed = 1 Then
+        If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then
+            modMapIO.GuardarMapa Dialog.FileName
+
+        End If
+
     End If
+
+    Call modMapIO.NuevoMapa
+    modMapIO.AbrirMapa Dialog.FileName
+    DoEvents
+    mnuReAbrirMapa.Enabled = True
+    EngineRun = True
+    
+    Exit Sub
+    
+ErrHandler:
+
 End Sub
 
 Public Sub SelectPanel_Click(Index As Integer)
@@ -1514,4 +1839,36 @@ Private Sub mnuInsertarSuperficieEnTodo_Click()
 'Last modified: 20/05/06
 '*************************************************
     Call modEdicion.Superficie_Todo
+End Sub
+
+Private Sub TimAutoGuardarMapa_Timer()
+    
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo TimAutoGuardarMapa_Timer_Err
+    
+    If mnuAutoGuardarMapas.Checked = True Then
+        bAutoGuardarMapaCount = bAutoGuardarMapaCount + 1
+
+        If bAutoGuardarMapaCount >= bAutoGuardarMapa Then
+            If MapInfo.Changed = 1 Then ' Solo guardo si el mapa esta modificado
+                modMapIO.GuardarMapa Dialog.FileName
+
+            End If
+
+            bAutoGuardarMapaCount = 0
+
+        End If
+
+    End If
+    
+    Exit Sub
+
+TimAutoGuardarMapa_Timer_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.TimAutoGuardarMapa_Timer", Erl)
+    Resume Next
+    
 End Sub

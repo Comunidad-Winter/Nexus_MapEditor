@@ -142,7 +142,7 @@ On Error GoTo ErrHandler
     End If
     
     If frmMain.Dialog.FilterIndex = 1 Then _
-        Call GuardarMapa_CSM(Path)
+        Call MapaCSM_Guardar(Path)
 
 ErrHandler:
 End Sub
@@ -163,7 +163,10 @@ Public Sub NuevoMapa()
     Dim y     As Integer
     Dim X     As Integer
 
+    bAutoGuardarMapaCount = 0
+
     frmMain.mnuReAbrirMapa.Enabled = False
+    frmMain.TimAutoGuardarMapa.Enabled = False
 
     MapaCargado = False
 
@@ -429,9 +432,195 @@ MapaCSM_Cargar_Err:
     Resume Next
 End Sub
 
-Private Sub GuardarMapa_CSM(ByVal RutaMapa As String)
+Private Function MapaCSM_Guardar(ByVal RutaMapa As String) As Boolean
+    '***************************************************
+    'Author: Lorwik
+    'Last Modification: 14/03/2021
+    '***************************************************
+    
+On Error GoTo ErrorHandler
 
-End Sub
+    Dim fh As Integer
+    Dim MH As tMapHeader
+    Dim Blqs() As tDatosBloqueados
+    Dim L1() As Long
+    Dim L2() As tDatosGrh
+    Dim L3() As tDatosGrh
+    Dim L4() As tDatosGrh
+    Dim Triggers() As tDatosTrigger
+    Dim Luces() As tDatosLuces
+    Dim Particulas() As tDatosParticulas
+    Dim Objetos() As tDatosObjs
+    Dim NPCs() As tDatosNPC
+    Dim TEs() As tDatosTE
+    
+    Dim i As Integer
+    Dim j As Integer
+    
+    If NoSobreescribir = False Then
+        If FileExist(RutaMapa, vbNormal) = True Then
+            If MsgBox("¿Desea sobrescribir " & RutaMapa & "?", vbCritical + vbYesNo) = vbNo Then
+                Exit Function
+            Else
+                'Kill MapRoute
+            End If
+        End If
+    End If
+    
+    frmMain.MousePointer = 11
+    MapSize.XMax = XMaxMapSize
+    MapSize.YMax = YMaxMapSize
+    ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax)
+    
+    For j = MapSize.YMin To MapSize.YMax
+        For i = MapSize.XMin To MapSize.XMax
+            With MapData(i, j)
+                If .Blocked Then
+                    MH.NumeroBloqueados = MH.NumeroBloqueados + 1
+                    ReDim Preserve Blqs(1 To MH.NumeroBloqueados)
+                    Blqs(MH.NumeroBloqueados).X = i
+                    Blqs(MH.NumeroBloqueados).y = j
+                End If
+                
+                L1(i, j) = .Graphic(1).GrhIndex
+                
+                If .Graphic(2).GrhIndex > 0 Then
+                    MH.NumeroLayers(2) = MH.NumeroLayers(2) + 1
+                    ReDim Preserve L2(1 To MH.NumeroLayers(2))
+                    L2(MH.NumeroLayers(2)).X = i
+                    L2(MH.NumeroLayers(2)).y = j
+                    L2(MH.NumeroLayers(2)).GrhIndex = .Graphic(2).GrhIndex
+                End If
+                
+                If .Graphic(3).GrhIndex > 0 Then
+                    MH.NumeroLayers(3) = MH.NumeroLayers(3) + 1
+                    ReDim Preserve L3(1 To MH.NumeroLayers(3))
+                    L3(MH.NumeroLayers(3)).X = i
+                    L3(MH.NumeroLayers(3)).y = j
+                    L3(MH.NumeroLayers(3)).GrhIndex = .Graphic(3).GrhIndex
+                End If
+                
+                If .Graphic(4).GrhIndex > 0 Then
+                    MH.NumeroLayers(4) = MH.NumeroLayers(4) + 1
+                    ReDim Preserve L4(1 To MH.NumeroLayers(4))
+                    L4(MH.NumeroLayers(4)).X = i
+                    L4(MH.NumeroLayers(4)).y = j
+                    L4(MH.NumeroLayers(4)).GrhIndex = .Graphic(4).GrhIndex
+                End If
+                
+                If .Trigger > 0 Then
+                    MH.NumeroTriggers = MH.NumeroTriggers + 1
+                    ReDim Preserve Triggers(1 To MH.NumeroTriggers)
+                    Triggers(MH.NumeroTriggers).X = i
+                    Triggers(MH.NumeroTriggers).y = j
+                    Triggers(MH.NumeroTriggers).Trigger = .Trigger
+                End If
+                
+                If .Particle_Group_Index > 0 Then
+                    MH.NumeroParticulas = MH.NumeroParticulas + 1
+                    ReDim Preserve Particulas(1 To MH.NumeroParticulas)
+                    Particulas(MH.NumeroParticulas).X = i
+                    Particulas(MH.NumeroParticulas).y = j
+                    Particulas(MH.NumeroParticulas).Particula = .Particle_Group_Index
+    
+                End If
+               
+               '¿Hay luz activa en este punto?
+'                If .Engine_Light.active Then
+'                    MH.NumeroLuces = MH.NumeroLuces + 1
+'                    ReDim Preserve Luces(1 To MH.NumeroLuces)
+'
+'                    Luces(MH.NumeroLuces).r = .Light.RGBcolor.r
+'                    Luces(MH.NumeroLuces).g = .Light.RGBcolor.g
+'                    Luces(MH.NumeroLuces).b = .Light.RGBcolor.b
+'                    Luces(MH.NumeroLuces).range = .Light.range
+'                    Luces(MH.NumeroLuces).X = .Light.map_x
+'                    Luces(MH.NumeroLuces).y = .Light.map_y
+'                End If
+                
+                If .OBJInfo.objindex > 0 Then
+                    MH.NumeroOBJs = MH.NumeroOBJs + 1
+                    ReDim Preserve Objetos(1 To MH.NumeroOBJs)
+                    Objetos(MH.NumeroOBJs).objindex = .OBJInfo.objindex
+                    Objetos(MH.NumeroOBJs).ObjAmmount = .OBJInfo.Amount
+                    Objetos(MH.NumeroOBJs).X = i
+                    Objetos(MH.NumeroOBJs).y = j
+                End If
+                
+                If .NPCIndex > 0 Then
+                    MH.NumeroNPCs = MH.NumeroNPCs + 1
+                    ReDim Preserve NPCs(1 To MH.NumeroNPCs)
+                    NPCs(MH.NumeroNPCs).NPCIndex = .NPCIndex
+                    NPCs(MH.NumeroNPCs).X = i
+                    NPCs(MH.NumeroNPCs).y = j
+                End If
+                
+                If .TileExit.Map > 0 Then
+                    MH.NumeroTE = MH.NumeroTE + 1
+                    ReDim Preserve TEs(1 To MH.NumeroTE)
+                    TEs(MH.NumeroTE).DestM = .TileExit.Map
+                    TEs(MH.NumeroTE).DestX = .TileExit.X
+                    TEs(MH.NumeroTE).DestY = .TileExit.y
+                    TEs(MH.NumeroTE).X = i
+                    TEs(MH.NumeroTE).y = j
+                End If
+            End With
+        Next i
+    Next j
+    
+    'Call CSMInfoSaveIAC
+              
+    fh = FreeFile
+    Open RutaMapa For Binary As fh
+        
+        Put #fh, , MiCabecera
+        
+        Put #fh, , MH
+        Put #fh, , MapSize
+        Put #fh, , MapDat
+        Put #fh, , L1
+    
+        With MH
+            If .NumeroBloqueados > 0 Then _
+                Put #fh, , Blqs
+            If .NumeroLayers(2) > 0 Then _
+                Put #fh, , L2
+            If .NumeroLayers(3) > 0 Then _
+                Put #fh, , L3
+            If .NumeroLayers(4) > 0 Then _
+                Put #fh, , L4
+            If .NumeroTriggers > 0 Then _
+                Put #fh, , Triggers
+            If .NumeroParticulas > 0 Then _
+                Put #fh, , Particulas
+            If .NumeroLuces > 0 Then _
+                Put #fh, , Luces
+            If .NumeroOBJs > 0 Then _
+                Put #fh, , Objetos
+            If .NumeroNPCs > 0 Then _
+                Put #fh, , NPCs
+            If .NumeroTE > 0 Then _
+                Put #fh, , TEs
+        End With
+    
+    Close fh
+    
+    Call Pestanias(RutaMapa)
+    
+    'Change mouse icon
+    frmMain.MousePointer = 0
+    MapInfo.Changed = 0
+    
+    NoSobreescribir = False
+    
+    MapaCSM_Guardar = True
+    
+    Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa " & RutaMapa & " guardado...", 0, 255, 0)
+    Exit Function
+
+ErrorHandler:
+    If fh <> 0 Then Close fh
+End Function
 
 ''
 ' Calcula la orden de Pestañas

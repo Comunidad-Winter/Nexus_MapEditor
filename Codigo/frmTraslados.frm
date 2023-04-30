@@ -3,7 +3,7 @@ Begin VB.Form frmTraslados
    BackColor       =   &H80000006&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Traslados"
-   ClientHeight    =   3585
+   ClientHeight    =   4005
    ClientLeft      =   23415
    ClientTop       =   13395
    ClientWidth     =   3630
@@ -19,7 +19,7 @@ Begin VB.Form frmTraslados
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3585
+   ScaleHeight     =   4005
    ScaleWidth      =   3630
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox tTMapa 
@@ -186,11 +186,36 @@ Begin VB.Form frmTraslados
       Height          =   375
       Left            =   180
       TabIndex        =   10
-      Top             =   3090
+      Top             =   3540
       Width           =   3285
       _ExtentX        =   5794
       _ExtentY        =   661
       Caption         =   "Quitar Traslados"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
+   End
+   Begin Nexus_MapEditor.lvButtons_H LvBDesplazarTraslados 
+      Height          =   375
+      Left            =   180
+      TabIndex        =   11
+      Top             =   3090
+      Width           =   3285
+      _ExtentX        =   5794
+      _ExtentY        =   661
+      Caption         =   "Desplazar Traslados"
       CapAlign        =   2
       BackStyle       =   2
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -278,3 +303,75 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Sub cInsertarTrans_Click()
+    
+    On Error GoTo cInsertarTrans_Click_Err
+    
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 22/05/06
+    '*************************************************
+    If cInsertarTrans.value = True Then
+        cQuitarTrans.Enabled = False
+        Call modPaneles.EstSelectPanel(1, True)
+    Else
+        cQuitarTrans.Enabled = True
+        Call modPaneles.EstSelectPanel(1, False)
+
+    End If
+    
+    Exit Sub
+
+cInsertarTrans_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.cInsertarTrans_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub cUnionManual_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo cUnionManual_Click_Err
+    
+    cInsertarTrans.value = (cUnionManual.value = True)
+    Call cInsertarTrans_Click
+
+    Exit Sub
+
+cUnionManual_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.cUnionManual_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub cUnionAuto_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    'Call MapPest_Click(4)
+    
+    On Error GoTo cUnionAuto_Click_Err
+    
+    frmUnionAdyacente.Show
+
+    Exit Sub
+
+cUnionAuto_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.cUnionAuto_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub LvBDesplazarTraslados_Click()
+    '********************************
+    'Author: Lorwik
+    '
+    '********************************
+    
+    frmDesplazarTranslados.Show , frmMain
+    
+End Sub

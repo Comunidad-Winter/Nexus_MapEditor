@@ -34,77 +34,83 @@ Public Enum E_Heading
 End Enum
 
 ' COLORES RENDER
-Public ColorTecho        As Byte
+Public ColorTecho            As Byte
 
-Public temp_rgb(3)       As Long
+Public temp_rgb(3)           As Long
 
-Public renderText        As String
+Public renderText            As String
 
-Public renderFont        As Integer
+Public renderFont            As Integer
 
-Public colorRender       As Byte
+Public colorRender           As Byte
 
-Public render_msg(3)     As Long
+Public render_msg(3)         As Long
 
 'Caminata fluida
-Public Movement_Speed    As Single
+Public Movement_Speed        As Single
 
-Public MapaCargado       As Boolean
+Public MapaCargado           As Boolean
 
-Public bRefreshRadar     As Boolean
+Public bRefreshRadar         As Boolean
 
-Public HotKeysAllow      As Boolean  ' Control Automatico de HotKeys
+Public bAutoGuardarMapa      As Byte
 
-Public vMostrando        As Byte
+Public bAutoGuardarMapaCount As Byte
+
+Public HotKeysAllow          As Boolean  ' Control Automatico de HotKeys
+
+Public vMostrando            As Byte
 
 'Map editor variables
-Public WalkMode          As Boolean
+Public WalkMode              As Boolean
 
-Public dLastWalk         As Double
+Public dLastWalk             As Double
 
-Public VerBlockeados     As Boolean
+Public VerBlockeados         As Boolean
 
-Public VerTriggers       As Boolean
+Public VerTriggers           As Boolean
 
-Public VerMarco          As Boolean ' Marco
+Public VerMarco              As Boolean ' Marco
 
-Public VerGrilla         As Boolean ' grilla
+Public VerGrilla             As Boolean ' grilla
 
-Public VerCapa1          As Boolean
+Public VerCapa1              As Boolean
 
-Public VerCapa2          As Boolean
+Public VerCapa2              As Boolean
 
-Public VerCapa3          As Boolean
+Public VerCapa3              As Boolean
 
-Public VerCapa4          As Boolean
+Public VerCapa4              As Boolean
 
-Public VerTranslados     As Boolean
+Public VerTranslados         As Boolean
 
-Public VerObjetos        As Boolean
+Public VerObjetos            As Boolean
 
-Public VerNpcs           As Boolean
+Public VerNpcs               As Boolean
 
-Public VerParticulas     As Boolean
+Public VerParticulas         As Boolean
 
-Public VerLuces          As Boolean
+Public VerLuces              As Boolean
 
-Public Cfg_TrOBJ         As Integer
+Public Cfg_TrOBJ             As Integer
 
-Public UltimoClickX      As Byte
+Public UltimoClickX          As Byte
 
-Public UltimoClickY      As Byte
+Public UltimoClickY          As Byte
 
-Public SobreX            As Byte   ' Posicion X bajo el Cursor
+Public SobreX                As Byte   ' Posicion X bajo el Cursor
 
-Public SobreY            As Byte   ' Posicion Y bajo el Cursor
+Public SobreY                As Byte   ' Posicion Y bajo el Cursor
 
-Public Const OFFSET_HEAD As Integer = 0
+Public NoSobreescribir       As Boolean
 
-Public Const MSGMod      As String = "Este mapa há sido modificado." & vbCrLf & "Si no lo guardas perderas todos los cambios ¿Deseas guardarlo?"
+Public Const OFFSET_HEAD     As Integer = 0
 
-Public Const MSGDang     As String = "CUIDADO! Este comando puede arruinar el mapa." & vbCrLf & "¿Estas seguro que desea continuar?"
+Public Const MSGMod          As String = "Este mapa há sido modificado." & vbCrLf & "Si no lo guardas perderas todos los cambios ¿Deseas guardarlo?"
 
-Public Const ENDL        As String * 2 = vbCrLf
+Public Const MSGDang         As String = "CUIDADO! Este comando puede arruinar el mapa." & vbCrLf & "¿Estas seguro que desea continuar?"
+
+Public Const ENDL            As String * 2 = vbCrLf
 
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
