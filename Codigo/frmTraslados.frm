@@ -3,10 +3,10 @@ Begin VB.Form frmTraslados
    BackColor       =   &H80000006&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Traslados"
-   ClientHeight    =   2775
+   ClientHeight    =   3585
    ClientLeft      =   23415
    ClientTop       =   13395
-   ClientWidth     =   3570
+   ClientWidth     =   3630
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -19,8 +19,8 @@ Begin VB.Form frmTraslados
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2775
-   ScaleWidth      =   3570
+   ScaleHeight     =   3585
+   ScaleWidth      =   3630
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox tTMapa 
       Appearance      =   0  'Flat
@@ -141,6 +141,56 @@ Begin VB.Form frmTraslados
       _ExtentX        =   5794
       _ExtentY        =   661
       Caption         =   "Union con Mapa Adyacente (manual)"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
+   End
+   Begin Nexus_MapEditor.lvButtons_H cUnionAuto 
+      Height          =   375
+      Left            =   180
+      TabIndex        =   9
+      Top             =   2700
+      Width           =   3285
+      _ExtentX        =   5794
+      _ExtentY        =   661
+      Caption         =   "Union con Mapas Adyacentes (auto)"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
+   End
+   Begin Nexus_MapEditor.lvButtons_H cQuitarTrans 
+      Height          =   375
+      Left            =   180
+      TabIndex        =   10
+      Top             =   3090
+      Width           =   3285
+      _ExtentX        =   5794
+      _ExtentY        =   661
+      Caption         =   "Quitar Traslados"
       CapAlign        =   2
       BackStyle       =   2
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 

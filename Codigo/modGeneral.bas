@@ -27,15 +27,15 @@ Public Sub CheckKeys()
     '[/Loopzer]
     
     If GetKeyState(vbKeyUp) < 0 Then
-        If UserPos.Y < YMinMapSize Then Exit Sub ' 10
+        If UserPos.y < YMinMapSize Then Exit Sub ' 10
         
-        If Map_LegalPos(UserPos.X, UserPos.Y - 1) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X, UserPos.y - 1) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
-            UserPos.Y = UserPos.Y - 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            UserPos.y = UserPos.y - 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
         ElseIf WalkMode = False Then
-            UserPos.Y = UserPos.Y - 1
+            UserPos.y = UserPos.y - 1
 
         End If
         
@@ -49,10 +49,10 @@ Public Sub CheckKeys()
     If GetKeyState(vbKeyRight) < 0 Then
         If UserPos.X > XMaxMapSize Then Exit Sub ' 89
         
-        If Map_LegalPos(UserPos.X + 1, UserPos.Y) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X + 1, UserPos.y) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
             UserPos.X = UserPos.X + 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
             
         ElseIf WalkMode = False Then
@@ -68,16 +68,16 @@ Public Sub CheckKeys()
     End If
 
     If GetKeyState(vbKeyDown) < 0 Then
-        If UserPos.Y > YMaxMapSize Then Exit Sub ' 92
+        If UserPos.y > YMaxMapSize Then Exit Sub ' 92
         
-        If Map_LegalPos(UserPos.X, UserPos.Y + 1) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X, UserPos.y + 1) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
-            UserPos.Y = UserPos.Y + 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            UserPos.y = UserPos.y + 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
             
         ElseIf WalkMode = False Then
-            UserPos.Y = UserPos.Y + 1
+            UserPos.y = UserPos.y + 1
             
         End If
         
@@ -91,10 +91,10 @@ Public Sub CheckKeys()
     If GetKeyState(vbKeyLeft) < 0 Then
         If UserPos.X < XMinMapSize Then Exit Sub ' 12
         
-        If Map_LegalPos(UserPos.X - 1, UserPos.Y) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X - 1, UserPos.y) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
             UserPos.X = UserPos.X - 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.Y)
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
         ElseIf WalkMode = False Then
             UserPos.X = UserPos.X - 1
@@ -392,4 +392,43 @@ GenerarVista_Err:
     Call LogError(Err.Number, Err.Description, "modGeneral.GenerarVista", Erl)
     Resume Next
     
+End Sub
+
+Public Sub ToggleWalkMode()
+
+    '*************************************************
+    'Author: Unkwown
+    'Last modified: 28/05/06 - GS
+    '*************************************************
+    On Error GoTo fin:
+
+    If WalkMode = False Then
+        WalkMode = True
+    Else
+        frmMain.mnuModoCaminata.Checked = False
+        WalkMode = False
+
+    End If
+
+    If WalkMode = False Then
+        'Erase character
+        Call Char_Erase(UserCharIndex)
+        MapData(UserPos.X, UserPos.y).CharIndex = 0
+    Else
+
+        'MakeCharacter
+        If Map_LegalPos(UserPos.X, UserPos.y) Then
+            Call Char_Make(NextOpenChar(), 1, 1, SOUTH, UserPos.X, UserPos.y, 0, 0, 0, 0, 0)
+            UserCharIndex = MapData(UserPos.X, UserPos.y).CharIndex
+            frmMain.mnuModoCaminata.Checked = True
+        Else
+            MsgBox "ERROR: Ubicacion ilegal."
+            WalkMode = False
+
+        End If
+
+    End If
+
+fin:
+
 End Sub

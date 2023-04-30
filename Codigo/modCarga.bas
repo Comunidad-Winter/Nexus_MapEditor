@@ -9,6 +9,9 @@ Public Type tSetupMods
     LimiteFPS As Boolean
     FPSShow As Boolean
     
+    'MOSTRAR
+    Preview As Byte
+    
 End Type
 
 Public ClientSetup As tSetupMods
@@ -40,18 +43,18 @@ End Type
 
 Private Type tDatosBloqueados
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosGrh
     X As Integer
-    Y As Integer
-    grhindex As Long
+    y As Integer
+    GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
     X As Integer
-    Y As Integer
+    y As Integer
     Trigger As Integer
 End Type
 
@@ -61,31 +64,31 @@ Private Type tDatosLuces
     b As Integer
     range As Byte
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosParticulas
     X As Integer
-    Y As Integer
+    y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
     X As Integer
-    Y As Integer
-    NpcIndex As Integer
+    y As Integer
+    NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
-    Y As Integer
-    OBJIndex As Integer
+    y As Integer
+    objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
     X As Integer
-    Y As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -147,7 +150,7 @@ End Type
 Public NumHeads As Integer
 Public NumCascos As Integer
 Public NumEscudosAnims As Integer
-Private grhCount As Long
+Public grhCount As Long
 
 Public Type NpcData
 
@@ -165,7 +168,7 @@ Public Type ObjData
 
     Name As String 'Nombre del obj
     ObjType As Integer 'Tipo enum que determina cuales son las caract del obj
-    grhindex As Long ' Indice del grafico que representa el obj
+    GrhIndex As Long ' Indice del grafico que representa el obj
     GrhSecundario As Integer
     Info As String
     Ropaje As Integer 'Indice del grafico del ropaje
@@ -225,7 +228,7 @@ Public Sub CargarConfiguracion()
         ' MOSTRAR
         tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
         UserPos.X = Val(ReadField(1, tStr, Asc("-")))
-        UserPos.Y = Val(ReadField(2, tStr, Asc("-")))
+        UserPos.y = Val(ReadField(2, tStr, Asc("-")))
         frmMain.mnuVerAutomatico.Checked = Val(Lector.GetValue("MOSTRAR", "ControlAutomatico"))
         frmMain.mnuVerCapa2.Checked = Val(Lector.GetValue("MOSTRAR", "Capa2"))
         frmMain.mnuVerCapa3.Checked = Val(Lector.GetValue("MOSTRAR", "Capa3"))
@@ -239,7 +242,8 @@ Public Sub CargarConfiguracion()
         frmMain.mnuVerBloqueos.Checked = Val(Lector.GetValue("MOSTRAR", "Bloqueos"))
         frmTriggers.cVerTriggers.value = frmMain.mnuVerTriggers.Checked
         frmBloqueos.cVerBloqueos.value = frmMain.mnuVerBloqueos.Checked
-    
+        .Preview = Val(Lector.GetValue("MOSTRAR", "Preview"))
+        
     End With
     
     Set Lector = Nothing
@@ -381,7 +385,7 @@ Public Sub CargarCabezas()
 'Fecha: ???
 'Descripción: Carga el index de Cabezas
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim InfoHead    As INFOHEADER
@@ -429,7 +433,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
     
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -448,7 +452,7 @@ Public Sub CargarCascos()
 'Fecha: ???
 'Descripción: Carga el index de Cascos
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim dLen        As Long
@@ -497,7 +501,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
     
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -516,7 +520,7 @@ Sub CargarCuerpos()
 'Fecha: ???
 'Descripción: Carga el index de Cuerpos
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim dLen        As Long
@@ -563,7 +567,7 @@ On Error GoTo errhandler:
                 Call InitGrh(BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0)
                 
                 BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-                BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
+                BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
             End If
         Next i
     
@@ -572,7 +576,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
     
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -591,7 +595,7 @@ Sub CargarFxs()
 'Fecha: ???
 'Descripción: Carga el index de Fxs
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim dLen        As Long
@@ -632,7 +636,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
 
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -651,7 +655,7 @@ Sub CargarAnimArmas()
 'Fecha: ???
 'Descripción: Carga el index de Armas
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim dLen        As Long
@@ -702,7 +706,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
 
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -721,7 +725,7 @@ Sub CargarAnimEscudos()
 'Fecha: ???
 'Descripción: Carga el index de Escudos
 '*************************************
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
 
     Dim buffer()    As Byte
     Dim InfoHead    As INFOHEADER
@@ -771,7 +775,7 @@ On Error GoTo errhandler:
     
     Set fileBuff = Nothing
 
-errhandler:
+ErrHandler:
     
     If Err.Number <> 0 Then
         
@@ -975,7 +979,7 @@ Public Sub CargarIndicesOBJ()
 
     End If
 
-    Dim Obj As Integer
+    Dim obj As Integer
 
     Set Lector = New clsIniManager
     
@@ -984,31 +988,31 @@ Public Sub CargarIndicesOBJ()
     NumOBJs = Val(Lector.GetValue("INIT", "NumOBJs"))
     ReDim ObjData(1 To NumOBJs) As ObjData
 
-    For Obj = 1 To NumOBJs
-        frmCargando.lblCargando.Caption = "Cargando Datos de Objetos..." & Obj & "/" & NumOBJs
+    For obj = 1 To NumOBJs
+        frmCargando.lblCargando.Caption = "Cargando Datos de Objetos..." & obj & "/" & NumOBJs
         DoEvents
-        ObjData(Obj).Name = Lector.GetValue("OBJ" & Obj, "Name")
+        ObjData(obj).Name = Lector.GetValue("OBJ" & obj, "Name")
         
-        If LenB(ObjData(Obj).Name) > 0 Then
-            ObjData(Obj).grhindex = Val(Lector.GetValue("OBJ" & Obj, "GrhIndex"))
-            ObjData(Obj).ObjType = Val(Lector.GetValue("OBJ" & Obj, "ObjType"))
-            ObjData(Obj).Ropaje = Val(Lector.GetValue("OBJ" & Obj, "NumRopaje"))
-            ObjData(Obj).Info = Lector.GetValue("OBJ" & Obj, "Info")
-            ObjData(Obj).WeaponAnim = Val(Lector.GetValue("OBJ" & Obj, "Anim"))
-            ObjData(Obj).Texto = Lector.GetValue("OBJ" & Obj, "Texto")
-            ObjData(Obj).GrhSecundario = Val(Lector.GetValue("OBJ" & Obj, "GrhSec"))
-            ObjData(Obj).Cerrada = Val(Lector.GetValue("OBJ" & Obj, "Cerrada"))
-            ObjData(Obj).Subtipo = Val(Lector.GetValue("OBJ" & Obj, "Subtipo"))
-            frmObjetos.lListado.AddItem ObjData(Obj).Name & " - #" & Obj
+        If LenB(ObjData(obj).Name) > 0 Then
+            ObjData(obj).GrhIndex = Val(Lector.GetValue("OBJ" & obj, "GrhIndex"))
+            ObjData(obj).ObjType = Val(Lector.GetValue("OBJ" & obj, "ObjType"))
+            ObjData(obj).Ropaje = Val(Lector.GetValue("OBJ" & obj, "NumRopaje"))
+            ObjData(obj).Info = Lector.GetValue("OBJ" & obj, "Info")
+            ObjData(obj).WeaponAnim = Val(Lector.GetValue("OBJ" & obj, "Anim"))
+            ObjData(obj).Texto = Lector.GetValue("OBJ" & obj, "Texto")
+            ObjData(obj).GrhSecundario = Val(Lector.GetValue("OBJ" & obj, "GrhSec"))
+            ObjData(obj).Cerrada = Val(Lector.GetValue("OBJ" & obj, "Cerrada"))
+            ObjData(obj).Subtipo = Val(Lector.GetValue("OBJ" & obj, "Subtipo"))
+            frmObjetos.lListado.AddItem ObjData(obj).Name & " - #" & obj
 
         End If
 
-    Next Obj
+    Next obj
     
     Set Lector = Nothing
 
     Exit Sub
 Fallo:
-    MsgBox "Error al intentar cargar el Objteto " & Obj & " de OBJ.dat en " & DirDats & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
+    MsgBox "Error al intentar cargar el Objteto " & obj & " de OBJ.dat en " & DirDats & vbCrLf & "Err: " & Err.Number & " - " & Err.Description, vbCritical + vbOKOnly
 
 End Sub

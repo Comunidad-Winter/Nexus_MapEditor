@@ -23,9 +23,34 @@ Begin VB.Form frmMain
    StartUpPosition =   2  'CenterScreen
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
+      Index           =   9
+      Left            =   8430
+      TabIndex        =   21
+      Top             =   90
+      Width           =   375
+      _ExtentX        =   661
+      _ExtentY        =   661
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Times New Roman"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Mode            =   0
+      Value           =   0   'False
+      Image           =   "frmMain.frx":0000
+      cBack           =   -2147483643
+   End
+   Begin Nexus_MapEditor.lvButtons_H SelectPanel 
+      Height          =   375
       Index           =   0
-      Left            =   120
-      TabIndex        =   14
+      Left            =   60
+      TabIndex        =   12
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -45,7 +70,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":0000
+      Image           =   "frmMain.frx":30052
       cBack           =   -2147483633
    End
    Begin VB.PictureBox MainViewPic 
@@ -58,7 +83,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   731
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   1275
-      TabIndex        =   13
+      TabIndex        =   11
       TabStop         =   0   'False
       Top             =   600
       Width           =   19125
@@ -73,8 +98,8 @@ Begin VB.Form frmMain
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   1
-      Left            =   1065
-      TabIndex        =   15
+      Left            =   975
+      TabIndex        =   13
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -94,14 +119,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":0C52
+      Image           =   "frmMain.frx":30CA4
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   2
-      Left            =   2010
-      TabIndex        =   16
+      Left            =   1890
+      TabIndex        =   14
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -121,14 +146,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":18A4
+      Image           =   "frmMain.frx":318F6
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   3
-      Left            =   2940
-      TabIndex        =   17
+      Left            =   2820
+      TabIndex        =   15
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -148,14 +173,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":24F6
+      Image           =   "frmMain.frx":32548
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   4
-      Left            =   3870
-      TabIndex        =   18
+      Left            =   3750
+      TabIndex        =   16
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -175,14 +200,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":3148
+      Image           =   "frmMain.frx":3319A
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   5
-      Left            =   4800
-      TabIndex        =   19
+      Left            =   4680
+      TabIndex        =   17
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -202,14 +227,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":3D9A
+      Image           =   "frmMain.frx":33DEC
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   6
-      Left            =   5730
-      TabIndex        =   20
+      Left            =   5610
+      TabIndex        =   18
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -229,14 +254,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":49EC
+      Image           =   "frmMain.frx":34A3E
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   7
-      Left            =   6660
-      TabIndex        =   21
+      Left            =   6540
+      TabIndex        =   19
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -256,14 +281,14 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":506E
+      Image           =   "frmMain.frx":350C0
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
       Height          =   375
       Index           =   8
-      Left            =   7590
-      TabIndex        =   22
+      Left            =   7470
+      TabIndex        =   20
       Top             =   90
       Width           =   915
       _ExtentX        =   1614
@@ -283,22 +308,22 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":5510
+      Image           =   "frmMain.frx":35562
       cBack           =   -2147483633
    End
    Begin VB.Line Line1 
       BorderColor     =   &H80000010&
       Index           =   1
-      X1              =   597
-      X2              =   597
+      X1              =   697
+      X2              =   697
       Y1              =   5.961
       Y2              =   33.78
    End
    Begin VB.Line Line1 
       BorderColor     =   &H80000010&
       Index           =   0
-      X1              =   600
-      X2              =   600
+      X1              =   700
+      X2              =   700
       Y1              =   5.961
       Y2              =   33.78
    End
@@ -320,9 +345,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   10
-      Left            =   16800
-      TabIndex        =   12
-      Top             =   150
+      Left            =   18330
+      TabIndex        =   10
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -344,9 +369,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   0
-      Left            =   9150
-      TabIndex        =   11
-      Top             =   150
+      Left            =   10680
+      TabIndex        =   9
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -368,9 +393,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   9
-      Left            =   16035
-      TabIndex        =   10
-      Top             =   150
+      Left            =   17565
+      TabIndex        =   8
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -392,9 +417,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   8
-      Left            =   15270
-      TabIndex        =   9
-      Top             =   150
+      Left            =   16800
+      TabIndex        =   7
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -416,9 +441,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   7
-      Left            =   14505
-      TabIndex        =   8
-      Top             =   150
+      Left            =   16035
+      TabIndex        =   6
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -440,9 +465,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   6
-      Left            =   13740
-      TabIndex        =   7
-      Top             =   150
+      Left            =   15270
+      TabIndex        =   5
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -464,9 +489,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   5
-      Left            =   12990
-      TabIndex        =   6
-      Top             =   150
+      Left            =   14520
+      TabIndex        =   4
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -488,9 +513,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   4
-      Left            =   12210
-      TabIndex        =   5
-      Top             =   150
+      Left            =   13740
+      TabIndex        =   3
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -512,9 +537,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   3
-      Left            =   11445
-      TabIndex        =   4
-      Top             =   150
+      Left            =   12975
+      TabIndex        =   2
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -536,9 +561,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   2
-      Left            =   10680
-      TabIndex        =   3
-      Top             =   150
+      Left            =   12210
+      TabIndex        =   1
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -560,57 +585,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   255
       Index           =   1
-      Left            =   9915
-      TabIndex        =   2
-      Top             =   150
-      Visible         =   0   'False
-      Width           =   750
-   End
-   Begin VB.Label MapPest 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BorderStyle     =   1  'Fixed Single
-      Caption         =   "Mapa1"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   255
-      Index           =   11
-      Left            =   17565
-      TabIndex        =   1
-      Top             =   150
-      Visible         =   0   'False
-      Width           =   750
-   End
-   Begin VB.Label MapPest 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BorderStyle     =   1  'Fixed Single
-      Caption         =   "Mapa1"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   255
-      Index           =   12
-      Left            =   18330
+      Left            =   11445
       TabIndex        =   0
-      Top             =   150
+      Top             =   180
       Visible         =   0   'False
       Width           =   750
    End
@@ -625,17 +602,20 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
       End
+      Begin VB.Menu mnuArchivoLine1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuGuardarMapa 
+         Caption         =   "&Guardar Mapa"
+      End
+      Begin VB.Menu mnuGuardarMapaComo 
+         Caption         =   "Guardar Mapa &como..."
+      End
       Begin VB.Menu mnuArchivoLine0 
          Caption         =   "-"
       End
       Begin VB.Menu menuSalir 
          Caption         =   "&Salir"
-      End
-   End
-   Begin VB.Menu mnuHerramientas 
-      Caption         =   "&Herramientas"
-      Begin VB.Menu mnuMinimapa 
-         Caption         =   "&Minimapa"
       End
    End
    Begin VB.Menu mnuEditar 
@@ -650,6 +630,53 @@ Begin VB.Form frmMain
             Caption         =   "Auto-&Quitar Funciones"
             Checked         =   -1  'True
          End
+      End
+      Begin VB.Menu mnuLineEdicion1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuInsertar 
+         Caption         =   "&Insertar"
+         Begin VB.Menu mnuInsertarSuperficieAlAzar 
+            Caption         =   "Superficie al &Azar"
+         End
+         Begin VB.Menu mnuInsertarSuperficieEnBordes 
+            Caption         =   "Superficie en los &Bordes del Mapa"
+         End
+         Begin VB.Menu mnuInsertarSuperficieEnTodo 
+            Caption         =   "Superficie en Todo el Mapa"
+         End
+      End
+      Begin VB.Menu mnuLineEdicion2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuConfigAvanzada 
+         Caption         =   "Configuracion A&vanzada de Superficie"
+      End
+      Begin VB.Menu mnuLineEdicion3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuAutoCompletarSuperficies 
+         Caption         =   "Auto completar superficies"
+      End
+      Begin VB.Menu mnuAutoCapturarSuperficie 
+         Caption         =   "Auto-C&apturar información de la Superficie"
+         Checked         =   -1  'True
+      End
+      Begin VB.Menu mnuAutoCapturarTranslados 
+         Caption         =   "Auto-&Capturar información de los Translados"
+         Checked         =   -1  'True
+      End
+   End
+   Begin VB.Menu mnuHerramientas 
+      Caption         =   "&Herramientas"
+      Begin VB.Menu mnuMinimapa 
+         Caption         =   "&Minimapa"
+      End
+      Begin VB.Menu mnuConsola 
+         Caption         =   "&Consola"
+      End
+      Begin VB.Menu mnuPreview 
+         Caption         =   "&Preview"
       End
    End
    Begin VB.Menu mnuVer 
@@ -701,6 +728,15 @@ Begin VB.Form frmMain
          Checked         =   -1  'True
       End
    End
+   Begin VB.Menu mnuopciones 
+      Caption         =   "Opciones"
+      Begin VB.Menu mnuModoCaminata 
+         Caption         =   "Modalidad Caminata"
+      End
+      Begin VB.Menu mnuActualizarIndices 
+         Caption         =   "Actualizar indices"
+      End
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -726,14 +762,14 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
     clicX = X
-    clicY = Y
+    clicY = y
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -761,7 +797,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     
     ConfigFile = DirInit & "Config.ini"
 
-    WriteVar ConfigFile, "PATH", "UltimoMapa", Dialog.filename
+    WriteVar ConfigFile, "PATH", "UltimoMapa", Dialog.FileName
     WriteVar ConfigFile, "MOSTRAR", "ControlAutomatico", IIf(frmMain.mnuVerAutomatico.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Capa2", IIf(frmMain.mnuVerCapa2.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Capa3", IIf(frmMain.mnuVerCapa3.Checked = True, "1", "0")
@@ -772,7 +808,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     WriteVar ConfigFile, "MOSTRAR", "Triggers", IIf(frmMain.mnuVerTriggers.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Grilla", IIf(frmMain.mnuVerGrilla.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Bloqueos", IIf(frmMain.mnuVerBloqueos.Checked = True, "1", "0")
-    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.Y
+    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.y
 
     'Allow MainLoop to close program
     If prgRun = True Then
@@ -789,6 +825,51 @@ Form_QueryUnload_Err:
     
 End Sub
 
+Private Sub MapPest_Click(Index As Integer)
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 27/04/2023
+    '*************************************************
+    
+    On Error GoTo MapPest_Click_Err
+
+    Dim Mapa As Integer
+    Mapa = Index + NumMap_Save - 4
+
+    MapaActual = Mapa
+
+    If MapInfo.Changed = 1 Then
+        If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then _
+            modMapIO.GuardarMapa Dialog.FileName
+
+    End If
+
+    Dialog.FileName = PATH_Save & NameMap_Save & Mapa & ".csm"
+
+    If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
+    Call modMapIO.NuevoMapa
+    DoEvents
+    modMapIO.AbrirMapa Dialog.FileName
+    EngineRun = True
+    Exit Sub
+
+    Exit Sub
+
+ErrHandler:
+    MsgBox Err.Description
+
+    
+    Exit Sub
+
+MapPest_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.MapPest_Click", Erl)
+    Resume Next
+
+End Sub
+
+Public Sub NextMap()
+    Call MapPest_Click(5)
+End Sub
 
 Private Sub menuSalir_Click()
     Call CloseClient
@@ -801,30 +882,107 @@ Private Sub mnuAbrirMapa_Click()
     '*************************************************
     Dialog.CancelError = True
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
-    'TODO
-    'DeseaGuardarMapa Dialog.filename
+    DeseaGuardarMapa Dialog.FileName
 
     ObtenerNombreArchivo False
 
-    If Len(Dialog.filename) < 3 Then Exit Sub
+    If Len(Dialog.FileName) < 3 Then Exit Sub
 
-    'TODO
-    'If WalkMode = True Then
-    '    Call modGeneral.ToggleWalkMode
-
-    'End If
+    If WalkMode = True Then _
+        Call modGeneral.ToggleWalkMode
     
     Call modMapIO.NuevoMapa
-    modMapIO.AbrirMapa Dialog.filename
+    modMapIO.AbrirMapa Dialog.FileName
     DoEvents
     mnuReAbrirMapa.Enabled = True
     EngineRun = True
     
     Exit Sub
-errhandler:
+ErrHandler:
 
+End Sub
+
+Private Sub mnuActualizarIndices_Click()
+    
+    On Error GoTo mnuActualizarIndices_Click_Err
+    
+    frmActualizarIndices.Show , Me
+
+    Exit Sub
+
+mnuActualizarIndices_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuActualizarIndices_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuConfigAvanzada_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuConfigAvanzada_Click_Err
+    
+    frmConfigSup.Show
+
+    Exit Sub
+
+mnuConfigAvanzada_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuConfigAvanzada_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuConsola_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 29/04/2023
+    '*************************************************
+
+    If Not frmConsola.Visible Then
+        frmConsola.Show , frmMain
+    Else
+        frmConsola.Visible = False
+    End If
+
+End Sub
+
+Public Sub mnuGuardarMapa_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 20/05/06
+'*************************************************
+
+    On Error GoTo mnuGuardarMapa_Click_Err
+
+    modMapIO.GuardarMapa Dialog.FileName
+    
+    Exit Sub
+
+mnuGuardarMapa_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuGuardarMapa_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuGuardarMapaComo_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 20/05/06
+'*************************************************
+    
+    On Error GoTo mnuGuardarMapaComo_Click_Err
+    
+    modMapIO.GuardarMapa
+    
+    Exit Sub
+
+mnuGuardarMapaComo_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuGuardarMapaComo_Click", Erl)
+    Resume Next
 End Sub
 
 Private Sub cmdQuitarFunciones_Click()
@@ -880,12 +1038,12 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
         If Guardar Then
             .DialogTitle = "Guardar"
             .DefaultExt = ".txt"
-            .filename = vbNullString
+            .FileName = vbNullString
             .flags = cdlOFNPathMustExist
             .ShowSave
         Else
             .DialogTitle = "Cargar"
-            .filename = vbNullString
+            .FileName = vbNullString
             .flags = cdlOFNFileMustExist
             .ShowOpen
 
@@ -896,7 +1054,83 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
 End Sub
 
 Private Sub mnuMinimapa_Click()
-    frmMiniMapa.Show , Me
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 29/04/2023
+    '*************************************************
+    
+    If Not frmMiniMapa.Visible Then
+        frmMiniMapa.Show , Me
+    Else
+        frmMiniMapa.Visible = False
+    End If
+End Sub
+
+Private Sub mnuModoCaminata_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 28/05/06
+    '*************************************************
+    
+    On Error GoTo mnuModoCaminata_Click_Err
+    
+    ToggleWalkMode
+    
+    Exit Sub
+
+mnuModoCaminata_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuModoCaminata_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuNuevoMapa_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuNuevoMapa_Click_Err
+    
+
+    Dim loopc As Integer
+
+    DeseaGuardarMapa Dialog.FileName
+
+    For loopc = 0 To frmMain.MapPest.Count
+        frmMain.MapPest(loopc).Visible = False
+    Next
+
+    frmMain.Dialog.FileName = Empty
+
+    If WalkMode = True Then
+        Call modGeneral.ToggleWalkMode
+
+    End If
+
+    Call modMapIO.NuevoMapa
+
+    Call SelectPanel_Click(9)
+
+    Exit Sub
+
+mnuNuevoMapa_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuNuevoMapa_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuPreview_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 29/04/2023
+    '*************************************************
+    
+    If Not frmPreview.Visible Then
+        frmPreview.Show , Me
+    Else
+        frmPreview.Visible = False
+    End If
 End Sub
 
 Public Sub SelectPanel_Click(Index As Integer)
@@ -921,12 +1155,48 @@ SelectPanel_Click_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub MainViewPic_Click()
+    
+    On Error GoTo MainViewPic_Click_Err
+
+    Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+    UltimoClickX = tX
+    UltimoClickY = tY
+
+    Exit Sub
+
+MainViewPic_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub MainViewPic_DblClick()
+    
+    On Error GoTo MainViewPic_DblClick_Err
+    
+    Dim tX As Integer
+    Dim tY As Integer
+
+    If Not MapaCargado Then Exit Sub
+
+    If SobreX > 0 And SobreY > 0 Then _
+        DobleClick Val(SobreX), Val(SobreY)
+    
+    Exit Sub
+
+MainViewPic_DblClick_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_DblClick", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub MainViewPic_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
     MouseX = X
-    MouseY = Y
+    MouseY = y
 
     'Make sure map is loaded
     If Not MapaCargado Then Exit Sub
@@ -938,6 +1208,35 @@ Private Sub MainViewPic_MouseMove(Button As Integer, Shift As Integer, X As Sing
 
 MainViewPic_MouseMove_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseMove", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
+    
+    On Error GoTo MainViewPic_MouseDown_Err
+    
+
+    If Not MapaCargado Then Exit Sub
+
+    Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+
+    'If Shift = 1 And Button = 2 Then PegarSeleccion tX, tY: Exit Sub
+    If Shift = 1 And Button = 1 Then
+        'TODO
+        'Seleccionando = True
+        'SeleccionIX = tX '+ UserPos.X
+        'SeleccionIY = tY '+ UserPos.Y
+    Else
+        ClickEdit Button, tX, tY
+
+    End If
+
+    
+    Exit Sub
+
+MainViewPic_MouseDown_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -1117,12 +1416,14 @@ mnuVerObjetos_Click_Err:
 End Sub
 
 Public Sub mnuVerParticulas_Click()
+    '************************************************
+    'Author: Lorwik
+    'Last modified: ???
+    '************************************************
     
     On Error GoTo mnuVerParticulas_Click_Err
     
-
     mnuVerParticulas.Checked = (mnuVerParticulas.Checked = False)
-
     
     Exit Sub
 
@@ -1168,4 +1469,28 @@ mnuVerTriggers_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuVerTriggers_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub mnuInsertarSuperficieAlAzar_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 20/05/06
+'*************************************************
+    Call modEdicion.Superficie_Azar
+End Sub
+
+Private Sub mnuInsertarSuperficieEnBordes_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 20/05/06
+'*************************************************
+    Call modEdicion.Superficie_Bordes
+End Sub
+
+Private Sub mnuInsertarSuperficieEnTodo_Click()
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 20/05/06
+'*************************************************
+    Call modEdicion.Superficie_Todo
 End Sub

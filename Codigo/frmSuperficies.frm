@@ -75,7 +75,7 @@ Begin VB.Form frmSuperficies
    End
    Begin Nexus_MapEditor.lvButtons_H cSeleccionarSuperficie 
       Height          =   765
-      Left            =   2100
+      Left            =   2070
       TabIndex        =   6
       Top             =   4110
       Width           =   1845
@@ -100,62 +100,33 @@ Begin VB.Form frmSuperficies
    End
    Begin VB.ComboBox cCapas 
       Appearance      =   0  'Flat
-      BackColor       =   &H80000012&
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000014&
-      Height          =   330
+      BackColor       =   &H8000000E&
+      ForeColor       =   &H80000012&
+      Height          =   315
       ItemData        =   "frmSuperficies.frx":0000
       Left            =   1020
-      List            =   "frmSuperficies.frx":000D
-      Style           =   2  'Dropdown List
+      List            =   "frmSuperficies.frx":0002
       TabIndex        =   4
       TabStop         =   0   'False
+      Text            =   "1"
       Top             =   3660
       Width           =   855
    End
    Begin VB.ComboBox cFiltro 
-      BackColor       =   &H80000012&
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000014&
-      Height          =   330
+      BackColor       =   &H8000000E&
+      ForeColor       =   &H80000012&
+      Height          =   315
       Left            =   690
-      Style           =   2  'Dropdown List
       TabIndex        =   2
       Top             =   3300
       Width           =   3285
    End
    Begin VB.ComboBox cGrh 
       Appearance      =   0  'Flat
-      BackColor       =   &H80000012&
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000014&
-      Height          =   330
+      BackColor       =   &H8000000B&
+      ForeColor       =   &H80000012&
+      Height          =   315
       Left            =   2850
-      Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   3660
       Width           =   1125
@@ -174,9 +145,9 @@ Begin VB.Form frmSuperficies
       EndProperty
       ForeColor       =   &H80000014&
       Height          =   3180
-      ItemData        =   "frmSuperficies.frx":001A
+      ItemData        =   "frmSuperficies.frx":0004
       Left            =   -30
-      List            =   "frmSuperficies.frx":001C
+      List            =   "frmSuperficies.frx":0006
       TabIndex        =   0
       Tag             =   "-1"
       Top             =   0
@@ -224,10 +195,11 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cSeleccionarSuperficie_Click()
-'*************************************************
-'Author: ^[GS]^
-'Last modified: 20/05/06
-'*************************************************
+
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
     If cSeleccionarSuperficie.value = True Then
         cQuitarEnTodasLasCapas.Enabled = False
         cQuitarEnEstaCapa.Enabled = False
@@ -239,13 +211,15 @@ Private Sub cSeleccionarSuperficie_Click()
         Call modPaneles.EstSelectPanel(0, False)
         
     End If
+
 End Sub
 
 Private Sub cQuitarEnEstaCapa_Click()
-'*************************************************
-'Author: ^[GS]^
-'Last modified: 20/05/06
-'*************************************************
+
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
     If cQuitarEnEstaCapa.value = True Then
         lListado.Enabled = False
         cFiltro.Enabled = False
@@ -263,13 +237,15 @@ Private Sub cQuitarEnEstaCapa_Click()
         Call modPaneles.EstSelectPanel(0, False)
         
     End If
+
 End Sub
 
 Private Sub cQuitarEnTodasLasCapas_Click()
-'*************************************************
-'Author: ^[GS]^
-'Last modified: 20/05/06
-'*************************************************
+
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
     If cQuitarEnTodasLasCapas.value = True Then
         cCapas.Enabled = False
         lListado.Enabled = False
@@ -289,7 +265,35 @@ Private Sub cQuitarEnTodasLasCapas_Click()
         Call modPaneles.EstSelectPanel(0, False)
         
     End If
+
 End Sub
+
+Private Sub cGrh_KeyPress(KeyAscii As Integer)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+
+    On Error GoTo Fallo
+
+    If KeyAscii = 13 Then
+        Call fPreviewGrh(cGrh.Text)
+
+        If cGrh.ListCount > 5 Then
+            cGrh.RemoveItem 0
+
+        End If
+
+        cGrh.AddItem cGrh.Text
+
+    End If
+
+    Exit Sub
+Fallo:
+    cGrh.Text = 1
+
+End Sub
+
 
 Private Sub cFiltro_LostFocus()
     '*************************************************
@@ -305,6 +309,60 @@ Private Sub cFiltro_LostFocus()
 
 cFiltro_LostFocus_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.cFiltro_LostFocus", Erl)
+
     Resume Next
     
+End Sub
+
+Private Sub Form_Load()
+
+    Dim i As Byte
+    
+    For i = 1 To 4
+        cCapas.AddItem i
+    Next i
+    
+    cCapas.ListIndex = 0
+
+End Sub
+
+Private Sub lListado_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: ?????
+    '*************************************************
+    
+    cGrh.Text = DameGrhIndex(ReadField(2, lListado.Text, Asc("#")))
+                
+    If SupData(ReadField(2, lListado.Text, Asc("#"))).Capa <> 0 Then
+        If LenB(ReadField(2, lListado.Text, Asc("#"))) = 0 Then cCapas.Tag = cCapas.Text
+        cCapas.Text = SupData(ReadField(2, lListado.Text, Asc("#"))).Capa
+    Else
+
+        If LenB(cCapas.Tag) <> 0 Then
+            cCapas.Text = cCapas.Tag
+            cCapas.Tag = vbNullString
+
+        End If
+
+    End If
+                
+    If SupData(ReadField(2, lListado.Text, Asc("#"))).Block = True Then
+        If LenB(frmBloqueos.cInsertarBloqueo.Tag) = 0 Then frmBloqueos.cInsertarBloqueo.Tag = IIf(frmBloqueos.cInsertarBloqueo.value = True, 1, 0)
+        frmBloqueos.cInsertarBloqueo.value = True
+        Call frmBloqueos.InsertarBloqueo
+    Else
+
+        If LenB(frmBloqueos.cInsertarBloqueo.Tag) <> 0 Then
+            frmBloqueos.cInsertarBloqueo.value = IIf(Val(frmBloqueos.cInsertarBloqueo.Tag) = 1, True, False)
+            frmBloqueos.cInsertarBloqueo.Tag = vbNullString
+            Call frmBloqueos.InsertarBloqueo
+
+        End If
+
+    End If
+
+    Call fPreviewGrh(cGrh.Text)
+    Call modPaneles.RenderPreview
+
 End Sub

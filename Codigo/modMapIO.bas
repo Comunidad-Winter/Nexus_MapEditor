@@ -50,13 +50,13 @@ End Type
 Private Type tDatosNPC
     X As Integer
     y As Integer
-    NpcIndex As Integer
+    NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
     y As Integer
-    OBJIndex As Integer
+    objindex As Integer
     ObjAmmount As Integer
 End Type
 
@@ -122,6 +122,32 @@ AbrirMapa_Err:
 End Sub
 
 ''
+' Guarda el Mapa
+'
+' @param Path Especifica el path del mapa
+
+Public Sub GuardarMapa(Optional Path As String)
+'*************************************************
+'Author: ^[GS]^
+'Last modified: 01/11/08
+'*************************************************
+
+    frmMain.Dialog.CancelError = True
+On Error GoTo ErrHandler
+    
+    If LenB(Path) = 0 Then
+        frmMain.ObtenerNombreArchivo True
+        Path = frmMain.Dialog.FileName
+        If LenB(Path) = 0 Then Exit Sub
+    End If
+    
+    If frmMain.Dialog.FilterIndex = 1 Then _
+        Call GuardarMapa_CSM(Path)
+
+ErrHandler:
+End Sub
+
+''
 ' Limpia todo el mapa a uno nuevo
 '
 
@@ -164,12 +190,12 @@ Public Sub NuevoMapa()
             ' NPCs
             If MapData(X, y).CharIndex > 0 Then
                 Call Char_Erase(MapData(X, y).CharIndex)
-                MapData(X, y).NpcIndex = 0
+                MapData(X, y).NPCIndex = 0
 
             End If
 
             ' OBJs
-            MapData(X, y).OBJInfo.OBJIndex = 0
+            MapData(X, y).OBJInfo.objindex = 0
             MapData(X, y).OBJInfo.Amount = 0
             MapData(X, y).ObjGrh.GrhIndex = 0
 
@@ -212,7 +238,7 @@ Public Sub NuevoMapa()
 
 End Sub
 
-Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
+Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     '***************************************************
     'Author: Lorwik
     'Last Modification: 27/04/2023
@@ -335,7 +361,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 ReDim Objetos(1 To .NumeroOBJs)
                 Get #fh, , Objetos
                 For i = 1 To .NumeroOBJs
-                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.objindex = Objetos(i).objindex
                     MapData(Objetos(i).X, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
                 Next i
             End If
@@ -346,12 +372,12 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
 
                 For i = 1 To .NumeroNPCs
                 
-                    MapData(NPCs(i).X, NPCs(i).y).NpcIndex = NPCs(i).NpcIndex
+                    MapData(NPCs(i).X, NPCs(i).y).NPCIndex = NPCs(i).NPCIndex
     
-                    If MapData(NPCs(i).X, NPCs(i).y).NpcIndex > 0 Then
-                        Body = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Body
-                        Head = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Head
-                        Heading = NpcData(MapData(NPCs(i).X, NPCs(i).y).NpcIndex).Heading
+                    If MapData(NPCs(i).X, NPCs(i).y).NPCIndex > 0 Then
+                        Body = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Body
+                        Head = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Head
+                        Heading = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Heading
                         Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).y, 2, 2, 2, 0, 0)
                     End If
 
@@ -390,6 +416,8 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     'Set changed flag
     MapInfo.Changed = 0
     
+    Call Pestanias(RutaMapa)
+    
     'Change mouse icon
     frmMain.MousePointer = 0
     MapaCargado = True
@@ -399,4 +427,98 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
 MapaCSM_Cargar_Err:
     Call LogError(Err.Number, Err.Description, "modMapIO.MapaCSM_Cargar", Erl)
     Resume Next
+End Sub
+
+Private Sub GuardarMapa_CSM(ByVal RutaMapa As String)
+
+End Sub
+
+''
+' Calcula la orden de Pestañas
+'
+' @param Map Especifica path del mapa
+
+Public Sub Pestanias(ByVal Map As String)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 28/05/06
+    '*************************************************
+    
+    On Error GoTo Pestañas_Err
+    
+    Dim loopc As Integer
+
+    For loopc = Len(Map) To 1 Step -1
+
+        If mid(Map, loopc, 1) = "\" Then
+            PATH_Save = Left(Map, loopc)
+            Exit For
+
+        End If
+
+    Next
+    Map = Right(Map, Len(Map) - (Len(PATH_Save)))
+
+    For loopc = Len(Left(Map, Len(Map) - 4)) To 1 Step -1
+
+        If IsNumeric(mid(Left(Map, Len(Map) - 4), loopc, 1)) = False Then
+            NumMap_Save = Right(Left(Map, Len(Map) - 4), Len(Left(Map, Len(Map) - 4)) - loopc)
+            NameMap_Save = Left(Map, loopc)
+            Exit For
+
+        End If
+
+    Next
+
+    For loopc = (NumMap_Save - 4) To (NumMap_Save + 6)
+
+        If FileExist(PATH_Save & NameMap_Save & loopc & ".csm", vbArchive) = True Then
+            frmMain.MapPest(loopc - NumMap_Save + 4).Visible = True
+            frmMain.MapPest(loopc - NumMap_Save + 4).Enabled = True
+            frmMain.MapPest(loopc - NumMap_Save + 4).Caption = NameMap_Save & loopc
+        Else
+            frmMain.MapPest(loopc - NumMap_Save + 4).Visible = False
+
+        End If
+
+    Next
+    
+    Exit Sub
+
+Pestañas_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.Pestanias", Erl)
+
+    Resume Next
+    
+End Sub
+
+''
+' Nos pregunta donde guardar el mapa en caso de modificarlo
+'
+' @param Path Especifica si existiera un path donde guardar el mapa
+
+Public Sub DeseaGuardarMapa(Optional Path As String)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo DeseaGuardarMapa_Err
+    
+
+    If MapInfo.Changed = 1 Then
+        If MsgBox(MSGMod, vbExclamation + vbYesNo) = vbYes Then
+            GuardarMapa Path
+
+        End If
+
+    End If
+
+    
+    Exit Sub
+
+DeseaGuardarMapa_Err:
+    Call LogError(Err.Number, Err.Description, "modMapIO.DeseaGuardarMapa", Erl)
+    Resume Next
+    
 End Sub
