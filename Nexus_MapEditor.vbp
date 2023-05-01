@@ -69,6 +69,7 @@ AutoIncrementVer=0
 ServerSupportFiles=0
 VersionFileDescription="Editor de mapas oficial de Nexus AO"
 VersionProductName="Nexus MapEditor"
+CondComp="LightEngine = 1"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0

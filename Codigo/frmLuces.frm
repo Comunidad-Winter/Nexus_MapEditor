@@ -53,7 +53,7 @@ Begin VB.Form frmLuces
    End
    Begin Nexus_MapEditor.lvButtons_H cQuitarLuz 
       Height          =   405
-      Left            =   390
+      Left            =   360
       TabIndex        =   14
       Top             =   1680
       Width           =   1725
@@ -512,29 +512,29 @@ Private Sub lvButtons_H5_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            R = 255
-            G = 0
-            B = 0
+            r = 255
+            g = 0
+            b = 0
         Case 1
-            R = 255
-            G = 255
-            B = 0
+            r = 255
+            g = 255
+            b = 0
         Case 2
-            R = 192
-            G = 192
-            B = 192
+            r = 192
+            g = 192
+            b = 192
         Case 3
-            R = 255
-            G = 0
-            B = 255
+            r = 255
+            g = 0
+            b = 255
         Case 4
-            R = 255
-            G = 255
-            B = 255
+            r = 255
+            g = 255
+            b = 255
         Case 5
-            R = 127
-            G = 255
-            B = 255
+            r = 127
+            g = 255
+            b = 255
 
 
     End Select

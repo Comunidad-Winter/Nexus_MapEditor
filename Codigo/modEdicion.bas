@@ -969,6 +969,43 @@ Sub ClickEdit(Button As Integer, _
             MapData(tX, tY).Particle_Group_Index = 0
                 
         End If
+        
+        ' ***************** Control de Funcion de Luces *****************
+        If frmLuces.cInsertarLuz.value Then
+            If Val(frmLuces.cRango = 0) Then Exit Sub
+            Call mDx8_Luces.Create_Light_To_Map(tX, tY, frmLuces.cRango, Val(frmLuces.r), Val(frmLuces.g), Val(frmLuces.b))
+            Call mDx8_Luces.LightRenderAll
+                
+            With MapData(tX, tY).Light
+                .active = True
+                .range = frmLuces.cRango
+                .RGBCOLOR.a = 255
+                .RGBCOLOR.r = Val(frmLuces.r)
+                .RGBCOLOR.g = Val(frmLuces.g)
+                .RGBCOLOR.b = Val(frmLuces.b)
+                    
+            End With
+                
+            If Deshacer Then modEdicion.Deshacer_Add "Insertar LÑuz" ' Hago deshacer
+            MapInfo.Changed = 1 'Set changed flag
+                
+        ElseIf frmLuces.cQuitarLuz.value Then
+            
+            With MapData(tX, tY).Light
+                .range = 0
+                .RGBCOLOR.a = 255
+                .RGBCOLOR.r = Val(frmLuces.r)
+                .RGBCOLOR.g = Val(frmLuces.g)
+                .RGBCOLOR.b = Val(frmLuces.b)
+                    
+            End With
+    
+            mDx8_Luces.Delete_Light_To_Map tX, tY
+    
+            If Deshacer Then modEdicion.Deshacer_Add "Quitar Luz" ' Hago deshacer
+            MapInfo.Changed = 1 'Set changed flag
+                
+        End If
 
     End If
     
