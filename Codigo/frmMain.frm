@@ -792,6 +792,9 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuConsola 
          Caption         =   "&Consola"
       End
+      Begin VB.Menu mnuDesplazarMapa 
+         Caption         =   "&Desplazar Mapa"
+      End
    End
    Begin VB.Menu mnuVer 
       Caption         =   "&Ver"
@@ -887,14 +890,14 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    clicX = X
-    clicY = Y
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    clicX = x
+    clicY = y
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -934,7 +937,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     WriteVar ConfigFile, "MOSTRAR", "Grilla", IIf(frmMain.mnuVerGrilla.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Bloqueos", IIf(frmMain.mnuVerBloqueos.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Particulas", IIf(frmMain.mnuVerParticulas.Checked = True, "1", "0")
-    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.Y
+    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.x & "-" & UserPos.y
 
     'Allow MainLoop to close program
     If prgRun = True Then
@@ -1238,6 +1241,23 @@ mnuCortar_Click_Err:
     
 End Sub
 
+Private Sub mnuDesplazarMapa_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 01/05/2023
+    '*************************************************
+    
+    On Error GoTo mnuDesplazarMapa_Click_Err
+    
+    frmDesplazarMapa.Show , frmMain
+
+    Exit Sub
+
+mnuDesplazarMapa_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuDesplazarMapa_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub mnuPegar_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1521,9 +1541,9 @@ Private Sub mnuNpcAzar_Click()
     On Error GoTo NpcAzar_Click_Err
     
     Dim NPCIndex As Long
-    Dim X        As Byte
+    Dim x        As Byte
     Dim tmp      As String
-    Dim Y        As Byte
+    Dim y        As Byte
     Dim i        As Byte
 
     tmp = InputBox("¿Cuantos npcs?", "Ingresar npcs al azar por todo el mapa.")
@@ -1531,20 +1551,20 @@ Private Sub mnuNpcAzar_Click()
     If tmp = "" Then Exit Sub
 
     For i = 1 To CLng(tmp)
-        X = RandomNumber(15, 87)
-        Y = RandomNumber(15, 87)
+        x = RandomNumber(15, 87)
+        y = RandomNumber(15, 87)
             
-        If (MapData(X, Y).Blocked And &HF) <> &HF Then
+        If (MapData(x, y).Blocked And &HF) <> &HF Then
 
             NPCIndex = frmNpcs.cNPC.Text
                 
-            If NPCIndex <> MapData(X, Y).NPCIndex Then
+            If NPCIndex <> MapData(x, y).NPCIndex Then
                 
                 modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
              
-                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, Y, 0, 0, 0, 0, 0)
-                MapData(X, Y).NPCIndex = NPCIndex
+                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, x, y, 0, 0, 0, 0, 0)
+                MapData(x, y).NPCIndex = NPCIndex
 
             End If
 
@@ -1847,13 +1867,13 @@ End Sub
 
 Private Sub MainViewPic_MouseMove(Button As Integer, _
                                   Shift As Integer, _
-                                  X As Single, _
-                                  Y As Single)
+                                  x As Single, _
+                                  y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
-    MouseX = X
-    MouseY = Y
+    MouseX = x
+    MouseY = y
 
     'Make sure map is loaded
     If Not MapaCargado Then Exit Sub
@@ -1887,7 +1907,7 @@ MainViewPic_MouseMove_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo MainViewPic_MouseDown_Err
     
