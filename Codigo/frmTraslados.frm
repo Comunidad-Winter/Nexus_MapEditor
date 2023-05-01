@@ -7,6 +7,7 @@ Begin VB.Form frmTraslados
    ClientLeft      =   23415
    ClientTop       =   13395
    ClientWidth     =   3630
+   ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -88,24 +89,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   0
       Top             =   1410
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Insertar Traslado"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Insertar Traslado"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":0000
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cInsertarTransOBJ 
       Height          =   375
@@ -113,24 +106,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   4
       Top             =   1830
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Colocar automaticamente Objeto"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Colocar automaticamente Objeto"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":0028
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cUnionManual 
       Height          =   375
@@ -138,24 +123,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   5
       Top             =   2310
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Union con Mapa Adyacente (manual)"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Union con Mapa Adyacente (manual)"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":0050
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cUnionAuto 
       Height          =   375
@@ -163,24 +140,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   9
       Top             =   2700
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Union con Mapas Adyacentes (auto)"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Union con Mapas Adyacentes (auto)"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":0078
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cQuitarTrans 
       Height          =   375
@@ -188,24 +157,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   10
       Top             =   3540
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Quitar Traslados"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Quitar Traslados"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":00A0
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H LvBDesplazarTraslados 
       Height          =   375
@@ -213,24 +174,16 @@ Begin VB.Form frmTraslados
       TabIndex        =   11
       Top             =   3090
       Width           =   3285
-      _ExtentX        =   5794
-      _ExtentY        =   661
-      Caption         =   "Desplazar Traslados"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   5794
+      _extenty        =   661
+      caption         =   "Desplazar Traslados"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTraslados.frx":00C8
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin VB.Label lMapN 
       AutoSize        =   -1  'True
@@ -356,7 +309,7 @@ Private Sub cUnionAuto_Click()
     
     On Error GoTo cUnionAuto_Click_Err
     
-    frmUnionAdyacente.Show
+    frmUnionAdyacente.Show , frmMain
 
     Exit Sub
 

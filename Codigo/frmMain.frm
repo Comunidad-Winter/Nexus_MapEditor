@@ -887,14 +887,14 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     clicX = X
-    clicY = y
+    clicY = Y
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -933,7 +933,8 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     WriteVar ConfigFile, "MOSTRAR", "Triggers", IIf(frmMain.mnuVerTriggers.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Grilla", IIf(frmMain.mnuVerGrilla.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Bloqueos", IIf(frmMain.mnuVerBloqueos.Checked = True, "1", "0")
-    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.y
+    WriteVar ConfigFile, "MOSTRAR", "Particulas", IIf(frmMain.mnuVerParticulas.Checked = True, "1", "0")
+    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.Y
 
     'Allow MainLoop to close program
     If prgRun = True Then
@@ -969,6 +970,21 @@ Private Sub Form_Resize()
     End With
     
     Call ChangeView
+    
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 01/05/2023
+    '*************************************************
+
+    If MapInfo.Changed = 1 Then
+        If MsgBox(MSGMod, vbQuestion + vbYesNo) Then _
+            modMapIO.GuardarMapa Dialog.FileName
+    End If
+    
+    Call CloseClient
     
 End Sub
 
@@ -1507,7 +1523,7 @@ Private Sub mnuNpcAzar_Click()
     Dim NPCIndex As Long
     Dim X        As Byte
     Dim tmp      As String
-    Dim y        As Byte
+    Dim Y        As Byte
     Dim i        As Byte
 
     tmp = InputBox("¿Cuantos npcs?", "Ingresar npcs al azar por todo el mapa.")
@@ -1516,19 +1532,19 @@ Private Sub mnuNpcAzar_Click()
 
     For i = 1 To CLng(tmp)
         X = RandomNumber(15, 87)
-        y = RandomNumber(15, 87)
+        Y = RandomNumber(15, 87)
             
-        If (MapData(X, y).Blocked And &HF) <> &HF Then
+        If (MapData(X, Y).Blocked And &HF) <> &HF Then
 
             NPCIndex = frmNpcs.cNPC.Text
                 
-            If NPCIndex <> MapData(X, y).NPCIndex Then
+            If NPCIndex <> MapData(X, Y).NPCIndex Then
                 
                 modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
              
-                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, y, 0, 0, 0, 0, 0)
-                MapData(X, y).NPCIndex = NPCIndex
+                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, Y, 0, 0, 0, 0, 0)
+                MapData(X, Y).NPCIndex = NPCIndex
 
             End If
 
@@ -1553,12 +1569,12 @@ Private Sub mnuNuevoMapa_Click()
     On Error GoTo mnuNuevoMapa_Click_Err
     
 
-    Dim loopc As Integer
+    Dim LoopC As Integer
 
     DeseaGuardarMapa Dialog.FileName
 
-    For loopc = 0 To frmMain.MapPest.Count
-        frmMain.MapPest(loopc).Visible = False
+    For LoopC = 0 To frmMain.MapPest.Count
+        frmMain.MapPest(LoopC).Visible = False
     Next
 
     frmMain.Dialog.FileName = Empty
@@ -1832,12 +1848,12 @@ End Sub
 Private Sub MainViewPic_MouseMove(Button As Integer, _
                                   Shift As Integer, _
                                   X As Single, _
-                                  y As Single)
+                                  Y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
     MouseX = X
-    MouseY = y
+    MouseY = Y
 
     'Make sure map is loaded
     If Not MapaCargado Then Exit Sub
@@ -1871,7 +1887,7 @@ MainViewPic_MouseMove_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MainViewPic_MouseDown_Err
     

@@ -43,18 +43,18 @@ End Type
 
 Private Type tDatosBloqueados
     X As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Private Type tDatosGrh
     X As Integer
-    y As Integer
+    Y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
     X As Integer
-    y As Integer
+    Y As Integer
     Trigger As Integer
 End Type
 
@@ -64,31 +64,31 @@ Private Type tDatosLuces
     B As Integer
     range As Byte
     X As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Private Type tDatosParticulas
     X As Integer
-    y As Integer
+    Y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
     X As Integer
-    y As Integer
+    Y As Integer
     NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
-    y As Integer
+    Y As Integer
     objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
     X As Integer
-    y As Integer
+    Y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -228,7 +228,7 @@ Public Sub CargarConfiguracion()
         ' MOSTRAR
         tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
         UserPos.X = Val(ReadField(1, tStr, Asc("-")))
-        UserPos.y = Val(ReadField(2, tStr, Asc("-")))
+        UserPos.Y = Val(ReadField(2, tStr, Asc("-")))
         frmMain.mnuVerAutomatico.Checked = Val(Lector.GetValue("MOSTRAR", "ControlAutomatico"))
         frmMain.mnuVerCapa2.Checked = Val(Lector.GetValue("MOSTRAR", "Capa2"))
         frmMain.mnuVerCapa3.Checked = Val(Lector.GetValue("MOSTRAR", "Capa3"))
@@ -240,9 +240,17 @@ Public Sub CargarConfiguracion()
         frmMain.mnuVerGrilla.Checked = Val(Lector.GetValue("MOSTRAR", "Grilla")) ' Grilla
         VerGrilla = frmMain.mnuVerGrilla.Checked
         frmMain.mnuVerBloqueos.Checked = Val(Lector.GetValue("MOSTRAR", "Bloqueos"))
+        frmMain.mnuVerParticulas.Checked = Val(Lector.GetValue("MOSTRAR", "Particulas"))
         frmTriggers.cVerTriggers.value = frmMain.mnuVerTriggers.Checked
         frmBloqueos.cVerBloqueos.value = frmMain.mnuVerBloqueos.Checked
         .Preview = Val(Lector.GetValue("MOSTRAR", "Preview"))
+        
+        ' Tamaño de visualizacion en el cliente
+        ClienteHeight = Val(Lector.GetValue("MOSTRAR", "ClienteHeight"))
+        ClienteWidth = Val(Lector.GetValue("MOSTRAR", "ClienteWidth"))
+        
+        If ClienteHeight <= 0 Then ClienteHeight = 13
+        If ClienteWidth <= 0 Then ClienteWidth = 17
         
         'MAPA
         XMaxMapSize = Val(Lector.GetValue("MAPA", "XMaxMapSize"))
@@ -573,7 +581,7 @@ On Error GoTo ErrHandler:
                 Call InitGrh(BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0)
                 
                 BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-                BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
+                BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
             End If
         Next i
     

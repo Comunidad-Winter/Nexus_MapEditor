@@ -7,6 +7,7 @@ Begin VB.Form frmTriggers
    ClientLeft      =   23415
    ClientTop       =   6900
    ClientWidth     =   4110
+   ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -50,24 +51,16 @@ Begin VB.Form frmTriggers
       TabIndex        =   0
       Top             =   3720
       Width           =   1875
-      _ExtentX        =   3307
-      _ExtentY        =   661
-      Caption         =   "Quitar Trigger's"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3307
+      _extenty        =   661
+      caption         =   "Quitar Trigger's"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTriggers.frx":0004
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cVerTriggers 
       Height          =   375
@@ -75,24 +68,16 @@ Begin VB.Form frmTriggers
       TabIndex        =   2
       Top             =   3330
       Width           =   1875
-      _ExtentX        =   3307
-      _ExtentY        =   661
-      Caption         =   "Mostrar Trigger's"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3307
+      _extenty        =   661
+      caption         =   "Mostrar Trigger's"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTriggers.frx":002C
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cInsertarTrigger 
       Height          =   765
@@ -100,24 +85,16 @@ Begin VB.Form frmTriggers
       TabIndex        =   3
       Top             =   3330
       Width           =   1875
-      _ExtentX        =   3307
-      _ExtentY        =   1349
-      Caption         =   "Insertar Trigger's"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3307
+      _extenty        =   1349
+      caption         =   "Insertar Trigger's"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmTriggers.frx":0054
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
 End
 Attribute VB_Name = "frmTriggers"

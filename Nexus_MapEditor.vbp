@@ -52,6 +52,7 @@ Form=Codigo\frmOptimizar.frm
 Form=Codigo\frmDesplazarTranslados.frm
 Form=Codigo\frmUnionAdyasente.frm
 Form=Codigo\frmAutoGuardarMapa.frm
+Module=mDx8_Particulas; Codigo\mDx8_Particulas.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

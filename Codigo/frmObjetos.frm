@@ -7,6 +7,7 @@ Begin VB.Form frmObjetos
    ClientLeft      =   9525
    ClientTop       =   11535
    ClientWidth     =   4125
+   ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -81,24 +82,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   0
       Top             =   4530
       Width           =   1935
-      _ExtentX        =   3413
-      _ExtentY        =   609
-      Caption         =   "Quitar OBJ"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3413
+      _extenty        =   609
+      caption         =   "Quitar OBJ"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmObjetos.frx":0008
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cAgregarObjAzar 
       Height          =   375
@@ -106,24 +99,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   1
       Top             =   4110
       Width           =   1935
-      _ExtentX        =   3413
-      _ExtentY        =   661
-      Caption         =   "Insertar OBJ al azar"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3413
+      _extenty        =   661
+      caption         =   "Insertar OBJ al azar"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmObjetos.frx":0030
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cInsertarObj 
       Height          =   765
@@ -131,24 +116,16 @@ Begin VB.Form frmObjetos
       TabIndex        =   2
       Top             =   4110
       Width           =   1845
-      _ExtentX        =   3254
-      _ExtentY        =   1349
-      Caption         =   "Insertar OBJ"
-      CapAlign        =   2
-      BackStyle       =   2
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      cGradient       =   0
-      Mode            =   1
-      Value           =   0   'False
-      cBack           =   -2147483633
+      _extentx        =   3254
+      _extenty        =   1349
+      caption         =   "Insertar OBJ"
+      capalign        =   2
+      backstyle       =   2
+      cgradient       =   0
+      font            =   "frmObjetos.frx":0058
+      mode            =   1
+      value           =   0
+      cback           =   -2147483633
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True

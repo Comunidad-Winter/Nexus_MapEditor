@@ -6,6 +6,7 @@ Begin VB.Form frmMapInfo
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   4440
+   ControlBox      =   0   'False
    Icon            =   "frmMapInfo.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False

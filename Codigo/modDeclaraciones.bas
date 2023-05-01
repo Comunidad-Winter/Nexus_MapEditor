@@ -1,26 +1,31 @@
 Attribute VB_Name = "modDeclaraciones"
 Option Explicit
 
-Public DirRecursos  As String
+Public DirRecursos   As String
 
-Public DirDats      As String
+Public DirDats       As String
 
-Public DirInit      As String
+Public DirInit       As String
 
-Public Form_Caption As String
+Public Form_Caption  As String
 
-Public PATH_Save    As String
+Public PATH_Save     As String
 
-Public NumMap_Save  As Integer
+Public NumMap_Save   As Integer
 
-Public NameMap_Save As String
+Public NameMap_Save  As String
 
-Public MapaActual   As Integer
+Public MapaActual    As Integer
+
+' Client Config
+Public ClienteHeight As Integer
+
+Public ClienteWidth  As Integer
 
 'Control
-Public prgRun       As Boolean 'When true the program ends
+Public prgRun        As Boolean 'When true the program ends
 
-Public pausa        As Boolean
+Public pausa         As Boolean
 
 'Direcciones
 Public Enum E_Heading

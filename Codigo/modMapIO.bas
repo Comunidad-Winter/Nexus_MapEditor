@@ -17,18 +17,18 @@ End Type
 
 Private Type tDatosBloqueados
     X As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Private Type tDatosGrh
     X As Integer
-    y As Integer
+    Y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
     X As Integer
-    y As Integer
+    Y As Integer
     Trigger As Integer
 End Type
 
@@ -38,31 +38,31 @@ Private Type tDatosLuces
     B As Integer
     range As Byte
     X As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Private Type tDatosParticulas
     X As Integer
-    y As Integer
+    Y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
     X As Integer
-    y As Integer
+    Y As Integer
     NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
-    y As Integer
+    Y As Integer
     objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
     X As Integer
-    y As Integer
+    Y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -95,7 +95,6 @@ Private MapDat As tMapDat
 '********************************
 'END - Load Map with .CSM format
 '********************************
-
 
 ''
 ' Abre un Mapa
@@ -159,8 +158,10 @@ Public Sub NuevoMapa()
 
     On Error Resume Next
 
-    Dim loopc As Integer
-    Dim y     As Integer
+    Dim LoopC As Integer
+
+    Dim Y     As Integer
+
     Dim X     As Integer
 
     bAutoGuardarMapaCount = 0
@@ -170,60 +171,86 @@ Public Sub NuevoMapa()
 
     MapaCargado = False
 
-    For loopc = 0 To frmMain.MapPest.Count - 1
-        frmMain.MapPest(loopc).Enabled = False
+    For LoopC = 0 To frmMain.MapPest.Count - 1
+        frmMain.MapPest(LoopC).Enabled = False
     Next
 
     frmMain.MousePointer = 11
 
-    For y = YMinMapSize To YMaxMapSize
+    For Y = YMinMapSize To YMaxMapSize
         For X = XMinMapSize To XMaxMapSize
     
-            ' Capa 1
-            MapData(X, y).Graphic(1).GrhIndex = 1
-        
-            ' Bloqueos
-            MapData(X, y).Blocked = 0
-
-            ' Capas 2, 3 y 4
-            MapData(X, y).Graphic(2).GrhIndex = 0
-            MapData(X, y).Graphic(3).GrhIndex = 0
-            MapData(X, y).Graphic(4).GrhIndex = 0
-
-            ' NPCs
-            If MapData(X, y).CharIndex > 0 Then
-                Call Char_Erase(MapData(X, y).CharIndex)
-                MapData(X, y).NPCIndex = 0
-
-            End If
-
-            ' OBJs
-            MapData(X, y).OBJInfo.objindex = 0
-            MapData(X, y).OBJInfo.Amount = 0
-            MapData(X, y).ObjGrh.GrhIndex = 0
-
-            ' Translados
-            MapData(X, y).TileExit.Map = 0
-            MapData(X, y).TileExit.X = 0
-            MapData(X, y).TileExit.y = 0
-        
-            ' Triggers
-            MapData(X, y).Trigger = 0
-        
-            InitGrh MapData(X, y).Graphic(1), 1
+            With MapData(X, Y)
+                ' Capa 1
+                .Graphic(1).GrhIndex = 1
+            
+                ' Bloqueos
+                .Blocked = 0
+    
+                ' Capas 2, 3 y 4
+                .Graphic(2).GrhIndex = 0
+                .Graphic(3).GrhIndex = 0
+                .Graphic(4).GrhIndex = 0
+    
+                ' NPCs
+                If .CharIndex > 0 Then
+                    Call Char_Erase(.CharIndex)
+                    .NPCIndex = 0
+    
+                End If
+    
+                ' OBJs
+                .OBJInfo.objindex = 0
+                .OBJInfo.Amount = 0
+                .ObjGrh.GrhIndex = 0
+    
+                ' Translados
+                .TileExit.Map = 0
+                .TileExit.X = 0
+                .TileExit.Y = 0
+            
+                ' Triggers
+                .Trigger = 0
+            
+                InitGrh .Graphic(1), 1
+                
+                .Light.active = False
+                .Light.range = 0
+                .Light.map_x = 0
+                .Light.map_y = 0
+                .Light.RGBCOLOR.a = 0
+                .Light.RGBCOLOR.R = 0
+                .Light.RGBCOLOR.G = 0
+                .Light.RGBCOLOR.B = 0
+                
+            End With
+            
         Next X
-    Next y
+    Next Y
+    
+    'Limpieza adicional del mapa. PARCHE: Solucion a bug de clones.
+    Call Char_CleanAll
+    
+    'Borramos las particulas activas en el mapa.
+    Call Particle_Group_Remove_All
+        
+    'Borramos todas las luces
+    Call LightRemoveAll
 
-    MapInfo.MapVersion = 0
-    MapInfo.name = "Nuevo Mapa"
-    MapInfo.Music = 0
-    MapInfo.Pk = True
-    MapInfo.MagiaSinEfecto = 0
-    MapInfo.InviSinEfecto = 0
-    MapInfo.ResuSinEfecto = 0
-    MapInfo.Terreno = "BOSQUE"
-    MapInfo.Zona = "CAMPO"
-    MapInfo.Restringir = 0
+    With MapInfo
+    
+        .MapVersion = 0
+        .name = "Nuevo Mapa"
+        .Music = 0
+        .Pk = True
+        .MagiaSinEfecto = 0
+        .InviSinEfecto = 0
+        .ResuSinEfecto = 0
+        .Terreno = "BOSQUE"
+        .Zona = "CAMPO"
+        .Restringir = 0
+    
+    End With
 
     'Call MapInfo_Actualizar
     Call DibujarMinimapa
@@ -254,165 +281,214 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     
     On Error GoTo MapaCSM_Cargar_Err
     
-    Dim fh              As Integer
-    Dim MH              As tMapHeader
-    Dim Blqs()          As tDatosBloqueados
-    Dim L1()            As Long
-    Dim L2()            As tDatosGrh
-    Dim L3()            As tDatosGrh
-    Dim L4()            As tDatosGrh
-    Dim Triggers()      As tDatosTrigger
-    Dim Luces()         As tDatosLuces
-    Dim Particulas()    As tDatosParticulas
-    Dim Objetos()       As tDatosObjs
-    Dim NPCs()          As tDatosNPC
-    Dim TEs()           As tDatosTE
-    Dim MapSize         As tMapSize
-    Dim MapDat          As tMapDat
-    Dim npcfile         As String
-    Dim i               As Long
-    Dim j               As Long
-    Dim LaCabecera      As tCabecera
+    Dim fh           As Integer
+
+    Dim MH           As tMapHeader
+
+    Dim Blqs()       As tDatosBloqueados
+
+    Dim L1()         As Long
+
+    Dim L2()         As tDatosGrh
+
+    Dim L3()         As tDatosGrh
+
+    Dim L4()         As tDatosGrh
+
+    Dim Triggers()   As tDatosTrigger
+
+    Dim Luces()      As tDatosLuces
+
+    Dim Particulas() As tDatosParticulas
+
+    Dim Objetos()    As tDatosObjs
+
+    Dim NPCs()       As tDatosNPC
+
+    Dim TEs()        As tDatosTE
+
+    Dim MapSize      As tMapSize
+
+    Dim MapDat       As tMapDat
+
+    Dim npcfile      As String
+
+    Dim i            As Long
+
+    Dim j            As Long
+
+    Dim LaCabecera   As tCabecera
     
     Dim Body         As Integer
+
     Dim Head         As Integer
+
     Dim Heading      As Byte
     
     fh = FreeFile
     
     Open RutaMapa For Binary Access Read As fh
     
-        Get #fh, , LaCabecera
+    Get #fh, , LaCabecera
     
-        Get #fh, , MH
-        Get #fh, , MapSize
-        Get #fh, , MapDat
+    Get #fh, , MH
+    Get #fh, , MapSize
+    Get #fh, , MapDat
         
-        ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax) As Long
+    ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax) As Long
         
-        Get #fh, , L1
+    Get #fh, , L1
         
-        With MH
-            If .NumeroBloqueados > 0 Then
-                ReDim Blqs(1 To .NumeroBloqueados)
-                Get #fh, , Blqs
-                For i = 1 To .NumeroBloqueados
-                    MapData(Blqs(i).X, Blqs(i).y).Blocked = 1
-                Next i
-            End If
+    With MH
+
+        If .NumeroBloqueados > 0 Then
+            ReDim Blqs(1 To .NumeroBloqueados)
+            Get #fh, , Blqs
+
+            For i = 1 To .NumeroBloqueados
+                MapData(Blqs(i).X, Blqs(i).Y).Blocked = 1
+            Next i
+
+        End If
             
-            If .NumeroLayers(2) > 0 Then
-                ReDim L2(1 To .NumeroLayers(2))
-                Get #fh, , L2
-                For i = 1 To .NumeroLayers(2)
-                    Call InitGrh(MapData(L2(i).X, L2(i).y).Graphic(2), L2(i).GrhIndex)
-                Next i
-            End If
+        If .NumeroLayers(2) > 0 Then
+            ReDim L2(1 To .NumeroLayers(2))
+            Get #fh, , L2
+
+            For i = 1 To .NumeroLayers(2)
+                Call InitGrh(MapData(L2(i).X, L2(i).Y).Graphic(2), L2(i).GrhIndex)
+            Next i
+
+        End If
             
-            If .NumeroLayers(3) > 0 Then
-                ReDim L3(1 To .NumeroLayers(3))
-                Get #fh, , L3
-                For i = 1 To .NumeroLayers(3)
-                    Call InitGrh(MapData(L3(i).X, L3(i).y).Graphic(3), L3(i).GrhIndex)
-                Next i
-            End If
+        If .NumeroLayers(3) > 0 Then
+            ReDim L3(1 To .NumeroLayers(3))
+            Get #fh, , L3
+
+            For i = 1 To .NumeroLayers(3)
+                Call InitGrh(MapData(L3(i).X, L3(i).Y).Graphic(3), L3(i).GrhIndex)
+            Next i
+
+        End If
             
-            If .NumeroLayers(4) > 0 Then
-                ReDim L4(1 To .NumeroLayers(4))
-                Get #fh, , L4
-                For i = 1 To .NumeroLayers(4)
-                    Call InitGrh(MapData(L4(i).X, L4(i).y).Graphic(4), L4(i).GrhIndex)
-                Next i
-            End If
+        If .NumeroLayers(4) > 0 Then
+            ReDim L4(1 To .NumeroLayers(4))
+            Get #fh, , L4
+
+            For i = 1 To .NumeroLayers(4)
+                Call InitGrh(MapData(L4(i).X, L4(i).Y).Graphic(4), L4(i).GrhIndex)
+            Next i
+
+        End If
             
-            If .NumeroTriggers > 0 Then
-                ReDim Triggers(1 To .NumeroTriggers)
-                Get #fh, , Triggers
-                For i = 1 To .NumeroTriggers
-                    MapData(Triggers(i).X, Triggers(i).y).Trigger = Triggers(i).Trigger
-                Next i
-            End If
+        If .NumeroTriggers > 0 Then
+            ReDim Triggers(1 To .NumeroTriggers)
+            Get #fh, , Triggers
+
+            For i = 1 To .NumeroTriggers
+                MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+            Next i
+
+        End If
             
-            If .NumeroParticulas > 0 Then
-                ReDim Particulas(1 To .NumeroParticulas)
-                Get #fh, , Particulas
+        If .NumeroParticulas > 0 Then
+            ReDim Particulas(1 To .NumeroParticulas)
+            Get #fh, , Particulas
                 
-                For i = 1 To .NumeroParticulas
+            For i = 1 To .NumeroParticulas
     
-                    With Particulas(i)
+                With Particulas(i)
                     
-                        'MapData(.X, .Y).Particle_Group_Index = General_Particle_Create(.Particula, .X, .Y)
+                    MapData(.X, .Y).Particle_Group_Index = General_Particle_Create(.Particula, .X, .Y)
     
-                    End With
+                End With
     
-                Next i
-            End If
-            
-            If .NumeroLuces > 0 Then
-                ReDim Luces(1 To .NumeroLuces)
-                Get #fh, , Luces
-                
-                For i = 1 To .NumeroLuces
-    
-                    With Luces(i)
-    
-                        Call Create_Light_To_Map(.X, .y, .range, .R, .G, .B)
-    
-                    End With
-    
-                Next i
-            
-                Call LightRenderAll
-            End If
-            
-            If .NumeroOBJs > 0 Then
-                ReDim Objetos(1 To .NumeroOBJs)
-                Get #fh, , Objetos
-                For i = 1 To .NumeroOBJs
-                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.objindex = Objetos(i).objindex
-                    MapData(Objetos(i).X, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                Next i
-            End If
-                
-            If .NumeroNPCs > 0 Then
-                ReDim NPCs(1 To .NumeroNPCs)
-                Get #fh, , NPCs
+            Next i
 
-                For i = 1 To .NumeroNPCs
-                
-                    MapData(NPCs(i).X, NPCs(i).y).NPCIndex = NPCs(i).NPCIndex
-    
-                    If MapData(NPCs(i).X, NPCs(i).y).NPCIndex > 0 Then
-                        Body = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Body
-                        Head = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Head
-                        Heading = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Heading
-                        Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).y, 2, 2, 2, 0, 0)
-                    End If
-
-                Next i
-
-            End If
-                
-            If .NumeroTE > 0 Then
-                ReDim TEs(1 To .NumeroTE)
-                Get #fh, , TEs
-                For i = 1 To .NumeroTE
-                    MapData(TEs(i).X, TEs(i).y).TileExit.Map = TEs(i).DestM
-                    MapData(TEs(i).X, TEs(i).y).TileExit.X = TEs(i).DestX
-                    MapData(TEs(i).X, TEs(i).y).TileExit.y = TEs(i).DestY
-                Next i
-            End If
+        End If
             
-        End With
+        If .NumeroLuces > 0 Then
+            ReDim Luces(1 To .NumeroLuces)
+            Get #fh, , Luces
+                
+            For i = 1 To .NumeroLuces
+    
+                With MapData(Luces(i).X, Luces(i).Y)
+                    .Light.range = Luces(i).range
+                    .Light.RGBCOLOR.a = 255
+                    .Light.RGBCOLOR.R = Luces(i).R
+                    .Light.RGBCOLOR.G = Luces(i).G
+                    .Light.RGBCOLOR.B = Luces(i).B
+                    .Light.active = True
+
+                End With
+    
+                With Luces(i)
+                    Call Create_Light_To_Map(.X, .Y, .range, .R, .G, .B)
+
+                End With
+    
+            Next i
+            
+            Call LightRenderAll
+
+        End If
+            
+        If .NumeroOBJs > 0 Then
+            ReDim Objetos(1 To .NumeroOBJs)
+            Get #fh, , Objetos
+
+            For i = 1 To .NumeroOBJs
+                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.objindex = Objetos(i).objindex
+                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
+            Next i
+
+        End If
+                
+        If .NumeroNPCs > 0 Then
+            ReDim NPCs(1 To .NumeroNPCs)
+            Get #fh, , NPCs
+
+            For i = 1 To .NumeroNPCs
+                
+                MapData(NPCs(i).X, NPCs(i).Y).NPCIndex = NPCs(i).NPCIndex
+    
+                If MapData(NPCs(i).X, NPCs(i).Y).NPCIndex > 0 Then
+                    Body = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Body
+                    Head = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Head
+                    Heading = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Heading
+                    Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).Y, 2, 2, 2, 0, 0)
+
+                End If
+
+            Next i
+
+        End If
+                
+        If .NumeroTE > 0 Then
+            ReDim TEs(1 To .NumeroTE)
+            Get #fh, , TEs
+
+            For i = 1 To .NumeroTE
+                MapData(TEs(i).X, TEs(i).Y).TileExit.Map = TEs(i).DestM
+                MapData(TEs(i).X, TEs(i).Y).TileExit.X = TEs(i).DestX
+                MapData(TEs(i).X, TEs(i).Y).TileExit.Y = TEs(i).DestY
+            Next i
+
+        End If
+            
+    End With
     
     Close fh
-    
         
     For j = MapSize.YMin To MapSize.YMax
         For i = MapSize.XMin To MapSize.XMax
+
             If L1(i, j) > 0 Then
                 Call InitGrh(MapData(i, j).Graphic(1), L1(i, j))
+
             End If
+
         Next i
     Next j
     
@@ -438,7 +514,9 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
 
 MapaCSM_Cargar_Err:
     Call LogError(Err.Number, Err.Description, "modMapIO.MapaCSM_Cargar", Erl)
+
     Resume Next
+
 End Sub
 
 Private Function MapaCSM_Guardar(ByVal RutaMapa As String) As Boolean
@@ -488,7 +566,7 @@ On Error GoTo ErrorHandler
                     MH.NumeroBloqueados = MH.NumeroBloqueados + 1
                     ReDim Preserve Blqs(1 To MH.NumeroBloqueados)
                     Blqs(MH.NumeroBloqueados).X = i
-                    Blqs(MH.NumeroBloqueados).y = j
+                    Blqs(MH.NumeroBloqueados).Y = j
                 End If
                 
                 L1(i, j) = .Graphic(1).GrhIndex
@@ -497,7 +575,7 @@ On Error GoTo ErrorHandler
                     MH.NumeroLayers(2) = MH.NumeroLayers(2) + 1
                     ReDim Preserve L2(1 To MH.NumeroLayers(2))
                     L2(MH.NumeroLayers(2)).X = i
-                    L2(MH.NumeroLayers(2)).y = j
+                    L2(MH.NumeroLayers(2)).Y = j
                     L2(MH.NumeroLayers(2)).GrhIndex = .Graphic(2).GrhIndex
                 End If
                 
@@ -505,7 +583,7 @@ On Error GoTo ErrorHandler
                     MH.NumeroLayers(3) = MH.NumeroLayers(3) + 1
                     ReDim Preserve L3(1 To MH.NumeroLayers(3))
                     L3(MH.NumeroLayers(3)).X = i
-                    L3(MH.NumeroLayers(3)).y = j
+                    L3(MH.NumeroLayers(3)).Y = j
                     L3(MH.NumeroLayers(3)).GrhIndex = .Graphic(3).GrhIndex
                 End If
                 
@@ -513,7 +591,7 @@ On Error GoTo ErrorHandler
                     MH.NumeroLayers(4) = MH.NumeroLayers(4) + 1
                     ReDim Preserve L4(1 To MH.NumeroLayers(4))
                     L4(MH.NumeroLayers(4)).X = i
-                    L4(MH.NumeroLayers(4)).y = j
+                    L4(MH.NumeroLayers(4)).Y = j
                     L4(MH.NumeroLayers(4)).GrhIndex = .Graphic(4).GrhIndex
                 End If
                 
@@ -521,7 +599,7 @@ On Error GoTo ErrorHandler
                     MH.NumeroTriggers = MH.NumeroTriggers + 1
                     ReDim Preserve Triggers(1 To MH.NumeroTriggers)
                     Triggers(MH.NumeroTriggers).X = i
-                    Triggers(MH.NumeroTriggers).y = j
+                    Triggers(MH.NumeroTriggers).Y = j
                     Triggers(MH.NumeroTriggers).Trigger = .Trigger
                 End If
                 
@@ -529,23 +607,23 @@ On Error GoTo ErrorHandler
                     MH.NumeroParticulas = MH.NumeroParticulas + 1
                     ReDim Preserve Particulas(1 To MH.NumeroParticulas)
                     Particulas(MH.NumeroParticulas).X = i
-                    Particulas(MH.NumeroParticulas).y = j
+                    Particulas(MH.NumeroParticulas).Y = j
                     Particulas(MH.NumeroParticulas).Particula = .Particle_Group_Index
     
                 End If
                
                '¿Hay luz activa en este punto?
-'                If .Engine_Light.active Then
-'                    MH.NumeroLuces = MH.NumeroLuces + 1
-'                    ReDim Preserve Luces(1 To MH.NumeroLuces)
-'
-'                    Luces(MH.NumeroLuces).r = .Light.RGBcolor.r
-'                    Luces(MH.NumeroLuces).g = .Light.RGBcolor.g
-'                    Luces(MH.NumeroLuces).b = .Light.RGBcolor.b
-'                    Luces(MH.NumeroLuces).range = .Light.range
-'                    Luces(MH.NumeroLuces).X = .Light.map_x
-'                    Luces(MH.NumeroLuces).y = .Light.map_y
-'                End If
+                If .Light.active Then
+                    MH.NumeroLuces = MH.NumeroLuces + 1
+                    ReDim Preserve Luces(1 To MH.NumeroLuces)
+
+                    Luces(MH.NumeroLuces).R = .Light.RGBCOLOR.R
+                    Luces(MH.NumeroLuces).G = .Light.RGBCOLOR.G
+                    Luces(MH.NumeroLuces).B = .Light.RGBCOLOR.B
+                    Luces(MH.NumeroLuces).range = .Light.range
+                    Luces(MH.NumeroLuces).X = .Light.map_x
+                    Luces(MH.NumeroLuces).Y = .Light.map_y
+                End If
                 
                 If .OBJInfo.objindex > 0 Then
                     MH.NumeroOBJs = MH.NumeroOBJs + 1
@@ -553,7 +631,7 @@ On Error GoTo ErrorHandler
                     Objetos(MH.NumeroOBJs).objindex = .OBJInfo.objindex
                     Objetos(MH.NumeroOBJs).ObjAmmount = .OBJInfo.Amount
                     Objetos(MH.NumeroOBJs).X = i
-                    Objetos(MH.NumeroOBJs).y = j
+                    Objetos(MH.NumeroOBJs).Y = j
                 End If
                 
                 If .NPCIndex > 0 Then
@@ -561,7 +639,7 @@ On Error GoTo ErrorHandler
                     ReDim Preserve NPCs(1 To MH.NumeroNPCs)
                     NPCs(MH.NumeroNPCs).NPCIndex = .NPCIndex
                     NPCs(MH.NumeroNPCs).X = i
-                    NPCs(MH.NumeroNPCs).y = j
+                    NPCs(MH.NumeroNPCs).Y = j
                 End If
                 
                 If .TileExit.Map > 0 Then
@@ -569,9 +647,9 @@ On Error GoTo ErrorHandler
                     ReDim Preserve TEs(1 To MH.NumeroTE)
                     TEs(MH.NumeroTE).DestM = .TileExit.Map
                     TEs(MH.NumeroTE).DestX = .TileExit.X
-                    TEs(MH.NumeroTE).DestY = .TileExit.y
+                    TEs(MH.NumeroTE).DestY = .TileExit.Y
                     TEs(MH.NumeroTE).X = i
-                    TEs(MH.NumeroTE).y = j
+                    TEs(MH.NumeroTE).Y = j
                 End If
             End With
         Next i
@@ -644,12 +722,12 @@ Public Sub Pestanias(ByVal Map As String)
     
     On Error GoTo Pestañas_Err
     
-    Dim loopc As Integer
+    Dim LoopC As Integer
 
-    For loopc = Len(Map) To 1 Step -1
+    For LoopC = Len(Map) To 1 Step -1
 
-        If mid(Map, loopc, 1) = "\" Then
-            PATH_Save = Left(Map, loopc)
+        If mid(Map, LoopC, 1) = "\" Then
+            PATH_Save = Left(Map, LoopC)
             Exit For
 
         End If
@@ -657,25 +735,25 @@ Public Sub Pestanias(ByVal Map As String)
     Next
     Map = Right(Map, Len(Map) - (Len(PATH_Save)))
 
-    For loopc = Len(Left(Map, Len(Map) - 4)) To 1 Step -1
+    For LoopC = Len(Left(Map, Len(Map) - 4)) To 1 Step -1
 
-        If IsNumeric(mid(Left(Map, Len(Map) - 4), loopc, 1)) = False Then
-            NumMap_Save = Right(Left(Map, Len(Map) - 4), Len(Left(Map, Len(Map) - 4)) - loopc)
-            NameMap_Save = Left(Map, loopc)
+        If IsNumeric(mid(Left(Map, Len(Map) - 4), LoopC, 1)) = False Then
+            NumMap_Save = Right(Left(Map, Len(Map) - 4), Len(Left(Map, Len(Map) - 4)) - LoopC)
+            NameMap_Save = Left(Map, LoopC)
             Exit For
 
         End If
 
     Next
 
-    For loopc = (NumMap_Save - 4) To (NumMap_Save + 6)
+    For LoopC = (NumMap_Save - 4) To (NumMap_Save + 6)
 
-        If FileExist(PATH_Save & NameMap_Save & loopc & ".csm", vbArchive) = True Then
-            frmMain.MapPest(loopc - NumMap_Save + 4).Visible = True
-            frmMain.MapPest(loopc - NumMap_Save + 4).Enabled = True
-            frmMain.MapPest(loopc - NumMap_Save + 4).Caption = NameMap_Save & loopc
+        If FileExist(PATH_Save & NameMap_Save & LoopC & ".csm", vbArchive) = True Then
+            frmMain.MapPest(LoopC - NumMap_Save + 4).Visible = True
+            frmMain.MapPest(LoopC - NumMap_Save + 4).Enabled = True
+            frmMain.MapPest(LoopC - NumMap_Save + 4).Caption = NameMap_Save & LoopC
         Else
-            frmMain.MapPest(loopc - NumMap_Save + 4).Visible = False
+            frmMain.MapPest(LoopC - NumMap_Save + 4).Visible = False
 
         End If
 
