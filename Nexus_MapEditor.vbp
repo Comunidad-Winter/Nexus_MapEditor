@@ -54,6 +54,7 @@ Form=Codigo\frmUnionAdyasente.frm
 Form=Codigo\frmAutoGuardarMapa.frm
 Module=mDx8_Particulas; Codigo\mDx8_Particulas.bas
 Form=Codigo\frmDesplazarMapa.frm
+Form=Codigo\frmConvert.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

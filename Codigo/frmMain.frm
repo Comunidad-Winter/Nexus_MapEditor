@@ -629,6 +629,11 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuAbrirMapa 
          Caption         =   "&Abrir Mapa"
+         Index           =   0
+      End
+      Begin VB.Menu mnuAbrirMapa 
+         Caption         =   "&Abrir Mapa Argentum"
+         Index           =   1
       End
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
@@ -646,6 +651,12 @@ Begin VB.Form frmMain
          Caption         =   "Guardar Mapa &como..."
       End
       Begin VB.Menu mnuArchivoLine0 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuConversorMapas 
+         Caption         =   "Conversor de Mapas"
+      End
+      Begin VB.Menu mnuArchivoLine2 
          Caption         =   "-"
       End
       Begin VB.Menu menuSalir 
@@ -734,6 +745,9 @@ Begin VB.Form frmMain
          End
          Begin VB.Menu mnuQuitarBloqueos 
             Caption         =   "Todos los &Bloqueos"
+         End
+         Begin VB.Menu mnuQuitarBloqueosBordes 
+            Caption         =   "&Bloqueos en Bordes del Mapa"
          End
          Begin VB.Menu mnuQuitarNPCs 
             Caption         =   "Todos los &NPC's"
@@ -1010,7 +1024,7 @@ Private Sub MapPest_Click(Index As Integer)
 
     End If
 
-    Dialog.FileName = PATH_Save & NameMap_Save & Mapa & ".csm"
+    Dialog.FileName = PATH_Save & NameMap_Save & Mapa & MapFormat
 
     If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
     Call modMapIO.NuevoMapa
@@ -1041,7 +1055,7 @@ Private Sub menuSalir_Click()
     Call CloseClient
 End Sub
 
-Private Sub mnuAbrirMapa_Click()
+Private Sub mnuAbrirMapa_Click(Index As Integer)
     '*************************************************
     'Author: Lorwik
     'Last modified: 27/04/2023
@@ -1060,14 +1074,13 @@ Private Sub mnuAbrirMapa_Click()
         Call modGeneral.ToggleWalkMode
     
     Call modMapIO.NuevoMapa
-    modMapIO.AbrirMapa Dialog.FileName
+    Call modMapIO.AbrirMapa(Dialog.FileName, Index)
     DoEvents
     mnuReAbrirMapa.Enabled = True
     EngineRun = True
     
     Exit Sub
 ErrHandler:
-
 End Sub
 
 Private Sub mnuAbrirMapaN_Click()
@@ -1088,7 +1101,7 @@ Private Sub mnuAbrirMapaN_Click()
             End If
         End If
 
-        Dialog.FileName = PATH_Save & NameMap_Save & Mapa & ".csm"
+        Dialog.FileName = PATH_Save & NameMap_Save & Mapa & MapFormat
 
         If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
         Call modMapIO.NuevoMapa
@@ -1204,6 +1217,20 @@ Private Sub mnuConsola_Click()
 
 End Sub
 
+Private Sub mnuConversorMapas_Click()
+'*************************************************
+'Author: Lorwik
+'Last modified: 22/03/2021
+'*************************************************
+    On Error GoTo mnuConversorMapas_Click_Err
+
+    frmConvert.Show , frmMain
+    
+mnuConversorMapas_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuConversorMapas_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub mnuCopiar_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1310,6 +1337,24 @@ Private Sub mnuBloquearS_Click()
 
 mnuBloquearS_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuBloquearS_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuQuitarBloqueosBordes_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 01/15/2023
+    '*************************************************
+    
+    On Error GoTo mnuQuitarBloqueosBordes_Click_Err
+    
+    Call Bloquear_Bordes(0)
+    
+    Exit Sub
+    
+mnuQuitarBloqueosBordes_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuQuitarBloqueosBordes_Click", Erl)
     Resume Next
     
 End Sub
@@ -1464,7 +1509,7 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
 
     With Dialog
 
-        .Filter = "Mapas de NexusAO (*.csm)|*.csm"
+        .Filter = "Mapas de NexusAO (*.csm)|*.csm|Mapas clasicos de Argentum Online (*.map)|*.map"
 
         If Guardar Then
             .DialogTitle = "Guardar"

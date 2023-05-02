@@ -67,7 +67,7 @@ Begin VB.Form frmDesplazarMapa
       Height          =   315
       Left            =   1200
       TabIndex        =   3
-      Text            =   "10"
+      Text            =   "15"
       Top             =   660
       Width           =   1035
    End
@@ -75,7 +75,7 @@ Begin VB.Form frmDesplazarMapa
       Height          =   315
       Left            =   1170
       TabIndex        =   1
-      Text            =   "10"
+      Text            =   "15"
       Top             =   210
       Width           =   1035
    End
@@ -142,6 +142,8 @@ Private Sub LvBDesplazar_Click()
     Dim i As Byte
     Dim Vacio As MapBlock
     
+    Working = True
+    
     ReDim SeleccionMap(Val(txtAncho.Text), Val(txtAlto.Text)) As MapBlock
     
     'Copiamos el trozo de mapa
@@ -168,5 +170,7 @@ Private Sub LvBDesplazar_Click()
             MapData(x + Val(Xdest.Text), y + Val(Ydest.Text)) = SeleccionMap(x, y)
         Next y
     Next x
+    
+    Working = False
     
 End Sub

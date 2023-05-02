@@ -1,7 +1,6 @@
 Attribute VB_Name = "modEdicion"
 Option Explicit
 
-Public maskBloqueo As Byte
 Public TriggerBox As Byte
 
 ' Deshacer
@@ -221,7 +220,7 @@ Sub DobleClick(tX As Integer, tY As Integer)
         End If
     
         If LenB(frmMain.Dialog.FileName) <> 0 Then
-            If FileExist(PATH_Save & NameMap_Save & tTrans.Map & ".csm", vbArchive) = True Then
+            If FileExist(PATH_Save & NameMap_Save & tTrans.Map & MapFormat, vbArchive) = True Then
                 Call modMapIO.NuevoMapa
                 frmMain.Dialog.FileName = PATH_Save & NameMap_Save & tTrans.Map & ".csm"
                 modMapIO.AbrirMapa frmMain.Dialog.FileName
@@ -538,7 +537,7 @@ Sub ClickEdit(Button As Integer, _
     
     On Error GoTo ClickEdit_Err
     
-    Dim LoopC    As Integer
+    Dim loopc    As Integer
 
     Dim NPCIndex As Integer
 
@@ -644,9 +643,9 @@ Sub ClickEdit(Button As Integer, _
             If Deshacer Then modEdicion.Deshacer_Add "Quitar Todas las Capas (2/3)" ' Hago deshacer
             MapInfo.Changed = 1 'Set changed flag
 
-            For LoopC = 2 To 3
-                MapData(tX, tY).Graphic(LoopC).GrhIndex = 0
-            Next LoopC
+            For loopc = 2 To 3
+                MapData(tX, tY).Graphic(loopc).GrhIndex = 0
+            Next loopc
 
             Call DibujarMinimapa
             Exit Sub
@@ -756,10 +755,10 @@ Sub ClickEdit(Button As Integer, _
 
         '************** Place blocked tile
         If frmBloqueos.cInsertarBloqueo.value = True Then
-            If MapData(tX, tY).Blocked <> maskBloqueo Then
+            If MapData(tX, tY).Blocked <> 1 Then
                 If Deshacer Then modEdicion.Deshacer_Add "Insertar Bloqueo" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
-                MapData(tX, tY).Blocked = maskBloqueo
+                MapData(tX, tY).Blocked = 1
                 
             End If
 
@@ -973,16 +972,16 @@ Sub ClickEdit(Button As Integer, _
         ' ***************** Control de Funcion de Luces *****************
         If frmLuces.cInsertarLuz.value Then
             If Val(frmLuces.cRango = 0) Then Exit Sub
-            Call mDx8_Luces.Create_Light_To_Map(tX, tY, frmLuces.cRango, Val(frmLuces.r), Val(frmLuces.g), Val(frmLuces.b))
+            Call mDx8_Luces.Create_Light_To_Map(tX, tY, frmLuces.cRango, Val(frmLuces.R), Val(frmLuces.G), Val(frmLuces.B))
             Call mDx8_Luces.LightRenderAll
                 
             With MapData(tX, tY).Light
                 .active = True
                 .range = frmLuces.cRango
                 .RGBCOLOR.a = 255
-                .RGBCOLOR.r = Val(frmLuces.r)
-                .RGBCOLOR.g = Val(frmLuces.g)
-                .RGBCOLOR.b = Val(frmLuces.b)
+                .RGBCOLOR.R = Val(frmLuces.R)
+                .RGBCOLOR.G = Val(frmLuces.G)
+                .RGBCOLOR.B = Val(frmLuces.B)
                     
             End With
                 
@@ -994,9 +993,9 @@ Sub ClickEdit(Button As Integer, _
             With MapData(tX, tY).Light
                 .range = 0
                 .RGBCOLOR.a = 255
-                .RGBCOLOR.r = Val(frmLuces.r)
-                .RGBCOLOR.g = Val(frmLuces.g)
-                .RGBCOLOR.b = Val(frmLuces.b)
+                .RGBCOLOR.R = Val(frmLuces.R)
+                .RGBCOLOR.G = Val(frmLuces.G)
+                .RGBCOLOR.B = Val(frmLuces.B)
                     
             End With
     
@@ -1022,7 +1021,7 @@ End Sub
 ' Bloquea los Bordes del Mapa
 '
 
-Public Sub Bloquear_Bordes()
+Public Sub Bloquear_Bordes(Optional ByVal ac As Byte = 1)
     '*************************************************
     'Author: ^[GS]^
     'Last modified: 20/05/06
@@ -1032,42 +1031,28 @@ Public Sub Bloquear_Bordes()
     
     Dim Y As Integer
     Dim X As Integer
-
-    If Not MapaCargado Then Exit Sub
-
+    
+    If Not MapaCargado Then
+        Exit Sub
+    End If
+    
     modEdicion.Deshacer_Add "Bloquear los bordes" ' Hago deshacer
-
-    For Y = 1 To 100
-        For X = 1 To 100
-
-            If X < 13 Or X > 88 Or Y < 10 Or Y > 91 Then
-                MapData(X, Y).Blocked = &HF
-            MapInfo.Changed = 1
+    
+    For Y = YMinMapSize To YMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
+            If X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder Then
+                MapData(X, Y).Blocked = ac
             End If
-
         Next X
     Next Y
-
-    ' Bloqueo las 4 esquinitas ReyarB
-    If MapData(13, 10).TileExit.Map = 0 Then
-       MapData(13, 10).Blocked = &HF
-       MapInfo.Changed = 1
-    End If
     
-    If MapData(13, 91).TileExit.Map = 0 Then
-        MapData(13, 91).Blocked = &HF
-        MapInfo.Changed = 1
-    End If
+    MapData(MinXBorder, MinYBorder).Blocked = ac
+    MapData(MaxXBorder, MinYBorder).Blocked = ac
+    MapData(MinXBorder, MaxYBorder).Blocked = ac
+    MapData(MaxXBorder, MaxYBorder).Blocked = ac
     
-    If MapData(88, 10).TileExit.Map = 0 Then
-        MapData(88, 10).Blocked = &HF
-        MapInfo.Changed = 1
-    End If
-    
-    If MapData(88, 91).TileExit.Map = 0 Then
-        MapData(88, 91).Blocked = &HF
-        MapInfo.Changed = 1
-    End If
+    'Set changed flag
+    MapInfo.Changed = 1
 
     Call DibujarMinimapa
 

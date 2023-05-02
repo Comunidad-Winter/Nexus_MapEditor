@@ -30,16 +30,24 @@ Begin VB.Form frmSuperficies
       TabIndex        =   8
       Top             =   4530
       Width           =   1935
-      _extentx        =   3413
-      _extenty        =   609
-      caption         =   "Quitar en Capas 2 y 3"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmSuperficies.frx":0000
-      mode            =   1
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   3413
+      _ExtentY        =   609
+      Caption         =   "Quitar en Capas 2 y 3"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cQuitarEnEstaCapa 
       Height          =   375
@@ -47,16 +55,24 @@ Begin VB.Form frmSuperficies
       TabIndex        =   7
       Top             =   4110
       Width           =   1935
-      _extentx        =   3413
-      _extenty        =   661
-      caption         =   "Quitar en esta Capa"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmSuperficies.frx":0028
-      mode            =   1
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   3413
+      _ExtentY        =   661
+      Caption         =   "Quitar en esta Capa"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cSeleccionarSuperficie 
       Height          =   765
@@ -64,25 +80,33 @@ Begin VB.Form frmSuperficies
       TabIndex        =   6
       Top             =   4110
       Width           =   1845
-      _extentx        =   3254
-      _extenty        =   1349
-      caption         =   "Insertar Superficie"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmSuperficies.frx":0050
-      mode            =   1
-      value           =   0   'False
-      cback           =   -2147483633
+      _ExtentX        =   3254
+      _ExtentY        =   1349
+      Caption         =   "Insertar Superficie"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin VB.ComboBox cCapas 
       Appearance      =   0  'Flat
       BackColor       =   &H8000000E&
       ForeColor       =   &H80000012&
       Height          =   315
-      ItemData        =   "frmSuperficies.frx":0078
+      ItemData        =   "frmSuperficies.frx":0000
       Left            =   1020
-      List            =   "frmSuperficies.frx":007A
+      List            =   "frmSuperficies.frx":0002
       TabIndex        =   4
       TabStop         =   0   'False
       Text            =   "1"
@@ -122,9 +146,9 @@ Begin VB.Form frmSuperficies
       EndProperty
       ForeColor       =   &H80000014&
       Height          =   3180
-      ItemData        =   "frmSuperficies.frx":007C
+      ItemData        =   "frmSuperficies.frx":0004
       Left            =   -30
-      List            =   "frmSuperficies.frx":007E
+      List            =   "frmSuperficies.frx":0006
       TabIndex        =   0
       Tag             =   "-1"
       Top             =   0
@@ -270,7 +294,6 @@ Fallo:
     cGrh.Text = 1
 
 End Sub
-
 
 Private Sub cFiltro_LostFocus()
     '*************************************************

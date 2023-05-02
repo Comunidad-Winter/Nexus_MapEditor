@@ -1,6 +1,7 @@
 # Client Files.
 Errores.log
 Codigo/*.log
+Conversor/
 *.vbw
 *.oca
 *.csi
