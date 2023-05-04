@@ -296,19 +296,19 @@ Public Sub RenderPreview(Optional ByVal SinMosaico As Boolean = False)
     Dim Cont     As Integer
     
     With destRect
-        .Bottom = frmPreview.PreviewGrh.ScaleHeight
-        .Right = frmPreview.PreviewGrh.ScaleWidth
+        .Bottom = frmPreview.PreviewGrh.Height
+        .Right = frmPreview.PreviewGrh.Width
 
     End With
     
     'Si el Render no esta activo, salimos
-    If Not frmPreview Then Exit Sub
+    If Not frmPreview.PreviewGrh.Visible Then Exit Sub
     
     'Clear the inventory window
     Call Engine_BeginScene
     
     If frmConfigSup.MOSAICO = vbUnchecked Or SinMosaico Then
-        Call Draw_GrhIndex(CurrentGrh.GrhIndex, frmPreview.PreviewGrh.ScaleHeight / 2, frmPreview.PreviewGrh.ScaleWidth - 50, 1, Normal_RGBList(), 0)
+        Call Draw_GrhIndex(CurrentGrh.GrhIndex, frmPreview.PreviewGrh.Height / 2, frmPreview.PreviewGrh.Width - 50, 1, Normal_RGBList(), 0)
         
     Else
     

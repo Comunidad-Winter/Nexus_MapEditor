@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form frmPreview 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Preview"
-   ClientHeight    =   4065
+   ClientHeight    =   3975
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   4320
+   ClientWidth     =   4440
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -18,24 +18,33 @@ Begin VB.Form frmPreview
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4065
-   ScaleWidth      =   4320
+   ScaleHeight     =   265
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   296
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.PictureBox PreviewGrh 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
+      FillColor       =   &H00C0C0C0&
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H80000008&
-      Height          =   4095
+      Height          =   4020
       Left            =   0
-      ScaleHeight     =   273
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   289
+      ScaleHeight     =   3990
+      ScaleWidth      =   4425
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   0
-      Width           =   4335
+      Width           =   4455
    End
 End
 Attribute VB_Name = "frmPreview"
