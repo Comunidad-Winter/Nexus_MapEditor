@@ -120,6 +120,9 @@ Public Sub AbrirMapa(ByVal Path As String, Optional ByVal MapaTipo As Byte)
             
         Case 1
             Call MapaAO_Cargar(Path)
+            
+        Case 2
+            Call MapaAO_Cargar(Path, False)
     
     End Select
     
@@ -255,6 +258,7 @@ Public Sub NuevoMapa()
         .MapVersion = 0
         .name = "Nuevo Mapa"
         .Music = 0
+        .ambient = 0
         .Pk = True
         .MagiaSinEfecto = 0
         .InviSinEfecto = 0
@@ -262,6 +266,7 @@ Public Sub NuevoMapa()
         .Terreno = "BOSQUE"
         .Zona = "CAMPO"
         .Restringir = 0
+        .LuzBase = 0
     
     End With
     
@@ -288,7 +293,7 @@ Public Sub NuevoMapa()
 
 End Sub
 
-Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
+Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     '***************************************************
     'Author: Lorwik
     'Last Modification: 27/04/2023
@@ -297,47 +302,25 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     On Error GoTo MapaCSM_Cargar_Err
     
     Dim fh           As Integer
-
     Dim MH           As tMapHeader
-
     Dim Blqs()       As tDatosBloqueados
-
     Dim L1()         As Long
-
     Dim L2()         As tDatosGrh
-
     Dim L3()         As tDatosGrh
-
     Dim L4()         As tDatosGrh
-
     Dim Triggers()   As tDatosTrigger
-
     Dim Luces()      As tDatosLuces
-
     Dim Particulas() As tDatosParticulas
-
     Dim Objetos()    As tDatosObjs
-
     Dim NPCs()       As tDatosNPC
-
     Dim TEs()        As tDatosTE
-
     Dim MapSize      As tMapSize
-
-    Dim MapDat       As tMapDat
-
     Dim npcfile      As String
-
     Dim i            As Long
-
     Dim j            As Long
-
     Dim LaCabecera   As tCabecera
-    
     Dim Body         As Integer
-
     Dim Head         As Integer
-
     Dim Heading      As Byte
     
     fh = FreeFile
@@ -351,7 +334,7 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     Get #fh, , MH
     Get #fh, , MapSize
     Get #fh, , MapDat
-        
+    
     ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax) As Long
         
     Get #fh, , L1
@@ -517,9 +500,9 @@ Private Sub MapaCSM_Cargar(ByVal RutaMapa As String)
         Next i
     Next j
     
+    Call CSMInfoCargar
     Call Actualizar_Estado
     Call DibujarMinimapa
-    Call CSMInfoCargar
     
     bRefreshRadar = True ' Radar
     
@@ -729,7 +712,8 @@ On Error GoTo ErrorHandler
     
     MapaCSM_Guardar = True
     
-    Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa " & RutaMapa & " guardado...", 0, 255, 0)
+    If frmConsola.Visible Then _
+        Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa " & RutaMapa & " guardado...", 0, 255, 0)
     Exit Function
 
 ErrorHandler:
@@ -1221,7 +1205,6 @@ Public Sub CSMInfoSave()
 
     MapDat.map_name = MapInfo.name
     MapDat.music_number = MapInfo.Music
-    
     MapDat.lvlMinimo = MapInfo.lvlMinimo
     
     If frmMapInfo.chkLuzClimatica = Checked Then
@@ -1267,7 +1250,6 @@ Public Sub CSMInfoCargar()
     
     MapInfo.name = MapDat.map_name
     MapInfo.Music = MapDat.music_number
-    
     MapInfo.lvlMinimo = Val(MapDat.lvlMinimo)
     MapInfo.LuzBase = MapDat.LuzBase
     
@@ -1296,7 +1278,7 @@ Public Sub CSMInfoCargar()
     MapInfo.Zona = MapDat.zone
     MapInfo.Restringir = MapDat.restrict_mode
     MapInfo.BackUp = MapDat.backup_mode
-    
+
     Call MapInfo_Actualizar
     
     Exit Sub

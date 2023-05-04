@@ -359,6 +359,8 @@ Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Star
 '*****************************************************************
     Grh.GrhIndex = GrhIndex
     
+    If Grh.GrhIndex < 1 Then Exit Sub
+    
     If Started = 2 Then
         If GrhData(Grh.GrhIndex).NumFrames > 1 Then
             Grh.Started = 1
@@ -426,7 +428,7 @@ On Error GoTo 0
     Call CargarFxs
     Call CargarAnimArmas
     Call CargarAnimEscudos
-    Call CargarMinimapa
+   ' Call CargarMinimapa
     Call LoadGraphics
     Call CargarParticulas
 
@@ -669,14 +671,13 @@ Sub RenderScreen(ByVal tilex As Integer, _
                     If frmConfigSup.MOSAICO.value = vbChecked Then
 
                         Dim aux As Long
-
                         Dim dy  As Integer
-
                         Dim dX  As Integer
 
                         If frmConfigSup.DespMosaic.value = vbChecked Then
                             dy = Val(frmConfigSup.DMLargo.Text)
                             dX = Val(frmConfigSup.DMAncho.Text)
+                            
                         Else
                             dy = 0
                             dX = 0
@@ -729,16 +730,26 @@ Sub RenderScreen(ByVal tilex As Integer, _
             If MapData(x, y).Graphic(2).GrhIndex <> 0 And VerCapa2 Then Call Draw_Grh(MapData(x, y).Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, MapData(x, y).Engine_Light(), 1)
             '******************************************
             
+            If Sobre >= 0 Then
+                If MapData(x, y).Graphic(bCapa).GrhIndex <> Sobre Then
+                    MapData(x, y).Graphic(bCapa).GrhIndex = Sobre
+                    InitGrh MapData(x, y).Graphic(bCapa), Sobre
+
+                End If
+
+            End If
+            
             ScreenX = ScreenX + 1
+            
             If x > XMaxMapSize Then Exit For
-        Next
+        Next x
     
         'Reset ScreenX to original value and increment ScreenY
         ScreenX = ScreenX - x + screenminX
         ScreenY = ScreenY + 1
         
         If y > YMaxMapSize Then Exit For
-    Next
+    Next y
                  
     '<----- Layer Obj, Char, 3 ----->
     ScreenY = minYOffset - TileBufferSize

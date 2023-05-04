@@ -82,16 +82,24 @@ Begin VB.Form frmObjetos
       TabIndex        =   0
       Top             =   4530
       Width           =   1935
-      _extentx        =   3413
-      _extenty        =   609
-      caption         =   "Quitar OBJ"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmObjetos.frx":0008
-      mode            =   1
-      value           =   0
-      cback           =   -2147483633
+      _ExtentX        =   3413
+      _ExtentY        =   609
+      Caption         =   "Quitar OBJ"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cAgregarObjAzar 
       Height          =   375
@@ -99,16 +107,24 @@ Begin VB.Form frmObjetos
       TabIndex        =   1
       Top             =   4110
       Width           =   1935
-      _extentx        =   3413
-      _extenty        =   661
-      caption         =   "Insertar OBJ al azar"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmObjetos.frx":0030
-      mode            =   1
-      value           =   0
-      cback           =   -2147483633
+      _ExtentX        =   3413
+      _ExtentY        =   661
+      Caption         =   "Insertar OBJ al azar"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H cInsertarObj 
       Height          =   765
@@ -116,16 +132,24 @@ Begin VB.Form frmObjetos
       TabIndex        =   2
       Top             =   4110
       Width           =   1845
-      _extentx        =   3254
-      _extenty        =   1349
-      caption         =   "Insertar OBJ"
-      capalign        =   2
-      backstyle       =   2
-      cgradient       =   0
-      font            =   "frmObjetos.frx":0058
-      mode            =   1
-      value           =   0
-      cback           =   -2147483633
+      _ExtentX        =   3254
+      _ExtentY        =   1349
+      Caption         =   "Insertar OBJ"
+      CapAlign        =   2
+      BackStyle       =   2
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      cGradient       =   0
+      Mode            =   1
+      Value           =   0   'False
+      cBack           =   -2147483633
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -211,6 +235,47 @@ cFiltro_LostFocus_Err:
     Call LogError(Err.Number, Err.Description, "FrmObjetos.cFiltro_LostFocus", Erl)
     Resume Next
     
+End Sub
+
+Private Sub cFiltro_KeyPress(KeyAscii As Integer)
+
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    If KeyAscii = 13 Then
+        
+        Dim vMaximo As Integer
+        Dim vDatos  As String
+        Dim NumI    As Integer
+        Dim i       As Integer
+        Dim j       As Integer
+    
+        If cFiltro.ListCount > 5 Then cFiltro.RemoveItem 0
+        
+        cFiltro.AddItem cFiltro.Text
+        lListado.Clear
+    
+        vMaximo = NumOBJs - 1
+        
+        For i = 0 To vMaximo
+        
+            vDatos = ObjData(i + 1).name
+            NumI = i + 1
+            
+            For j = 1 To Len(vDatos)
+
+                If UCase$(mid$(vDatos & str(i), j, Len(cFiltro.Text))) = UCase$(cFiltro.Text) Or LenB(cFiltro.Text) = 0 Then
+                    lListado.AddItem vDatos & " - #" & NumI
+                    Exit For
+
+                End If
+
+            Next j
+        Next i
+    
+    End If
+
 End Sub
 
 Private Sub cInsertarObj_Click()

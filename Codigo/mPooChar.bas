@@ -7,7 +7,7 @@ Public Sub Char_Make(ByVal CharIndex As Integer, _
                      ByVal Body As Integer, _
                      ByVal Head As Integer, _
                      ByVal Heading As Byte, _
-                     ByVal X As Integer, _
+                     ByVal x As Integer, _
                      ByVal y As Integer, _
                      ByVal Arma As Integer, _
                      ByVal Escudo As Integer, _
@@ -49,7 +49,7 @@ Public Sub Char_Make(ByVal CharIndex As Integer, _
         .MoveOffsetY = 0
 
         'Update position
-        .Pos.X = X
+        .Pos.x = x
         .Pos.y = y
            
         'Make active
@@ -57,7 +57,7 @@ Public Sub Char_Make(ByVal CharIndex As Integer, _
     End With
    
     'Plot on map
-    MapData(X, y).CharIndex = CharIndex
+    MapData(x, y).CharIndex = CharIndex
        
 End Sub
 
@@ -71,8 +71,8 @@ Public Sub Char_Erase(ByVal CharIndex As Integer)
  
     With charlist(CharIndex)
                 
-        If Map_InBounds(.Pos.X, .Pos.y) Then  '// Posicion valida
-            MapData(.Pos.X, .Pos.y).CharIndex = 0  '// Borramos el user
+        If Map_InBounds(.Pos.x, .Pos.y) Then  '// Posicion valida
+            MapData(.Pos.x, .Pos.y).CharIndex = 0  '// Borramos el user
         End If
        
         'Update lastchar
@@ -109,39 +109,39 @@ Sub Char_CleanAll()
     
     '// Borramos los obj y char que esten
 
-    Dim X         As Long, y As Long
+    Dim x         As Long, y As Long
     Dim CharIndex As Integer, obj As Long
     
-    For X = XMinMapSize To XMaxMapSize
+    For x = XMinMapSize To XMaxMapSize
         For y = YMinMapSize To YMaxMapSize
           
             'Erase NPCs
-            CharIndex = Char_MapPosExits(CByte(X), CByte(y))
+            CharIndex = Char_MapPosExits(CByte(x), CByte(y))
  
             If (CharIndex > 0) Then
                 Call Char_Erase(CharIndex)
             End If
                         
             'Erase OBJs
-            obj = Map_PosExitsObject(CByte(X), CByte(y))
+            obj = Map_PosExitsObject(CByte(x), CByte(y))
 
             If (obj > 0) Then
-                Call Map_DestroyObject(CByte(X), CByte(y))
+                Call Map_DestroyObject(CByte(x), CByte(y))
             End If
 
         Next y
-    Next X
+    Next x
 
 End Sub
 
-Public Function Char_MapPosExits(ByVal X As Byte, ByVal y As Byte) As Integer
+Public Function Char_MapPosExits(ByVal x As Byte, ByVal y As Byte) As Integer
  
     '*****************************************************************
     'Checks to see if a tile position has a char_index and return it
     '*****************************************************************
    
-    If (Map_InBounds(X, y)) Then
-        Char_MapPosExits = MapData(X, y).CharIndex
+    If (Map_InBounds(x, y)) Then
+        Char_MapPosExits = MapData(x, y).CharIndex
     Else
         Char_MapPosExits = 0
     End If
@@ -170,7 +170,7 @@ Private Sub Char_ResetInfo(ByVal CharIndex As Integer)
         .Nombre = vbNullString
         .Clan = vbNullString
         .pie = False
-        .Pos.X = 0
+        .Pos.x = 0
         .Pos.y = 0
         .UsandoArma = False
             
@@ -211,7 +211,7 @@ End Function
 
 Sub Char_MovebyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
 
-    Dim X        As Integer
+    Dim x        As Integer
     Dim y        As Integer
     Dim addx     As Integer
     Dim addy     As Integer
@@ -221,15 +221,15 @@ Sub Char_MovebyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As 
 
     With charlist(CharIndex)
         
-        X = .Pos.X
+        x = .Pos.x
         y = .Pos.y
                 
         '// Miqueas : Agrego este parchesito para evitar un run time
-        If Not (Map_InBounds(X, y)) Then Exit Sub
+        If Not (Map_InBounds(x, y)) Then Exit Sub
 
-        MapData(X, y).CharIndex = 0
+        MapData(x, y).CharIndex = 0
         
-        addx = nX - X
+        addx = nX - x
         addy = nY - y
         
         If Sgn(addx) = 1 Then
@@ -248,7 +248,7 @@ Sub Char_MovebyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As 
         
         MapData(nX, nY).CharIndex = CharIndex
         
-        .Pos.X = nX
+        .Pos.x = nX
         .Pos.y = nY
         
         .MoveOffsetX = -1 * (TilePixelWidth * addx)

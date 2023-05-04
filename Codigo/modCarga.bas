@@ -42,19 +42,19 @@ Private Type tMapHeader
 End Type
 
 Private Type tDatosBloqueados
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Private Type tDatosGrh
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Trigger As Integer
 End Type
 
@@ -63,32 +63,32 @@ Private Type tDatosLuces
     G As Integer
     B As Integer
     range As Byte
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Private Type tDatosParticulas
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -198,7 +198,7 @@ Public SupData() As SupData
 Public Sub IniciarCabecera()
 
     With MiCabecera
-        .Desc = "WinterAO Resurrection mod Argentum Online by Noland Studios. http://winterao.com.ar"
+        .Desc = "NexusAO mod Argentum Online by Noland Studios."
         .CRC = Rnd * 245
         .MagicWord = Rnd * 92
     End With
@@ -219,6 +219,7 @@ Public Sub CargarConfiguracion()
     
     DirRecursos = Lector.GetValue("RUTAS", "Recursos")
     DirDats = Lector.GetValue("RUTAS", "Dats")
+    DirMapas = Lector.GetValue("RUTAS", "Mapas")
     
     With ClientSetup
         ' VIDEO
@@ -227,8 +228,8 @@ Public Sub CargarConfiguracion()
         
         ' MOSTRAR
         tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
-        UserPos.X = Val(ReadField(1, tStr, Asc("-")))
-        UserPos.Y = Val(ReadField(2, tStr, Asc("-")))
+        UserPos.x = Val(ReadField(1, tStr, Asc("-")))
+        UserPos.y = Val(ReadField(2, tStr, Asc("-")))
         frmMain.mnuVerAutomatico.Checked = Val(Lector.GetValue("MOSTRAR", "ControlAutomatico"))
         frmMain.mnuVerCapa2.Checked = Val(Lector.GetValue("MOSTRAR", "Capa2"))
         frmMain.mnuVerCapa3.Checked = Val(Lector.GetValue("MOSTRAR", "Capa3"))
@@ -291,12 +292,12 @@ On Error GoTo ErrorHandler:
     Dim fileBuff    As clsByteBuffer
     Dim InfoHead    As INFOHEADER
     Dim buffer()    As Byte
-    
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Graficos.ind"))
+
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("graficos.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Graficos.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("graficos.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -408,11 +409,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera  As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Head.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("cabezas.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Head.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("cabezas.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -476,11 +477,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera  As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Helmet.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("cascos.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Helmet.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("cascos.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -545,11 +546,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Personajes.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("personajes.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Personajes.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("personajes.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -580,8 +581,8 @@ On Error GoTo ErrHandler:
                 Call InitGrh(BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0)
                 Call InitGrh(BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0)
                 
-                BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-                BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
+                BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
+                BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
             End If
         Next i
     
@@ -619,11 +620,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera  As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("FXs.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("fxs.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("FXs.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("fxs.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -637,7 +638,7 @@ On Error GoTo ErrHandler:
         NumFxs = fileBuff.getInteger()
         
         'Resize array
-        ReDim FxData(1 To NumFxs) As tIndiceFx
+        ReDim FxData(0 To NumFxs) As tIndiceFx
         
         For i = 1 To NumFxs
             FxData(i).Animacion = fileBuff.getLong()
@@ -678,11 +679,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Armas.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("armas.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Armas.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("armas.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -747,11 +748,11 @@ On Error GoTo ErrHandler:
     Dim LaCabecera As tCabecera
     Dim fileBuff  As clsByteBuffer
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("Escudos.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("escudos.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("Escudos.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("escudos.ind"), buffer()
         
         Set fileBuff = New clsByteBuffer
         
@@ -809,7 +810,7 @@ Public Sub CargarMinimapa()
     Dim buffer()    As Byte
     Dim i           As Long
     
-    InfoHead = File_Find(DirRecursos & "\Scripts" & Formato, LCase$("minimap.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("minimap.ind"))
     
     If InfoHead.lngFileSize <> 0 Then
     

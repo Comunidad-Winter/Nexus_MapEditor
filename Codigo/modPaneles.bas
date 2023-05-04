@@ -24,13 +24,14 @@ Public Sub EstSelectPanel(ByVal Numero As Byte, ByVal Activado As Boolean)
             Select Case Numero
 
                 Case 0
-
                     If frmSuperficies.cCapas.Text = 4 Then
                         frmMain.mnuVerCapa4.Tag = CInt(frmMain.mnuVerCapa4.Checked)
                         frmMain.mnuVerCapa4.Checked = True
+                        
                     ElseIf frmSuperficies.cCapas.Text = 3 Then
                         frmMain.mnuVerCapa3.Tag = CInt(frmMain.mnuVerCapa3.Checked)
                         frmMain.mnuVerCapa3.Checked = True
+                        
                     ElseIf frmSuperficies.cCapas.Text = 2 Then
                         frmMain.mnuVerCapa2.Tag = CInt(frmMain.mnuVerCapa2.Checked)
                         frmMain.mnuVerCapa2.Checked = True
@@ -60,7 +61,6 @@ Public Sub EstSelectPanel(ByVal Numero As Byte, ByVal Activado As Boolean)
             Select Case Numero
 
                 Case 0
-
                     If frmSuperficies.cCapas.Text = 4 Then
                         If LenB(frmMain.mnuVerCapa3.Tag) <> 0 Then frmMain.mnuVerCapa4.Checked = CBool(frmMain.mnuVerCapa4.Tag)
                     ElseIf frmSuperficies.cCapas.Text = 3 Then
@@ -442,3 +442,4 @@ PonerAlAzar_Err:
     Resume Next
     
 End Sub
+

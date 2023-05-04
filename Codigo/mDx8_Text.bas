@@ -5,7 +5,7 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
     (Destination As Any, Source As Any, ByVal Length As Long)
     
 Private Type CharVA
-    X As Integer
+    x As Integer
     y As Integer
     W As Integer
     h As Integer
@@ -17,7 +17,7 @@ Private Type CharVA
 End Type
 
 Private Type POINTAPI
-    X As Long
+    x As Long
     y As Long
 End Type
 
@@ -99,7 +99,7 @@ End Function ' GSZAO
 Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
                                 ByRef UseFont As CustomFont, _
                                 ByVal Text As String, _
-                                ByVal X As Long, _
+                                ByVal x As Long, _
                                 ByVal y As Long, _
                                 ByRef Color() As Long, _
                                 Optional ByVal Center As Boolean = False, _
@@ -161,7 +161,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
     Call Batch.SetTexture(UseFont.Texture)
     
     If Center Then
-        X = X - CInt(Engine_GetTextWidth(cfonts(Font), Text) * 0.5)
+        x = x - CInt(Engine_GetTextWidth(cfonts(Font), Text) * 0.5)
     End If
     
     'Loop through each line if there are line breaks (vbCrLf)
@@ -178,7 +178,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
 
                 Call CopyMemory(TempVA, UseFont.HeaderInfo.CharVA(ascii(j - 1)), 24) 'this number represents the size of "CharVA" struct
                 
-                TempVA.X = X + Count
+                TempVA.x = x + Count
                 TempVA.y = y + yOffset
                 
                 'Set the colors
@@ -190,7 +190,7 @@ Private Sub Engine_Render_Text(ByRef Batch As clsBatch, _
                     
                 End If
                 Call Batch.SetAlpha(False)
-                Call Batch.Draw(TempVA.X, TempVA.y, TempVA.W, TempVA.h, Color, TempVA.Tx1, TempVA.Ty1, TempVA.Tx2, TempVA.Ty2)
+                Call Batch.Draw(TempVA.x, TempVA.y, TempVA.W, TempVA.h, Color, TempVA.Tx1, TempVA.Ty1, TempVA.Tx2, TempVA.Ty2)
 
                 'Shift over the the position to render the next character
                 Count = Count + UseFont.HeaderInfo.CharWidth(ascii(j - 1))
@@ -292,7 +292,7 @@ Sub Engine_Init_FontTextures()
     '*** Default font ***
     For i = 1 To UBound(cfonts)
 
-        InfoHead = File_Find(DirRecursos & "\Fuentes" & Formato, "font" & CStr(i) & ".png")
+        InfoHead = File_Find(DirRecursos & "Fuentes" & Formato, "font" & CStr(i) & ".png")
         
         If InfoHead.lngFileSize <> 0 Then
 
@@ -317,7 +317,7 @@ Sub Engine_Init_FontTextures()
         End If
         
         'Store the size of the texture
-        cfonts(i).TextureSize.X = TexInfo.Width
+        cfonts(i).TextureSize.x = TexInfo.Width
         cfonts(i).TextureSize.y = TexInfo.Height
     Next
     
@@ -354,7 +354,7 @@ Sub Engine_Init_FontSettings()
     For i = 1 To UBound(cfonts)
     
         'Load the header information
-        InfoHead = File_Find(DirRecursos & "\Fuentes" & Formato, LCase$("Font" & i & ".dat"))
+        InfoHead = File_Find(DirRecursos & "Fuentes" & Formato, LCase$("Font" & i & ".dat"))
     
         If InfoHead.lngFileSize <> 0 Then
         
@@ -393,7 +393,7 @@ Sub Engine_Init_FontSettings()
         
                 'Set the verticies
                 With cfonts(i).HeaderInfo.CharVA(LoopChar)
-                    .X = 0
+                    .x = 0
                     .y = 0
                     .W = cfonts(i).HeaderInfo.CellWidth
                     .h = cfonts(i).HeaderInfo.CellHeight
@@ -412,7 +412,7 @@ Sub Engine_Init_FontSettings()
     Next i
 End Sub
 
-Public Sub DrawText(ByVal X As Integer, _
+Public Sub DrawText(ByVal x As Integer, _
                     ByVal y As Integer, _
                     ByVal Text As String, _
                     ByVal Color As Long, _
@@ -422,7 +422,7 @@ Public Sub DrawText(ByVal X As Integer, _
     Dim aux(3) As Long
 
     Call Engine_Long_To_RGB_List(aux(), Color)
-    Call Engine_Render_Text(SpriteBatch, cfonts(Font), Text, X, y, aux(), Center, , , Font)
+    Call Engine_Render_Text(SpriteBatch, cfonts(Font), Text, x, y, aux(), Center, , , Font)
 
 End Sub
 

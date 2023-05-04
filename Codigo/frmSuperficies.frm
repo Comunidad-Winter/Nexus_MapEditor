@@ -76,7 +76,7 @@ Begin VB.Form frmSuperficies
    End
    Begin Nexus_MapEditor.lvButtons_H cSeleccionarSuperficie 
       Height          =   765
-      Left            =   2070
+      Left            =   2130
       TabIndex        =   6
       Top             =   4110
       Width           =   1845
@@ -312,6 +312,47 @@ cFiltro_LostFocus_Err:
 
     Resume Next
     
+End Sub
+
+Private Sub cFiltro_KeyPress(KeyAscii As Integer)
+
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    If KeyAscii = 13 Then
+        
+        Dim vMaximo As Integer
+        Dim vDatos  As String
+        Dim NumI    As Integer
+        Dim i       As Integer
+        Dim j       As Integer
+    
+        If cFiltro.ListCount > 5 Then cFiltro.RemoveItem 0
+        
+        cFiltro.AddItem cFiltro.Text
+        lListado.Clear
+    
+        vMaximo = MaxSup
+        
+        For i = 0 To vMaximo
+        
+            vDatos = SupData(i).name
+            NumI = i
+            
+            For j = 1 To Len(vDatos)
+
+                If UCase$(mid$(vDatos & str(i), j, Len(cFiltro.Text))) = UCase$(cFiltro.Text) Or LenB(cFiltro.Text) = 0 Then
+                    lListado.AddItem vDatos & " - #" & NumI
+                    Exit For
+
+                End If
+
+            Next j
+        Next i
+    
+    End If
+
 End Sub
 
 Private Sub Form_Load()

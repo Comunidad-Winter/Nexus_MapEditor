@@ -629,11 +629,17 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuAbrirMapa 
          Caption         =   "&Abrir Mapa"
-         Index           =   0
       End
-      Begin VB.Menu mnuAbrirMapa 
-         Caption         =   "&Abrir Mapa Argentum"
-         Index           =   1
+      Begin VB.Menu mnuAbrirMapaAO 
+         Caption         =   "&Abrir Mapa de Argentum"
+         Begin VB.Menu mnuAbrirMapaArgentum 
+            Caption         =   "&Abrir Mapa Argentum"
+            Index           =   0
+         End
+         Begin VB.Menu mnuAbrirMapaArgentum 
+            Caption         =   "&Abrir Mapa Argentum (Long)"
+            Index           =   1
+         End
       End
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
@@ -1055,32 +1061,85 @@ Private Sub menuSalir_Click()
     Call CloseClient
 End Sub
 
-Private Sub mnuAbrirMapa_Click(Index As Integer)
+Private Sub mnuAbrirMapa_Click()
     '*************************************************
     'Author: Lorwik
     'Last modified: 27/04/2023
     '*************************************************
+
+    On Error GoTo ErrHandler
+
+    Call AbrirMapaDialog("CSM")
+    
+    Exit Sub
+    
+ErrHandler:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuAbrirMapa_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub mnuAbrirMapaArgentum_Click(Index As Integer)
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    On Error GoTo ErrHandler
+    
+    If Index = 0 Then
+        Call AbrirMapaDialog("AO")
+        
+    ElseIf Index = 1 Then
+        Call AbrirMapaDialog("AOLong")
+        
+    End If
+    
+ErrHandler:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuAbrirMapaArgentum_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub AbrirMapaDialog(ByVal Modo As String)
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    
     Dialog.CancelError = True
 
     On Error GoTo ErrHandler
 
     DeseaGuardarMapa Dialog.FileName
-
     ObtenerNombreArchivo False
 
     If Len(Dialog.FileName) < 3 Then Exit Sub
 
-    If WalkMode = True Then _
-        Call modGeneral.ToggleWalkMode
+    If WalkMode = True Then Call modGeneral.ToggleWalkMode
     
     Call modMapIO.NuevoMapa
-    Call modMapIO.AbrirMapa(Dialog.FileName, Index)
+    
+    Select Case Modo
+    
+        Case "CSM"
+            Call modMapIO.AbrirMapa(Dialog.FileName, 0)
+            
+        Case "AO"
+            Call modMapIO.AbrirMapa(Dialog.FileName, 1)
+            
+        Case "AOLong"
+            Call modMapIO.AbrirMapa(Dialog.FileName, 2)
+            
+    End Select
+    
     DoEvents
     mnuReAbrirMapa.Enabled = True
     EngineRun = True
     
     Exit Sub
+    
 ErrHandler:
+    Call LogError(Err.Number, Err.Description, "FrmMain.AbrirMapaDialog", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuAbrirMapaN_Click()
@@ -1225,6 +1284,8 @@ Private Sub mnuConversorMapas_Click()
     On Error GoTo mnuConversorMapas_Click_Err
 
     frmConvert.Show , frmMain
+    
+    Exit Sub
     
 mnuConversorMapas_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuConversorMapas_Click", Erl)
@@ -1910,6 +1971,34 @@ MainViewPic_DblClick_Err:
     
 End Sub
 
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo MainViewPic_MouseDown_Err
+    
+
+    If Not MapaCargado Then Exit Sub
+
+    Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+
+    'If Shift = 1 And Button = 2 Then PegarSeleccion tX, tY: Exit Sub
+    If Shift = 1 And Button = 1 Then
+        Seleccionando = True
+        SeleccionIX = tX '+ UserPos.X
+        SeleccionIY = tY '+ UserPos.Y
+    Else
+        ClickEdit Button, tX, tY
+
+    End If
+
+    
+    Exit Sub
+
+MainViewPic_MouseDown_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseDown", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub MainViewPic_MouseMove(Button As Integer, _
                                   Shift As Integer, _
                                   x As Single, _
@@ -1948,34 +2037,6 @@ Private Sub MainViewPic_MouseMove(Button As Integer, _
 MainViewPic_MouseMove_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseMove", Erl)
 
-    Resume Next
-    
-End Sub
-
-Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo MainViewPic_MouseDown_Err
-    
-
-    If Not MapaCargado Then Exit Sub
-
-    Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-
-    'If Shift = 1 And Button = 2 Then PegarSeleccion tX, tY: Exit Sub
-    If Shift = 1 And Button = 1 Then
-        Seleccionando = True
-        SeleccionIX = tX '+ UserPos.X
-        SeleccionIY = tY '+ UserPos.Y
-    Else
-        ClickEdit Button, tX, tY
-
-    End If
-
-    
-    Exit Sub
-
-MainViewPic_MouseDown_Err:
-    Call LogError(Err.Number, Err.Description, "FrmMain.MainViewPic_MouseDown", Erl)
     Resume Next
     
 End Sub

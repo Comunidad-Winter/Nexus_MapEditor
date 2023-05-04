@@ -298,7 +298,7 @@ Private Automatico As Boolean
 
 Private Sub chkAuto_Click()
 
-    If chkAuto.value = False Then
+    If chkAuto.Value = False Then
         Label6.Visible = False
         Label7.Visible = False
         txtMax.Visible = False
@@ -329,11 +329,11 @@ Private Sub ConvertirInteger()
     Dim i As Integer
     
     If Automatico = False Then
-        If FileExist(App.Path & "\Conversor\Integer\Mapa" & txtMin.Text & ".map", vbNormal) = True Then
+        If FileExist(App.Path & "\Conversor\Integer\mapa" & txtMin.Text & ".map", vbNormal) = True Then
             Call modMapIO.NuevoMapa
-            Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Integer\Mapa" & txtMin.Text & ".map", True)
+            Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Integer\mapa" & txtMin.Text & ".map", True)
             DoEvents
-            Call modMapIO.MapaAO_Guardar(App.Path & "\Conversor\Long\Mapa" & txtMin.Text & ".map")
+            Call modMapIO.MapaAO_Guardar(App.Path & "\Conversor\Long\mapa" & txtMin.Text & ".map")
             
             Info.Caption = "Conversion realizada correctamente!"
                     
@@ -341,12 +341,12 @@ Private Sub ConvertirInteger()
             Info.Caption = "Mapa" & txtMin.Text & ".map no existe!"
         End If
     Else
-        For i = txtMin.Text To txtMax.Text
-            If FileExist(App.Path & "\Conversor\Integer\Mapa" & i & ".map", vbNormal) = True Then
+        For i = Val(txtMin.Text) To Val(txtMax.Text)
+            If FileExist(App.Path & "\Conversor\Integer\mapa" & i & ".map", vbNormal) = True Then
                 Call modMapIO.NuevoMapa
-                Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Integer\Mapa" & i & ".map", True)
+                Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Integer\mapa" & i & ".map", True)
                 DoEvents
-                Call modMapIO.MapaAO_Guardar(App.Path & "\Conversor\Long\Mapa" & i & ".map")
+                Call modMapIO.MapaAO_Guardar(App.Path & "\Conversor\Long\mapa" & i & ".map")
             
                 Info.Caption = "Mapa" & i & " convertido correctamente!"
                 
@@ -367,9 +367,9 @@ Private Sub ConvertirLong()
     If Automatico = False Then
         If FileExist(App.Path & "\Conversor\Long\Mapa" & txtMin.Text & ".map", vbNormal) = True Then
             Call modMapIO.NuevoMapa
-            Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Long\Mapa" & txtMin.Text & ".map", False)
+            Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Long\mapa" & txtMin.Text & ".map", False)
             DoEvents
-            Call modMapIO.MapaCSM_Guardar(App.Path & "\Conversor\CSM\Mapa" & txtMin.Text & ".csm")
+            Call modMapIO.MapaCSM_Guardar(App.Path & "\Conversor\CSM\mapa" & txtMin.Text & ".csm")
             
             Info.Caption = "Conversion realizada correctamente!"
             
@@ -379,13 +379,13 @@ Private Sub ConvertirLong()
         End If
         
     Else
-        For i = txtMin.Text To txtMax.Text
+        For i = Val(txtMin.Text) To Val(txtMax.Text)
             
             If FileExist(App.Path & "\Conversor\Long\Mapa" & i & ".map", vbNormal) = True Then
                 Call modMapIO.NuevoMapa
-                Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Long\Mapa" & i & ".map", False)
+                Call modMapIO.MapaAO_Cargar(App.Path & "\Conversor\Long\mapa" & i & ".map", False)
                 DoEvents
-                Call modMapIO.MapaCSM_Guardar(App.Path & "\Conversor\CSM\Mapa" & i & ".csm")
+                Call modMapIO.MapaCSM_Guardar(App.Path & "\Conversor\CSM\mapa" & i & ".csm")
             
                 Info.Caption = "Mapa" & i & " convertido correctamente!"
                 

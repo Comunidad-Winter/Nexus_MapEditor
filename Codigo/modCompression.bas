@@ -25,7 +25,7 @@ End Type
 
 Public Enum srcFileType
     Graphics
-    Ambient
+    ambient
     Music
     Midi
     Wav
@@ -218,98 +218,6 @@ Public Function General_Get_Temp_Dir() As String
    General_Get_Temp_Dir = IIf(c > 0, Left$(s, c), "")
 End Function
 
-Public Function extractMusic(ByVal file_name As String, Optional ByVal Midi As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Extracts all files from a resource file
-'*****************************************************************
-
-    Dim LoopC As Long
-    
-    Dim SourceFilePath As String
-    Dim OutputFilePath As String
-    
-    Dim SourceData() As Byte
-    Dim InfoHead As INFOHEADER
-    Dim Handle As Integer
-    
-'Set up the error handler
-On Local Error GoTo errhandler
-    
-    '¿Queremos descomprimir en la carpeta temporal?
-    OutputFilePath = Windows_Temp_Dir
-    
-    If Midi = False Then
-        'Find the Info Head of the desired file
-        SourceFilePath = DirRecursos & "Musica" & Formato
-        InfoHead = File_Find(SourceFilePath, file_name & ".mp3")
-    Else
-        'Find the Info Head of the desired file
-        SourceFilePath = DirRecursos & "Midi" & Formato
-        InfoHead = File_Find(SourceFilePath, file_name & ".mid")
-    End If
-    
-    If InfoHead.strFileName = "" Or InfoHead.lngFileSize = 0 Then
-        extractMusic = False
-        Exit Function
-    End If
-
-    'Open the binary file
-    Handle = FreeFile
-    Open SourceFilePath For Binary Access Read Lock Write As Handle
-    
-    'Check the file for validity
-    'If LOF(handle) <> InfoHead.lngFileSize Then
-    '    Close handle
-    '    MsgBox "Resource file " & SourceFilePath & " seems to be corrupted.", , "Error"
-    '    Exit Function
-    'End If
-    
-    'Make sure there is enough space in the HD
-    If InfoHead.lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left$(App.Path, 3)) Then
-        Close Handle
-        MsgBox "There is not enough drive space to extract the compressed file.", , "Error"
-        extractMusic = False
-        Exit Function
-    End If
-    
-    'Extract file from the binary file
-    
-    'Resize the byte data array
-    ReDim SourceData(InfoHead.lngFileSize - 1)
-    
-    'Get the data
-    Get Handle, InfoHead.lngFileStart, SourceData
-    
-    'Decompress all data
-    Decompress_Data SourceData, InfoHead.lngFileSizeUncompressed
-    
-    'Close the binary file
-    Close Handle
-    
-    'Get a free handler
-    Handle = FreeFile
-    
-    Open OutputFilePath & InfoHead.strFileName For Binary As Handle
-    
-    Put Handle, 1, SourceData
-    
-    Close Handle
-    
-    Erase SourceData
-        
-    extractMusic = True
-Exit Function
-
-errhandler:
-    Close Handle
-    Erase SourceData
-    extractMusic = False
-    'Display an error message if it didn't work
-    'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
-End Function
-
 Public Function Extract_File_Memory(ByVal File_Type As srcFileType, ByVal file_name As String, ByRef SourceData() As Byte) As Boolean
  '********************************************
 'Author: ???
@@ -320,9 +228,9 @@ Public Function Extract_File_Memory(ByVal File_Type As srcFileType, ByVal file_n
     Dim LoopC As Long
     Dim SourceFilePath As String
     Dim InfoHead As INFOHEADER
-    Dim Handle As Integer
+    Dim handle As Integer
    
-On Local Error GoTo errhandler
+On Local Error GoTo ErrHandler
    
     Select Case File_Type
     
@@ -334,14 +242,20 @@ On Local Error GoTo errhandler
                 
         Case Midi
                 SourceFilePath = DirRecursos & "Midi" & Formato
+        
+        Case Wav
+                SourceFilePath = DirRecursos & "Sounds" & Formato
 
         Case Scripts
                 SourceFilePath = DirRecursos & "Scripts" & Formato
 
+        Case Interface
+                SourceFilePath = DirRecursos & "Interface" & Formato
+
         Case Map
                 SourceFilePath = DirRecursos & "Mapas" & Formato
 
-        Case Ambient
+        Case ambient
                 SourceFilePath = DirRecursos & "Ambient" & Formato
                 
         Case Fuentes
@@ -355,11 +269,11 @@ On Local Error GoTo errhandler
    
     If InfoHead.strFileName = "" Or InfoHead.lngFileSize = 0 Then Exit Function
  
-    Handle = FreeFile
-    Open SourceFilePath For Binary Access Read Lock Write As Handle
+    handle = FreeFile
+    Open SourceFilePath For Binary Access Read Lock Write As handle
    
     If InfoHead.lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left$(App.Path, 3)) Then
-        Close Handle
+        Close handle
         MsgBox "There is not enough drive space to extract the compressed file.", , "Error"
         Exit Function
     End If
@@ -367,15 +281,15 @@ On Local Error GoTo errhandler
    
     ReDim SourceData(InfoHead.lngFileSize - 1)
    
-    Get Handle, InfoHead.lngFileStart, SourceData
+    Get handle, InfoHead.lngFileStart, SourceData
         Decompress_Data SourceData, InfoHead.lngFileSizeUncompressed
-    Close Handle
+    Close handle
        
     Extract_File_Memory = True
 Exit Function
  
-errhandler:
-    Close Handle
+ErrHandler:
+    Close handle
     Erase SourceData
 End Function
 
@@ -386,21 +300,21 @@ Public Sub DeleteFile(ByVal file_path As String)
 'Deletes a resource files
 '*****************************************************************
 
-    Dim Handle As Integer
+    Dim handle As Integer
     Dim Data() As Byte
     
     On Error GoTo Error_Handler
     
     'We open the file to delete
-    Handle = FreeFile
-    Open file_path For Binary Access Write Lock Read As Handle
+    handle = FreeFile
+    Open file_path For Binary Access Write Lock Read As handle
     
     'We replace all the bytes in it with 0s
-    ReDim Data(LOF(Handle) - 1)
-    Put Handle, 1, Data
+    ReDim Data(LOF(handle) - 1)
+    Put handle, 1, Data
     
     'We close the file
-    Close Handle
+    Close handle
     
     'Now we delete it, knowing that if they retrieve it (some antivirus may create backup copies of deleted files), it will be useless
     Kill file_path
@@ -466,10 +380,10 @@ Public Function File_Find(ByVal resource_file_path As String, ByVal file_name As
 'Extra archivos en memoria
 '*********************************************
  
-On Error GoTo errhandler
+On Error GoTo ErrHandler
  
-    Dim max As Integer
-    Dim min As Integer
+    Dim Max As Integer
+    Dim Min As Integer
     Dim mid As Integer
     Dim file_handler As Integer
    
@@ -480,6 +394,7 @@ On Error GoTo errhandler
         file_name = file_name & Space$(Len(info_head.strFileName) - Len(file_name))
    
     file_handler = FreeFile
+
     Open resource_file_path For Binary Access Read Lock Write As file_handler
    
     Get file_handler, 1, file_head
@@ -487,11 +402,11 @@ On Error GoTo errhandler
     'Desencrypt File Header
     encryptHeaderFile file_head
    
-    min = 1
-    max = file_head.lngNumFiles
+    Min = 1
+    Max = file_head.lngNumFiles
    
-    Do While min <= max
-        mid = (min + max) / 2
+    Do While Min <= Max
+        mid = (Min + Max) / 2
        
         Get file_handler, CLng(Len(file_head) + CLng(Len(info_head)) * CLng((mid - 1)) + 1), info_head
         
@@ -499,16 +414,16 @@ On Error GoTo errhandler
         encryptHeaderInfo info_head
                
         If file_name < info_head.strFileName Then
-            If max = mid Then
-                max = max - 1
+            If Max = mid Then
+                Max = Max - 1
             Else
-                max = mid
+                Max = mid
             End If
         ElseIf file_name > info_head.strFileName Then
-            If min = mid Then
-                min = min + 1
+            If Min = mid Then
+                Min = Min + 1
             Else
-                min = mid
+                Min = mid
             End If
         Else
             File_Find = info_head
@@ -518,7 +433,7 @@ On Error GoTo errhandler
         End If
     Loop
    
-errhandler:
+ErrHandler:
     Close file_handler
     File_Find.strFileName = ""
     File_Find.lngFileSize = 0
@@ -595,5 +510,4 @@ On Error GoTo ErrorHandler
 ErrorHandler:
 
 End Function
-
 

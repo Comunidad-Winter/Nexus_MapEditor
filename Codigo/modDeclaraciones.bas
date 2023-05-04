@@ -7,6 +7,8 @@ Public DirDats       As String
 
 Public DirInit       As String
 
+Public DirMapas      As String
+
 Public Form_Caption  As String
 
 Public PATH_Save     As String
