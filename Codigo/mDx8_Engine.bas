@@ -49,7 +49,7 @@ Public ScreenHeight As Long
 Public MainScreenRect As RECT
 
 Public Type TLVERTEX
-    X As Single
+    x As Single
     y As Single
     Z As Single
     rhw As Single
@@ -352,13 +352,13 @@ Dim Start_Time As Long
 
 End Function
 
-Public Function Engine_PixelPosX(ByVal X As Integer) As Integer
+Public Function Engine_PixelPosX(ByVal x As Integer) As Integer
 '*****************************************************************
 'Converts a tile position to a screen position
 'More info: http://www.vbgore.com/GameClient.TileEngine.Engine_PixelPosX
 '*****************************************************************
 
-    Engine_PixelPosX = (X - 1) * 32
+    Engine_PixelPosX = (x - 1) * 32
     
 End Function
 
@@ -372,14 +372,14 @@ Public Function Engine_PixelPosY(ByVal y As Integer) As Integer
     
 End Function
 
-Public Function Engine_TPtoSPX(ByVal X As Byte) As Long
+Public Function Engine_TPtoSPX(ByVal x As Byte) As Long
 '************************************************************
 'Tile Position to Screen Position
 'Takes the tile position and returns the pixel location on the screen
 'More info: http://www.vbgore.com/GameClient.TileEngine.Engine_TPtoSPX
 '************************************************************
 
-    Engine_TPtoSPX = Engine_PixelPosX(X - ((UserPos.X - HalfWindowTileWidth) - TileBufferSize)) + OffsetCounterX - 272 + ((10 - TileBufferSize) * 32)
+    Engine_TPtoSPX = Engine_PixelPosX(x - ((UserPos.x - HalfWindowTileWidth) - TileBufferSize)) + OffsetCounterX - 272 + ((10 - TileBufferSize) * 32)
     
 End Function
 
@@ -394,7 +394,7 @@ Public Function Engine_TPtoSPY(ByVal y As Byte) As Long
     
 End Function
 
-Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long)
+Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long)
 '***************************************************
 'Author: Ezequiel Juarez (Standelf)
 'Last Modification: 29/12/10
@@ -404,7 +404,7 @@ Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal y As Integer, ByVal Width A
     Call Engine_Long_To_RGB_List(temp_rgb(), Color)
 
     Call SpriteBatch.SetTexture(Nothing)
-    Call SpriteBatch.Draw(X, y, Width, ByVal Height, temp_rgb())
+    Call SpriteBatch.Draw(x, y, Width, ByVal Height, temp_rgb())
     
 End Sub
 
@@ -610,7 +610,6 @@ Public Sub Engine_EndScene(ByRef destRect As RECT, Optional ByVal hWndDest As Lo
 On Error GoTo DeviceHandler:
 
     Call SpriteBatch.Flush
-    
     Call DirectDevice.EndScene
         
     If hWndDest = 0 Then
@@ -626,69 +625,11 @@ On Error GoTo DeviceHandler:
 DeviceHandler:
 
     If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-
         Call mDx8_Engine.Engine_DirectX8_Init
-
         Call LoadGraphics
-
     End If
     
 End Sub
-
-Public Sub Engine_ZoomIn()
-'**************************************************************
-'Author: Standelf
-'Last Modify Date: 29/12/2010
-'**************************************************************
-
-    With MainScreenRect
-        .Top = 0
-        .Left = 0
-        .Bottom = IIf(.Bottom - 1 <= 367, .Bottom, .Bottom - 1)
-        .Right = IIf(.Right - 1 <= 491, .Right, .Right - 1)
-    End With
-    
-End Sub
-
-Public Sub Engine_ZoomOut()
-'**************************************************************
-'Author: Standelf
-'Last Modify Date: 29/12/2010
-'**************************************************************
-
-    With MainScreenRect
-        .Top = 0
-        .Left = 0
-        .Bottom = IIf(.Bottom + 1 >= 459, .Bottom, .Bottom + 1)
-        .Right = IIf(.Right + 1 >= 583, .Right, .Right + 1)
-    End With
-    
-End Sub
-
-Public Sub Engine_ZoomNormal()
-'**************************************************************
-'Author: Standelf
-'Last Modify Date: 29/12/2010
-'**************************************************************
-
-    With MainScreenRect
-        .Top = 0
-        .Left = 0
-        .Bottom = ScreenHeight
-        .Right = ScreenWidth
-    End With
-    
-End Sub
-
-Public Function ZoomOffset(ByVal offset As Byte) As Single
-'**************************************************************
-'Author: Standelf
-'Last Modify Date: 30/01/2011
-'**************************************************************
-
-    ZoomOffset = IIf((offset = 1), (ScreenHeight - MainScreenRect.Bottom) / 2, (ScreenWidth - MainScreenRect.Right) / 2)
-    
-End Function
 
 Function Engine_Distance(ByVal x1 As Integer, ByVal y1 As Integer, ByVal x2 As Integer, ByVal y2 As Integer) As Long
 '***************************************************

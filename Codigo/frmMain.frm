@@ -815,6 +815,9 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuDesplazarMapa 
          Caption         =   "&Desplazar Mapa"
       End
+      Begin VB.Menu mnuHerrSeleccion 
+         Caption         =   "Herramientas de Selección"
+      End
    End
    Begin VB.Menu mnuVer 
       Caption         =   "&Ver"
@@ -1192,6 +1195,24 @@ mnuActualizarIndices_Click_Err:
     
 End Sub
 
+Private Sub mnuAutoCompletarSuperficies_Click()
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 20/05/06
+    '*************************************************
+    
+    On Error GoTo mnuAutoCompletarSuperficies_Click_Err
+    
+    mnuAutoCompletarSuperficies.Checked = (mnuAutoCompletarSuperficies.Checked = False)
+    
+    Exit Sub
+
+mnuAutoCompletarSuperficies_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuAutoCompletarSuperficies_Click", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub mnuAutoGuardarMapas_Click()
     '*************************************************
     'Author: ^[GS]^
@@ -1343,6 +1364,23 @@ Private Sub mnuDesplazarMapa_Click()
 
 mnuDesplazarMapa_Click_Err:
     Call LogError(Err.Number, Err.Description, "FrmMain.mnuDesplazarMapa_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub mnuHerrSeleccion_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    
+    On Error GoTo mnuHerrSeleccion_Click_Err
+    
+    frmSeleccion.Show , frmMain
+
+    Exit Sub
+
+mnuHerrSeleccion_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuHerrSeleccion_Click", Erl)
     Resume Next
 End Sub
 
@@ -1985,6 +2023,8 @@ Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, x As Sing
         Seleccionando = True
         SeleccionIX = tX '+ UserPos.X
         SeleccionIY = tY '+ UserPos.Y
+        frmSeleccion.DX1.Text = tX
+        frmSeleccion.DY1.Text = tY
     Else
         ClickEdit Button, tX, tY
 
@@ -2019,6 +2059,8 @@ Private Sub MainViewPic_MouseMove(Button As Integer, _
         Seleccionando = True
         SeleccionFX = tX '+ TileX
         SeleccionFY = tY '+ TileY
+        frmSeleccion.DX2.Text = tX
+        frmSeleccion.DY2.Text = tY
     Else
 
         If tX = 0 Then Exit Sub

@@ -293,6 +293,83 @@ Public Sub Superficie_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As
 
 End Sub
 
+Public Sub Bloqueos_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As Integer, ByVal y2 As Integer, ByVal Inserta As Boolean)
+'*************************************************
+'Author: Lorwik
+'Last modified: 07/12/2018
+'*************************************************
+
+    If EditWarning Then Exit Sub
+    
+    Dim y As Integer
+    Dim x As Integer
+    
+    If Not MapaCargado Then
+        Exit Sub
+    End If
+    
+    modEdicion.Deshacer_Add "Bloqueo en Area" ' Hago deshacer
+
+    For y = y1 To y2
+        For x = x1 To x2
+    
+            If Inserta = True Then
+                MapData(x, y).Blocked = 1
+            Else
+                MapData(x, y).Blocked = 0
+            End If
+    
+        Next x
+    Next y
+    
+    'Set changed flag
+    MapInfo.Changed = 1
+
+End Sub
+
+Public Sub Triggers_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As Integer, ByVal y2 As Integer, ByVal Poner As Boolean)
+'*************************************************
+'Author: Lorwik
+'Last modified: 25/03/2021
+'*************************************************
+
+    If EditWarning Then Exit Sub
+    
+    Dim y As Integer
+    Dim x As Integer
+    
+    If Not MapaCargado Then
+        Exit Sub
+    End If
+    
+    modEdicion.Deshacer_Add "Triggers en Area" ' Hago deshacer
+
+    For y = y1 To y2
+        For x = x1 To x2
+            If Poner = True Then
+                If frmConfigSup.MOSAICO.value = vbChecked Then
+                    MapInfo.Changed = 1 'Set changed flag
+                    MapData(x, y).Trigger = frmTriggers.lListado.ListIndex
+                Else
+                    MapInfo.Changed = 1
+                    'Else Place trigger
+                    MapData(x, y).Trigger = 0
+
+                End If
+            Else
+                MapInfo.Changed = 1
+                MapData(x, y).Trigger = 0
+                
+            End If
+        Next x
+    Next y
+    
+    'Set changed flag
+    MapInfo.Changed = 1
+
+End Sub
+
+
 ''
 ' Coloca la superficie seleccionada al azar en el mapa
 '

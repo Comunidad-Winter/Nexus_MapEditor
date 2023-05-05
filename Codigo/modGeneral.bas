@@ -115,7 +115,6 @@ Public Sub CheckKeys()
 End Sub
 
 Sub Main()
-    Static lastFlush As Long
     
     frmCargando.Show
 
@@ -180,11 +179,6 @@ Sub Main()
         If GetTickCount - lFrameTimer >= 1000 Then
             
             lFrameTimer = GetTickCount
-        End If
-        
-        If timeGetTime >= lastFlush Then
-            ' If there is anything to be sent, we send it
-            lastFlush = timeGetTime + 10
         End If
         
         DoEvents
