@@ -35,7 +35,7 @@ Begin VB.Form frmMapInfo
       Height          =   315
       ItemData        =   "frmMapInfo.frx":000C
       Left            =   1650
-      List            =   "frmMapInfo.frx":001F
+      List            =   "frmMapInfo.frx":0022
       TabIndex        =   30
       Top             =   2310
       Width           =   2655
@@ -116,7 +116,7 @@ Begin VB.Form frmMapInfo
       cBack           =   -2147483633
    End
    Begin VB.CheckBox chkLuzClimatica 
-      Caption         =   "Desactivado"
+      Caption         =   "Luz climatica"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -130,11 +130,9 @@ Begin VB.Form frmMapInfo
       Left            =   150
       TabIndex        =   26
       Top             =   4170
-      Value           =   1  'Checked
       Width           =   1335
    End
    Begin VB.TextBox b1 
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -152,7 +150,6 @@ Begin VB.Form frmMapInfo
       Width           =   495
    End
    Begin VB.TextBox G1 
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -170,7 +167,6 @@ Begin VB.Form frmMapInfo
       Width           =   495
    End
    Begin VB.TextBox r1 
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -188,7 +184,6 @@ Begin VB.Form frmMapInfo
       Width           =   495
    End
    Begin VB.TextBox txtColor 
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   11.25
@@ -205,9 +200,8 @@ Begin VB.Form frmMapInfo
       Top             =   4650
       Width           =   2415
    End
-   Begin VB.PictureBox Picture1 
+   Begin VB.PictureBox PicColorMap 
       BackColor       =   &H00FFFFFF&
-      Enabled         =   0   'False
       FillColor       =   &H00FFFFFF&
       ForeColor       =   &H00FFFFFF&
       Height          =   975
@@ -288,9 +282,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":004D
+      ItemData        =   "frmMapInfo.frx":0054
       Left            =   1650
-      List            =   "frmMapInfo.frx":005A
+      List            =   "frmMapInfo.frx":0061
       TabIndex        =   9
       Top             =   1950
       Width           =   2655
@@ -306,9 +300,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":0077
+      ItemData        =   "frmMapInfo.frx":007E
       Left            =   1650
-      List            =   "frmMapInfo.frx":0084
+      List            =   "frmMapInfo.frx":008B
       TabIndex        =   8
       Top             =   1590
       Width           =   2655
@@ -654,45 +648,6 @@ Attribute VB_Exposed = False
 '**************************************************************
 Option Explicit
 
-Private Sub chkLuzClimatica_Click()
-    
-    On Error GoTo Check1_Click_Err
-
-    If chkLuzClimatica.value = 0 Then
-        r1.Enabled = True
-        G1.Enabled = True
-        b1.Enabled = True
-        txtColor.Enabled = True
-        cPrevia.Enabled = True
-        Picture1.Enabled = True
-        chkLuzClimatica.value = 0
-        Exit Sub
-
-    End If
-
-    If chkLuzClimatica.value = 1 Then
-        r1.Enabled = False
-        G1.Enabled = False
-        b1.Enabled = False
-        txtColor.Enabled = False
-        cPrevia.Enabled = False
-        Picture1.Enabled = False
-        chkLuzClimatica.value = 1
-        MapInfo.LuzBase = 0
-        MapInfo.Changed = 1
-        Call Actualizar_Estado
-        Exit Sub
-
-    End If
-    
-    Exit Sub
-
-Check1_Click_Err:
-    Call LogError(Err.Number, Err.Description, "frmMapInfo.chkLuzClimatica_Click", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub chkMapBackup_LostFocus()
     '*************************************************
     'Author: ^[GS]^
@@ -802,7 +757,7 @@ Private Sub cmdCerrar_Click()
 
     End If
 
-    MapInfo.LuzBase = txtColor
+    MapInfo.LuzBase = RGB(r1.Text, G1.Text, b1.Text)
     Call Actualizar_Estado
     Me.Hide
     MapInfo.Changed = 1
@@ -859,13 +814,8 @@ End Sub
 Private Sub cPrevia_Click()
     
     On Error GoTo lvButtons_H1_Click_Err
-    
-    Picture1.BackColor = RGB(r1, G1, b1)
-    Dim Out As String
-    Out = "&H" & Format(Hex(r1), "0#") & Format(Hex(G1), "0#") & Format(Hex(b1), "0#")
 
-    MapInfo.LuzBase = Out
-
+    MapInfo.LuzBase = RGB(r1.Text, G1.Text, b1.Text)
     Call Actualizar_Estado
     
     Exit Sub
@@ -895,11 +845,11 @@ Public Function Selected_Color()
         ' initial default color selection.
         .flags = cdlCCFullOpen + cdlCCRGBInit
       
-        .Color = RGB(255, 255, 255)
+        .color = RGB(255, 255, 255)
       
         ' Display the full color palette
         .ShowColor
-        c = .Color
+        c = .color
                       
     End With
 
@@ -921,18 +871,18 @@ Selected_Color_Err:
     
 End Function
 
-Private Sub Picture1_Click()
+Private Sub PicColorMap_Click()
     
-    On Error GoTo Picture1_Click_Err
+    On Error GoTo PicColorMap_Click_Err
     
-    txtColor = Selected_Color()
-
-    MapInfo.LuzBase = txtColor
+    If chkLuzClimatica.value = False Then Exit Sub
+    
+    frmColorPicker.Show
 
     Exit Sub
 
-Picture1_Click_Err:
-    Call LogError(Err.Number, Err.Description, "frmMapInfo.Picture1_Click", Erl)
+PicColorMap_Click_Err:
+    Call LogError(Err.Number, Err.Description, "frmMapInfo.PicColorMap_Click", Erl)
     Resume Next
     
 End Sub
@@ -1104,6 +1054,26 @@ Private Sub txtMapZona_LostFocus()
 
 txtMapZona_LostFocus_Err:
     Call LogError(Err.Number, Err.Description, "frmMapInfo.txtMapZona_LostFocus", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub CambiarColorMap()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: ?????
+    '*************************************************
+    
+    On Error GoTo PicColorMap_Err
+    
+    PicColorMap.BackColor = MapInfo.LuzBase
+    frmMapInfo.PicColorMap.BackColor = PicColorMap.BackColor
+    MapInfo.Changed = 1
+    
+    Exit Sub
+
+PicColorMap_Err:
+    Call LogError(Err.Number, Err.Description, " FrmMain.CambiarColorMap", Erl)
     Resume Next
     
 End Sub

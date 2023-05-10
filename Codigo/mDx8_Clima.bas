@@ -18,6 +18,7 @@ End Enum
 
 Public Estados(0 To 8) As D3DCOLORVALUE
 Public Estado_Actual As D3DCOLORVALUE
+Public Estado_Custom As D3DCOLORVALUE
 
 Private m_Hora_Actual As Long
 Private m_Last_Hora_Actual As Long
@@ -59,36 +60,48 @@ Public Sub Init_MeteoEngine()
 End Sub
 
 Public Sub Actualizar_Estado()
-'***************************************************
-'Author: Lorwik
-'Last Modification: 09/08/2020
-'Actualiza el estado del clima y del dia
-'***************************************************
-    Dim X As Byte, y As Byte
 
-    'Primero actualizamos la imagen del frmmain
-    'Call ActualizarImgClima
-
+    '***************************************************
+    'Author: Lorwik
+    'Last Modification: 09/08/2020
+    'Actualiza el estado del clima y del dia
+    '***************************************************
+    Dim X  As Byte, Y As Byte
+    Dim tR As Byte
+    Dim tG As Byte
+    Dim tB As Byte
+    
     '¿El mapa tiene su propia luz?
-'    If MapInfo.LuzBase <> -1 Then
-'
-'        For X = XMinMapSize To XMaxMapSize
-'            For y = YMinMapSize To YMaxMapSize
-'                Call Engine_Long_To_RGB_List(MapData(X, y).Engine_Light(), MapInfo.LuzBase)
-'            Next y
-'        Next X
-'
-'        Call LightRenderAll
-'
-'        Exit Sub
-'    End If
+    If MapInfo.LuzBase <> 0 Then
         
+        Call ConvertLongToRGB(MapInfo.LuzBase, tR, tG, tB)
+                    
+        With Estado_Custom
+            .a = 255
+            .R = tR
+            .G = tG
+            .B = tB
+
+        End With
+        
+        For X = XMinMapSize To XMaxMapSize
+            For Y = YMinMapSize To YMaxMapSize
+                Call Engine_D3DColor_To_RGB_List(MapData(X, Y).Engine_Light(), Estado_Custom)
+            Next Y
+        Next X
+            
+        Call LightRenderAll
+            
+        Exit Sub
+
+    End If
+            
     For X = XMinMapSize To XMaxMapSize
-        For y = YMinMapSize To YMaxMapSize
-            Call Engine_D3DColor_To_RGB_List(MapData(X, y).Engine_Light(), Estado_Actual)
-        Next y
+        For Y = YMinMapSize To YMaxMapSize
+            Call Engine_D3DColor_To_RGB_List(MapData(X, Y).Engine_Light(), Estado_Actual)
+        Next Y
     Next X
-        
+    
     Call LightRenderAll
 
 End Sub

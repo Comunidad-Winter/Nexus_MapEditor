@@ -211,7 +211,7 @@ Private Sub LvBDesplazar_Click()
 
     Dim i As Integer
 
-    If chkAutomatizar.Value = Unchecked Then
+    If chkAutomatizar.value = Unchecked Then
         Call DesplazarMapa
         
     Else
@@ -247,8 +247,8 @@ Private Sub DesplazarMapa()
 'Fecha: 01/05/2023
 '****************************************
 
-    Dim x As Integer
-    Dim y As Integer
+    Dim X As Integer
+    Dim Y As Integer
     Dim i As Byte
     Dim Vacio As MapBlock
     
@@ -257,29 +257,29 @@ Private Sub DesplazarMapa()
     ReDim SeleccionMap(Val(txtAncho.Text), Val(txtAlto.Text)) As MapBlock
     
     'Copiamos el trozo de mapa
-    For x = 1 To Val(txtAncho.Text)
-        For y = 1 To Val(txtAlto.Text)
+    For X = 1 To Val(txtAncho.Text)
+        For Y = 1 To Val(txtAlto.Text)
         
-            SeleccionMap(x, y) = MapData(x, y)
+            SeleccionMap(X, Y) = MapData(X, Y)
         
-        Next y
-    Next x
+        Next Y
+    Next X
     
     'Borramos el trozo de mapa
-    For x = 1 To Val(txtAncho.Text)
-        For y = 1 To Val(txtAlto.Text)
+    For X = 1 To Val(txtAncho.Text)
+        For Y = 1 To Val(txtAlto.Text)
         
-            MapData(x, y) = Vacio
+            MapData(X, Y) = Vacio
             
-        Next y
-    Next x
+        Next Y
+    Next X
     
     'Pegamos el trozo de mapa en la nueva ubicación
-    For x = 1 To Val(txtAncho.Text)
-        For y = 1 To Val(txtAlto.Text)
-            MapData(x + Val(Xdest.Text), y + Val(Ydest.Text)) = SeleccionMap(x, y)
-        Next y
-    Next x
+    For X = 1 To Val(txtAncho.Text)
+        For Y = 1 To Val(txtAlto.Text)
+            MapData(X + Val(Xdest.Text), Y + Val(Ydest.Text)) = SeleccionMap(X, Y)
+        Next Y
+    Next X
     
     Working = False
     

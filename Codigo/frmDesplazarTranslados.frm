@@ -3,17 +3,75 @@ Begin VB.Form frmDesplazarTranslados
    BackColor       =   &H80000006&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Desplazar Translados"
-   ClientHeight    =   4185
+   ClientHeight    =   5475
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4980
    LinkTopic       =   "Form4"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4185
+   ScaleHeight     =   5475
    ScaleWidth      =   4980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.Frame FraAutomatizar 
+      BackColor       =   &H80000006&
+      Caption         =   "Automatizar"
+      ForeColor       =   &H8000000B&
+      Height          =   1185
+      Left            =   120
+      TabIndex        =   21
+      Top             =   4140
+      Width           =   4785
+      Begin VB.TextBox txtMapMin 
+         Height          =   315
+         Left            =   660
+         TabIndex        =   24
+         Text            =   "1"
+         Top             =   330
+         Width           =   1545
+      End
+      Begin VB.TextBox txtMapMax 
+         Height          =   315
+         Left            =   2910
+         TabIndex        =   23
+         Text            =   "168"
+         Top             =   330
+         Width           =   1785
+      End
+      Begin VB.CheckBox chkAutomatizar 
+         BackColor       =   &H80000006&
+         Caption         =   "Automatizar"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   150
+         TabIndex        =   22
+         Top             =   720
+         Width           =   1335
+      End
+      Begin VB.Label lblDesde 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Desde:"
+         ForeColor       =   &H8000000B&
+         Height          =   195
+         Left            =   90
+         TabIndex        =   26
+         Top             =   390
+         Width           =   510
+      End
+      Begin VB.Label lblHasta 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Hasta:"
+         ForeColor       =   &H8000000B&
+         Height          =   195
+         Left            =   2370
+         TabIndex        =   25
+         Top             =   390
+         Width           =   465
+      End
+   End
    Begin VB.TextBox DestinoDerecha 
       Height          =   375
       Left            =   4410
@@ -62,10 +120,10 @@ Begin VB.Form frmDesplazarTranslados
       Top             =   1740
       Width           =   495
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton cmdProcesar 
       Caption         =   "Procesar"
       Height          =   615
-      Left            =   1710
+      Left            =   1680
       TabIndex        =   12
       Top             =   1770
       Width           =   1575
@@ -226,82 +284,123 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-Public Sub Command1_Click()
+Public Sub cmdProcesar_Click()
     
-    On Error GoTo Command1_Click_Err
+    On Error GoTo cmdProcesar_Click_Err
+    
+    Dim i As Integer
+    
+    If chkAutomatizar.value = Unchecked Then
+        Call DesplazarTraslados
+        
+    Else
+    
+        For i = Val(txtMapMin.Text) To Val(txtMapMax.Text)
+        
+            If FileExist(DirMapas & "mapa" & i & ".csm", vbNormal) = True Then
+            
+                Call modMapIO.NuevoMapa
+                Call modMapIO.MapaCSM_Cargar(DirMapas & "mapa" & i & ".csm")
+                DoEvents
+                Call DesplazarTraslados
+                DoEvents
+                NoSobreescribir = True
+                Call modMapIO.MapaCSM_Guardar(DirMapas & "mapa" & i & ".csm")
+            
+                If frmConsola.Visible Then _
+                    Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa" & i & " convertido correctamente!", 255, 255, 255, False, True, True)
+                
+            Else
+                If frmConsola.Visible Then _
+                    Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa" & i & ".csm no existe!", 255, 255, 255, False, True, True)
+                
+            End If
+        
+        Next i
+    
+    End If
+        
+    Exit Sub
+
+cmdProcesar_Click_Err:
+    Call LogError(Err.Number, Err.Description, "DesplazarTranslados.cmdProcesar_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub DesplazarTraslados()
+    On Error GoTo DesplazarTraslados_Err
     
     Dim X As Byte
-    Dim y As Byte
+    Dim Y As Byte
 
     For X = 13 To 87
-        For y = ActualYSuperior To ActualYSuperior
+        For Y = ActualYSuperior To ActualYSuperior
 
-            If MapData(X, y).TileExit.Map <> 0 Then
-                MapData(X, DesplazadaYSuperior).TileExit.Map = MapData(X, y).TileExit.Map
-                MapData(X, DesplazadaYSuperior).TileExit.X = MapData(X, y).TileExit.X
-                MapData(X, DesplazadaYSuperior).TileExit.y = DestinoSuperior
-                MapData(X, y).TileExit.Map = 0
-                MapData(X, y).TileExit.X = 0
-                MapData(X, y).TileExit.y = 0
+            If MapData(X, Y).TileExit.Map <> 0 Then
+                MapData(X, DesplazadaYSuperior).TileExit.Map = MapData(X, Y).TileExit.Map
+                MapData(X, DesplazadaYSuperior).TileExit.X = MapData(X, Y).TileExit.X
+                MapData(X, DesplazadaYSuperior).TileExit.Y = DestinoSuperior
+                MapData(X, Y).TileExit.Map = 0
+                MapData(X, Y).TileExit.X = 0
+                MapData(X, Y).TileExit.Y = 0
 
             End If
 
-        Next y
+        Next Y
     Next X
 
     For X = 13 To 87
-        For y = ActualYInferior To ActualYInferior
+        For Y = ActualYInferior To ActualYInferior
 
-            If MapData(X, y).TileExit.Map <> 0 Then
-                MapData(X, DesplazadaYInferior).TileExit.Map = MapData(X, y).TileExit.Map
-                MapData(X, DesplazadaYInferior).TileExit.X = MapData(X, y).TileExit.X
-                MapData(X, DesplazadaYInferior).TileExit.y = DestinoYInferior
-                MapData(X, y).TileExit.Map = 0
-                MapData(X, y).TileExit.X = 0
-                MapData(X, y).TileExit.y = 0
+            If MapData(X, Y).TileExit.Map <> 0 Then
+                MapData(X, DesplazadaYInferior).TileExit.Map = MapData(X, Y).TileExit.Map
+                MapData(X, DesplazadaYInferior).TileExit.X = MapData(X, Y).TileExit.X
+                MapData(X, DesplazadaYInferior).TileExit.Y = DestinoYInferior
+                MapData(X, Y).TileExit.Map = 0
+                MapData(X, Y).TileExit.X = 0
+                MapData(X, Y).TileExit.Y = 0
 
             End If
 
-        Next y
+        Next Y
     Next X
 
     For X = ActualXIzquierda To ActualXIzquierda
-        For y = 11 To 90
+        For Y = 11 To 90
 
-            If MapData(X, y).TileExit.Map <> 0 Then
-                MapData(DesplazadaXIzquierda, y).TileExit.Map = MapData(X, y).TileExit.Map
-                MapData(DesplazadaXIzquierda, y).TileExit.X = DestinoIzquierda
-                MapData(DesplazadaXIzquierda, y).TileExit.y = MapData(X, y).TileExit.y
-                MapData(X, y).TileExit.Map = 0
-                MapData(X, y).TileExit.X = 0
-                MapData(X, y).TileExit.y = 0
+            If MapData(X, Y).TileExit.Map <> 0 Then
+                MapData(DesplazadaXIzquierda, Y).TileExit.Map = MapData(X, Y).TileExit.Map
+                MapData(DesplazadaXIzquierda, Y).TileExit.X = DestinoIzquierda
+                MapData(DesplazadaXIzquierda, Y).TileExit.Y = MapData(X, Y).TileExit.Y
+                MapData(X, Y).TileExit.Map = 0
+                MapData(X, Y).TileExit.X = 0
+                MapData(X, Y).TileExit.Y = 0
 
             End If
 
-        Next y
+        Next Y
     Next X
 
     For X = ActualXDerecha To ActualXDerecha
-        For y = 11 To 90
+        For Y = 11 To 90
 
-            If MapData(X, y).TileExit.Map <> 0 Then
-                MapData(DesplazadaXDerecha, y).TileExit.Map = MapData(X, y).TileExit.Map
-                MapData(DesplazadaXDerecha, y).TileExit.X = DestinoDerecha
-                MapData(DesplazadaXDerecha, y).TileExit.y = MapData(X, y).TileExit.y
-                MapData(X, y).TileExit.Map = 0
-                MapData(X, y).TileExit.X = 0
-                MapData(X, y).TileExit.y = 0
+            If MapData(X, Y).TileExit.Map <> 0 Then
+                MapData(DesplazadaXDerecha, Y).TileExit.Map = MapData(X, Y).TileExit.Map
+                MapData(DesplazadaXDerecha, Y).TileExit.X = DestinoDerecha
+                MapData(DesplazadaXDerecha, Y).TileExit.Y = MapData(X, Y).TileExit.Y
+                MapData(X, Y).TileExit.Map = 0
+                MapData(X, Y).TileExit.X = 0
+                MapData(X, Y).TileExit.Y = 0
 
             End If
 
-        Next y
+        Next Y
     Next X
         
-    
     Exit Sub
 
-Command1_Click_Err:
-    Call LogError(Err.Number, Err.Description, "DesplazarTranslados.Command1_Click", Erl)
+DesplazarTraslados_Err:
+    Call LogError(Err.Number, Err.Description, "DesplazarTranslados.DesplazarTraslados", Erl)
     Resume Next
-    
 End Sub

@@ -641,6 +641,9 @@ Begin VB.Form frmMain
             Index           =   1
          End
       End
+      Begin VB.Menu mnuAbrirMapaFurius 
+         Caption         =   "&Abrir Mapa de Furius"
+      End
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
       End
@@ -913,14 +916,14 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    clicX = x
-    clicY = y
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    clicX = X
+    clicY = Y
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -960,7 +963,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     WriteVar ConfigFile, "MOSTRAR", "Grilla", IIf(frmMain.mnuVerGrilla.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Bloqueos", IIf(frmMain.mnuVerBloqueos.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Particulas", IIf(frmMain.mnuVerParticulas.Checked = True, "1", "0")
-    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.x & "-" & UserPos.y
+    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.Y
 
     'Allow MainLoop to close program
     If prgRun = True Then
@@ -1101,6 +1104,22 @@ ErrHandler:
     Resume Next
 End Sub
 
+Private Sub mnuAbrirMapaFurius_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 04/05/2023
+    '*************************************************
+    On Error GoTo ErrHandler
+    
+    Call AbrirMapaDialog("Furius")
+    
+    Exit Sub
+    
+ErrHandler:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuAbrirMapaFurius_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub AbrirMapaDialog(ByVal Modo As String)
     '*************************************************
     'Author: Lorwik
@@ -1130,6 +1149,9 @@ Private Sub AbrirMapaDialog(ByVal Modo As String)
             
         Case "AOLong"
             Call modMapIO.AbrirMapa(Dialog.FileName, 2)
+        
+        Case "Furius"
+            Call modMapIO.AbrirMapa(Dialog.FileName, 3)
             
     End Select
     
@@ -1608,7 +1630,7 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
 
     With Dialog
 
-        .Filter = "Mapas de NexusAO (*.csm)|*.csm|Mapas clasicos de Argentum Online (*.map)|*.map"
+        .Filter = "Mapas de NexusAO (*.csm)|*.csm|Mapas clasicos de Argentum Online (*.map)|*.map|Mapas FuriusAO (*.mcl)|*.mcl"
 
         If Guardar Then
             .DialogTitle = "Guardar"
@@ -1685,9 +1707,9 @@ Private Sub mnuNpcAzar_Click()
     On Error GoTo NpcAzar_Click_Err
     
     Dim NPCIndex As Long
-    Dim x        As Byte
+    Dim X        As Byte
     Dim tmp      As String
-    Dim y        As Byte
+    Dim Y        As Byte
     Dim i        As Byte
 
     tmp = InputBox("¿Cuantos npcs?", "Ingresar npcs al azar por todo el mapa.")
@@ -1695,20 +1717,20 @@ Private Sub mnuNpcAzar_Click()
     If tmp = "" Then Exit Sub
 
     For i = 1 To CLng(tmp)
-        x = RandomNumber(15, 87)
-        y = RandomNumber(15, 87)
+        X = RandomNumber(15, 87)
+        Y = RandomNumber(15, 87)
             
-        If (MapData(x, y).Blocked And &HF) <> &HF Then
+        If (MapData(X, Y).Blocked And &HF) <> &HF Then
 
             NPCIndex = frmNpcs.cNPC.Text
                 
-            If NPCIndex <> MapData(x, y).NPCIndex Then
+            If NPCIndex <> MapData(X, Y).NPCIndex Then
                 
                 modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
              
-                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, x, y, 0, 0, 0, 0, 0)
-                MapData(x, y).NPCIndex = NPCIndex
+                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, Y, 0, 0, 0, 0, 0)
+                MapData(X, Y).NPCIndex = NPCIndex
 
             End If
 
@@ -1733,12 +1755,12 @@ Private Sub mnuNuevoMapa_Click()
     On Error GoTo mnuNuevoMapa_Click_Err
     
 
-    Dim LoopC As Integer
+    Dim loopc As Integer
 
     DeseaGuardarMapa Dialog.FileName
 
-    For LoopC = 0 To frmMain.MapPest.Count
-        frmMain.MapPest(LoopC).Visible = False
+    For loopc = 0 To frmMain.MapPest.Count
+        frmMain.MapPest(loopc).Visible = False
     Next
 
     frmMain.Dialog.FileName = Empty
@@ -2009,7 +2031,7 @@ MainViewPic_DblClick_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MainViewPic_MouseDown_Err
     
@@ -2041,13 +2063,13 @@ End Sub
 
 Private Sub MainViewPic_MouseMove(Button As Integer, _
                                   Shift As Integer, _
-                                  x As Single, _
-                                  y As Single)
+                                  X As Single, _
+                                  Y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
-    MouseX = x
-    MouseY = y
+    MouseX = X
+    MouseY = Y
 
     'Make sure map is loaded
     If Not MapaCargado Then Exit Sub
