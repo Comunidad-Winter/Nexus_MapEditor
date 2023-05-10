@@ -792,7 +792,6 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     
     On Error GoTo Form_QueryUnload_Err
     
-
     '*************************************************
     'Author: ^[GS]^
     'Last modified: 20/05/06
@@ -812,6 +811,10 @@ Form_QueryUnload_Err:
 End Sub
 
 Private Sub cPrevia_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 10/05/2023
+    '*************************************************
     
     On Error GoTo lvButtons_H1_Click_Err
 
@@ -827,6 +830,10 @@ lvButtons_H1_Click_Err:
 End Sub
 
 Public Function Selected_Color()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 10/05/2023
+    '*************************************************
     
     On Error GoTo Selected_Color_Err
 
@@ -872,6 +879,10 @@ Selected_Color_Err:
 End Function
 
 Private Sub PicColorMap_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 10/05/2023
+    '*************************************************
     
     On Error GoTo PicColorMap_Click_Err
     
@@ -887,6 +898,24 @@ PicColorMap_Click_Err:
     
 End Sub
 
+Private Sub TxtAmbient_LostFocus()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 10/05/2023
+    '*************************************************
+    
+    On Error GoTo TxtAmbient_LostFocus_Err
+    
+    MapInfo.ambient = TxtAmbient.Text
+    MapInfo.Changed = 1
+
+    Exit Sub
+
+TxtAmbient_LostFocus_Err:
+    Call LogError(Err.Number, Err.Description, "frmMapInfo.TxtAmbient_LostFocus", Erl)
+    Resume Next
+End Sub
+
 Private Sub txtMapMusica_LostFocus()
     '*************************************************
     'Author: ^[GS]^
@@ -896,7 +925,6 @@ Private Sub txtMapMusica_LostFocus()
     On Error GoTo txtMapMusica_LostFocus_Err
     
     MapInfo.Music = txtMapMusica.Text
-    'FrmMain.lblMapMusica.Caption = MapInfo.Music
     MapInfo.Changed = 1
 
     Exit Sub
@@ -974,6 +1002,7 @@ Private Sub txtMapRestringir_LostFocus()
     
     On Error GoTo txtMapRestringir_LostFocus_Err
     
+    MapInfo.Restringir = txtMapRestringir.Text
     MapInfo.Changed = 1
     
     Exit Sub
@@ -1004,13 +1033,13 @@ End Sub
 
 Private Sub txtMapTerreno_LostFocus()
     '*************************************************
-    'Author: ^[GS]^
-    'Last modified: 20/05/06
+    'Author: Lorwik
+    'Last modified: 10/05/2023
     '*************************************************
-    'MapInfo.Terreno = txtMapTerreno.Text
     
     On Error GoTo txtMapTerreno_LostFocus_Err
     
+    MapInfo.Terreno = txtMapTerreno.Text
     MapInfo.Changed = 1
     
     Exit Sub

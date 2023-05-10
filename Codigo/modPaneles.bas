@@ -183,10 +183,10 @@ Public Sub VerFuncion(ByVal Numero As Byte)
             
         Case 8 'Bordes
 
-            If Not frmBordes.Visible Then
-                frmBordes.Show , frmMain
+            If Not frmCopiarBordes.Visible Then
+                frmCopiarBordes.Show , frmMain
             Else
-                frmBordes.Visible = False
+                frmCopiarBordes.Visible = False
 
             End If
             
@@ -333,11 +333,11 @@ Public Sub RenderPreview(Optional ByVal SinMosaico As Boolean = False)
 
     Call Engine_EndScene(destRect, frmPreview.PreviewGrh.hwnd)
 
-    Call DrawBuffer.LoadPictureBlt(frmPreview.PreviewGrh.hdc)
+    Call DrawBuffer.LoadPictureBlt(frmPreview.PreviewGrh.hDC)
 
     frmPreview.PreviewGrh.AutoRedraw = True
 
-    Call DrawBuffer.PaintPicture(frmPreview.PreviewGrh.hdc, 0, 0, frmPreview.PreviewGrh.Width, frmPreview.PreviewGrh.Height, 0, 0, vbSrcCopy)
+    Call DrawBuffer.PaintPicture(frmPreview.PreviewGrh.hDC, 0, 0, frmPreview.PreviewGrh.Width, frmPreview.PreviewGrh.Height, 0, 0, vbSrcCopy)
 
 End Sub
 
@@ -351,7 +351,7 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
     
     Dim objindex As Long
     Dim NPCIndex As Long
-    Dim x, y, i
+    Dim X, y, i
     Dim Head    As Integer
     Dim Body    As Integer
     Dim Heading As Byte
@@ -361,33 +361,33 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
     modEdicion.Deshacer_Add "Aplicar " & IIf(T = 0, "Objetos", "NPCs") & " al Azar" ' Hago deshacer
 
     Do While i > 0
-        x = CInt(RandomNumber(XMinMapSize, XMaxMapSize - 1))
+        X = CInt(RandomNumber(XMinMapSize, XMaxMapSize - 1))
         y = CInt(RandomNumber(YMinMapSize, YMaxMapSize - 1))
     
         Select Case T
 
             Case 0
 
-                If MapData(x, y).OBJInfo.objindex = 0 Then
+                If MapData(X, y).OBJInfo.objindex = 0 Then
                     i = i - 1
 
                     If frmBloqueos.cInsertarBloqueo.value = True Then
-                        MapData(x, y).Blocked = 1
+                        MapData(X, y).Blocked = 1
                     Else
-                        MapData(x, y).Blocked = 0
+                        MapData(X, y).Blocked = 0
 
                     End If
 
                     If frmObjetos.cCantidad.Text > 0 Then
                         objindex = frmObjetos.cCantidad.Text
-                        InitGrh MapData(x, y).ObjGrh, ObjData(objindex).GrhIndex
-                        MapData(x, y).OBJInfo.objindex = objindex
-                        MapData(x, y).OBJInfo.Amount = Val(frmObjetos.cCantidad.Text)
+                        InitGrh MapData(X, y).ObjGrh, ObjData(objindex).GrhIndex
+                        MapData(X, y).OBJInfo.objindex = objindex
+                        MapData(X, y).OBJInfo.Amount = Val(frmObjetos.cCantidad.Text)
 
                         Select Case ObjData(objindex).ObjType ' GS
 
                             Case 4, 8, 10, 22 ' Arboles, Carteles, Foros, Yacimientos
-                                MapData(x, y).Graphic(3) = MapData(x, y).ObjGrh
+                                MapData(X, y).Graphic(3) = MapData(X, y).ObjGrh
 
                         End Select
 
@@ -397,7 +397,7 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
 
             Case 1
 
-                If (MapData(x, y).Blocked And &HF) <> &HF Then
+                If (MapData(X, y).Blocked And &HF) <> &HF Then
                     i = i - 1
 
                     If frmNpcs.cNPC.Text > 0 Then
@@ -405,8 +405,8 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
                         Body = NpcData(NPCIndex).Body
                         Head = NpcData(NPCIndex).Head
                         Heading = NpcData(NPCIndex).Heading
-                        Call Char_Make(NextOpenChar(), Body, Head, Heading, CInt(x), CInt(y), 2, 2, 2, 0, 0)
-                        MapData(x, y).NPCIndex = NPCIndex
+                        Call Char_Make(NextOpenChar(), Body, Head, Heading, CInt(X), CInt(y), 2, 2, 2, 0, 0)
+                        MapData(X, y).NPCIndex = NPCIndex
 
                     End If
 
@@ -414,7 +414,7 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
 
             Case 2
 
-                If (MapData(x, y).Blocked And &HF) <> &HF Then
+                If (MapData(X, y).Blocked And &HF) <> &HF Then
                     i = i - 1
 
                     If frmNpcs.cNPC.Text >= 0 Then
@@ -422,8 +422,8 @@ Public Sub PonerAlAzar(ByVal n As Integer, T As Byte)
                         Body = NpcData(NPCIndex).Body
                         Head = NpcData(NPCIndex).Head
                         Heading = NpcData(NPCIndex).Heading
-                        Call Char_Make(NextOpenChar(), Body, Head, Heading, CInt(x), CInt(y), 2, 2, 2, 0, 0)
-                        MapData(x, y).NPCIndex = NPCIndex
+                        Call Char_Make(NextOpenChar(), Body, Head, Heading, CInt(X), CInt(y), 2, 2, 2, 0, 0)
+                        MapData(X, y).NPCIndex = NPCIndex
 
                     End If
 
