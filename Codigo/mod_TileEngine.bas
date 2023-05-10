@@ -424,7 +424,7 @@ On Error GoTo 0
     Call CargarFxs
     Call CargarAnimArmas
     Call CargarAnimEscudos
-   ' Call CargarMinimapa
+    Call CargarMinimapa
     Call LoadGraphics
     Call CargarParticulas
 
