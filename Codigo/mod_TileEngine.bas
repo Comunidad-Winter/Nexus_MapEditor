@@ -409,10 +409,6 @@ On Error GoTo ErrorHandler:
     
     Call modEdicion.InitDeshacer
     
-    'Set intial user position
-    UserPos.X = MinXBorder
-    UserPos.Y = MinYBorder
-    
     'Set scroll pixels per frame
     ScrollPixelsPerFrameX = pixelsToScrollPerFrameX
     ScrollPixelsPerFrameY = pixelsToScrollPerFrameY
