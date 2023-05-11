@@ -29,10 +29,10 @@ Public Sub CheckKeys()
     If GetKeyState(vbKeyUp) < 0 Then
         If UserPos.y < YMinMapSize Then Exit Sub ' 10
         
-        If Map_LegalPos(UserPos.x, UserPos.y - 1) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X, UserPos.y - 1) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
             UserPos.y = UserPos.y - 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.x, UserPos.y)
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
         ElseIf WalkMode = False Then
             UserPos.y = UserPos.y - 1
@@ -47,16 +47,16 @@ Public Sub CheckKeys()
     End If
 
     If GetKeyState(vbKeyRight) < 0 Then
-        If UserPos.x > XMaxMapSize Then Exit Sub ' 89
+        If UserPos.X > XMaxMapSize Then Exit Sub ' 89
         
-        If Map_LegalPos(UserPos.x + 1, UserPos.y) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X + 1, UserPos.y) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
-            UserPos.x = UserPos.x + 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.x, UserPos.y)
+            UserPos.X = UserPos.X + 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
             
         ElseIf WalkMode = False Then
-            UserPos.x = UserPos.x + 1
+            UserPos.X = UserPos.X + 1
             
         End If
         
@@ -70,10 +70,10 @@ Public Sub CheckKeys()
     If GetKeyState(vbKeyDown) < 0 Then
         If UserPos.y > YMaxMapSize Then Exit Sub ' 92
         
-        If Map_LegalPos(UserPos.x, UserPos.y + 1) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X, UserPos.y + 1) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
             UserPos.y = UserPos.y + 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.x, UserPos.y)
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
             
         ElseIf WalkMode = False Then
@@ -89,15 +89,15 @@ Public Sub CheckKeys()
     End If
 
     If GetKeyState(vbKeyLeft) < 0 Then
-        If UserPos.x < XMinMapSize Then Exit Sub ' 12
+        If UserPos.X < XMinMapSize Then Exit Sub ' 12
         
-        If Map_LegalPos(UserPos.x - 1, UserPos.y) And WalkMode = True Then
+        If Map_LegalPos(UserPos.X - 1, UserPos.y) And WalkMode = True Then
             If dLastWalk + 50 > GetTickCount Then Exit Sub
-            UserPos.x = UserPos.x - 1
-            Call Char_MovebyPos(UserCharIndex, UserPos.x, UserPos.y)
+            UserPos.X = UserPos.X - 1
+            Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y)
             dLastWalk = GetTickCount
         ElseIf WalkMode = False Then
-            UserPos.x = UserPos.x - 1
+            UserPos.X = UserPos.X - 1
 
         End If
 
@@ -135,7 +135,7 @@ Sub Main()
           
     'Tile Engine
     frmCargando.lblCargando.Caption = "Cargando Tile Engine..."
-    Call InitTileEngine(frmMain.hwnd, 32, 32, 8, 8)
+    Call InitTileEngine(frmMain.hWnd, 32, 32, 8, 8)
     
     '##############
     ' Dats
@@ -199,6 +199,9 @@ Public Sub CloseClient()
     Call Engine_DirectX8_End
     
     Set SurfaceDB = Nothing
+    
+    Erase MapData
+    Erase SeleccionMap
     
     Call UnloadAllForms
     
@@ -448,13 +451,13 @@ Public Sub ToggleWalkMode()
     If WalkMode = False Then
         'Erase character
         Call Char_Erase(UserCharIndex)
-        MapData(UserPos.x, UserPos.y).CharIndex = 0
+        MapData(UserPos.X, UserPos.y).CharIndex = 0
     Else
 
         'MakeCharacter
-        If Map_LegalPos(UserPos.x, UserPos.y) Then
-            Call Char_Make(NextOpenChar(), 1, 1, SOUTH, UserPos.x, UserPos.y, 0, 0, 0, 0, 0)
-            UserCharIndex = MapData(UserPos.x, UserPos.y).CharIndex
+        If Map_LegalPos(UserPos.X, UserPos.y) Then
+            Call Char_Make(NextOpenChar(), 1, 1, SOUTH, UserPos.X, UserPos.y, 0, 0, 0, 0, 0)
+            UserCharIndex = MapData(UserPos.X, UserPos.y).CharIndex
             frmMain.mnuModoCaminata.Checked = True
         Else
             MsgBox "ERROR: Ubicacion ilegal."

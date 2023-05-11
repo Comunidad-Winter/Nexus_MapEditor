@@ -9,6 +9,10 @@ Public DirInit       As String
 
 Public DirMapas      As String
 
+Public Radio         As Byte
+
+Public ToWorldMap2   As Boolean
+
 Public Form_Caption  As String
 
 Public PATH_Save     As String

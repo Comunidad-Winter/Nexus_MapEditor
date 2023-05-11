@@ -665,6 +665,9 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuConversorMapas 
          Caption         =   "Conversor de Mapas"
       End
+      Begin VB.Menu mnuRenderMap 
+         Caption         =   "Renderizar"
+      End
       Begin VB.Menu mnuArchivoLine2 
          Caption         =   "-"
       End
@@ -916,14 +919,14 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
     MouseBoton = Button
     MouseShift = Shift
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
     clicX = X
-    clicY = Y
+    clicY = y
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -963,7 +966,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     WriteVar ConfigFile, "MOSTRAR", "Grilla", IIf(frmMain.mnuVerGrilla.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Bloqueos", IIf(frmMain.mnuVerBloqueos.Checked = True, "1", "0")
     WriteVar ConfigFile, "MOSTRAR", "Particulas", IIf(frmMain.mnuVerParticulas.Checked = True, "1", "0")
-    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.Y
+    WriteVar ConfigFile, "MOSTRAR", "LastPos", UserPos.X & "-" & UserPos.y
 
     'Allow MainLoop to close program
     If prgRun = True Then
@@ -1014,6 +1017,7 @@ Private Sub Form_Unload(Cancel As Integer)
     End If
     
     Call CloseClient
+    End
     
 End Sub
 
@@ -1521,6 +1525,30 @@ mnuDeshacerPegado_Click_Err:
     
 End Sub
 
+Private Sub mnuRenderMap_Click()
+    '*************************************************
+    'Author: Lorwik
+    'Last modified: 10/05/2023
+    '*************************************************
+    
+    On Error GoTo mnuRenderMap_Click_Err
+    
+    'Radio = Val(InputBox("Escriba la escala de 1 a 5 en la que generemos su mapa", "la escala se multiplica x 32")) 'ver ReyarB
+    Radio = 1
+    
+    If Radio = 0 Then Radio = 1
+    If Radio >= 5 Then Radio = 5
+
+    FrmRender.Show
+    
+    Exit Sub
+
+mnuRenderMap_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuRenderMap_Click", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub mnuUtilizarDeshacer_Click()
 '*************************************************
 'Author: ^[GS]^
@@ -1709,7 +1737,7 @@ Private Sub mnuNpcAzar_Click()
     Dim NPCIndex As Long
     Dim X        As Byte
     Dim tmp      As String
-    Dim Y        As Byte
+    Dim y        As Byte
     Dim i        As Byte
 
     tmp = InputBox("¿Cuantos npcs?", "Ingresar npcs al azar por todo el mapa.")
@@ -1718,19 +1746,19 @@ Private Sub mnuNpcAzar_Click()
 
     For i = 1 To CLng(tmp)
         X = RandomNumber(15, 87)
-        Y = RandomNumber(15, 87)
+        y = RandomNumber(15, 87)
             
-        If (MapData(X, Y).Blocked And &HF) <> &HF Then
+        If (MapData(X, y).Blocked And &HF) <> &HF Then
 
             NPCIndex = frmNpcs.cNPC.Text
                 
-            If NPCIndex <> MapData(X, Y).NPCIndex Then
+            If NPCIndex <> MapData(X, y).NPCIndex Then
                 
                 modEdicion.Deshacer_Add "Insertar NPC" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
              
-                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, Y, 0, 0, 0, 0, 0)
-                MapData(X, Y).NPCIndex = NPCIndex
+                Call Char_Make(NextOpenChar(), NpcData(NPCIndex).Body, NpcData(NPCIndex).Head, NpcData(NPCIndex).Heading, X, y, 0, 0, 0, 0, 0)
+                MapData(X, y).NPCIndex = NPCIndex
 
             End If
 
@@ -1755,12 +1783,12 @@ Private Sub mnuNuevoMapa_Click()
     On Error GoTo mnuNuevoMapa_Click_Err
     
 
-    Dim loopc As Integer
+    Dim LoopC As Integer
 
     DeseaGuardarMapa Dialog.FileName
 
-    For loopc = 0 To frmMain.MapPest.Count
-        frmMain.MapPest(loopc).Visible = False
+    For LoopC = 0 To frmMain.MapPest.Count
+        frmMain.MapPest(LoopC).Visible = False
     Next
 
     frmMain.Dialog.FileName = Empty
@@ -2031,7 +2059,7 @@ MainViewPic_DblClick_Err:
     
 End Sub
 
-Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub MainViewPic_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
     
     On Error GoTo MainViewPic_MouseDown_Err
     
@@ -2064,12 +2092,12 @@ End Sub
 Private Sub MainViewPic_MouseMove(Button As Integer, _
                                   Shift As Integer, _
                                   X As Single, _
-                                  Y As Single)
+                                  y As Single)
     
     On Error GoTo MainViewPic_MouseMove_Err
 
     MouseX = X
-    MouseY = Y
+    MouseY = y
 
     'Make sure map is loaded
     If Not MapaCargado Then Exit Sub

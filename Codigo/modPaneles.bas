@@ -186,7 +186,7 @@ Public Sub VerFuncion(ByVal Numero As Byte)
             If Not frmCopiarBordes.Visible Then
                 frmCopiarBordes.Show , frmMain
             Else
-                frmCopiarBordes.Visible = False
+                Unload frmCopiarBordes
 
             End If
             
@@ -331,13 +331,13 @@ Public Sub RenderPreview(Optional ByVal SinMosaico As Boolean = False)
     
     frmPreview.PreviewGrh.AutoRedraw = False
 
-    Call Engine_EndScene(destRect, frmPreview.PreviewGrh.hwnd)
+    Call Engine_EndScene(destRect, frmPreview.PreviewGrh.hWnd)
 
-    Call DrawBuffer.LoadPictureBlt(frmPreview.PreviewGrh.hDC)
+    Call DrawBuffer.LoadPictureBlt(frmPreview.PreviewGrh.hdc)
 
     frmPreview.PreviewGrh.AutoRedraw = True
 
-    Call DrawBuffer.PaintPicture(frmPreview.PreviewGrh.hDC, 0, 0, frmPreview.PreviewGrh.Width, frmPreview.PreviewGrh.Height, 0, 0, vbSrcCopy)
+    Call DrawBuffer.PaintPicture(frmPreview.PreviewGrh.hdc, 0, 0, frmPreview.PreviewGrh.Width, frmPreview.PreviewGrh.Height, 0, 0, vbSrcCopy)
 
 End Sub
 

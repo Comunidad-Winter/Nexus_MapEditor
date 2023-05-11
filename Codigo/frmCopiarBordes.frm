@@ -25,7 +25,7 @@ Begin VB.Form frmCopiarBordes
    ShowInTaskbar   =   0   'False
    Begin VB.Frame FraCopiarAutomatico 
       BackColor       =   &H80000006&
-      Caption         =   "Copiar Automatico"
+      Caption         =   "Copiar Manual"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -146,9 +146,9 @@ Begin VB.Form frmCopiarBordes
          cBack           =   -2147483633
       End
    End
-   Begin VB.Frame FraCopiarManual 
+   Begin VB.Frame FraCopiarAuto 
       BackColor       =   &H80000006&
-      Caption         =   "Copiar Manual"
+      Caption         =   "Copiar Automatico"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -159,10 +159,10 @@ Begin VB.Form frmCopiarBordes
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H8000000B&
-      Height          =   3135
+      Height          =   3165
       Left            =   2100
       TabIndex        =   0
-      Top             =   150
+      Top             =   120
       Width           =   3945
       Begin Nexus_MapEditor.lvButtons_H LvBCopiarManual 
          Height          =   465
@@ -188,7 +188,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBCopiarManual 
@@ -215,7 +214,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBCopiarManual 
@@ -242,7 +240,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBCopiarManual 
@@ -269,7 +266,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBPegar 
@@ -278,7 +274,6 @@ Begin VB.Form frmCopiarBordes
          Left            =   1530
          TabIndex        =   5
          Top             =   1260
-         Visible         =   0   'False
          Width           =   795
          _ExtentX        =   1402
          _ExtentY        =   1402
@@ -297,7 +292,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBPegar 
@@ -306,6 +300,32 @@ Begin VB.Form frmCopiarBordes
          Left            =   1530
          TabIndex        =   15
          Top             =   1260
+         Width           =   795
+         _ExtentX        =   1402
+         _ExtentY        =   1402
+         Caption         =   "Pegar"
+         CapAlign        =   2
+         BackStyle       =   2
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         cGradient       =   0
+         Mode            =   0
+         Value           =   0   'False
+         cBack           =   -2147483633
+      End
+      Begin Nexus_MapEditor.lvButtons_H LvBPegar 
+         Height          =   795
+         Index           =   2
+         Left            =   1530
+         TabIndex        =   16
+         Top             =   1260
          Visible         =   0   'False
          Width           =   795
          _ExtentX        =   1402
@@ -325,34 +345,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
-         cBack           =   -2147483633
-      End
-      Begin Nexus_MapEditor.lvButtons_H LvBPegar 
-         Height          =   795
-         Index           =   2
-         Left            =   1530
-         TabIndex        =   16
-         Top             =   1260
-         Width           =   795
-         _ExtentX        =   1402
-         _ExtentY        =   1402
-         Caption         =   "Pegar"
-         CapAlign        =   2
-         BackStyle       =   2
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         cGradient       =   0
-         Mode            =   0
-         Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin Nexus_MapEditor.lvButtons_H LvBPegar 
@@ -361,6 +353,7 @@ Begin VB.Form frmCopiarBordes
          Left            =   1530
          TabIndex        =   17
          Top             =   1260
+         Visible         =   0   'False
          Width           =   795
          _ExtentX        =   1402
          _ExtentY        =   1402
@@ -379,7 +372,6 @@ Begin VB.Form frmCopiarBordes
          cGradient       =   0
          Mode            =   0
          Value           =   0   'False
-         Enabled         =   0   'False
          cBack           =   -2147483633
       End
       Begin VB.Label lblMapaEste 
@@ -443,10 +435,10 @@ Private Sub Form_Load()
     
     Call VerMapaTraslado
 
-    If lblMapaSur.Caption = "Sur" Then LvBCopiarManual(3).Enabled = False
-    If lblMapaEste.Caption = "Este" Then LvBCopiarManual(2).Enabled = False
-    If lblMapaOeste.Caption = "Oeste" Then LvBCopiarManual(1).Enabled = False
-    If lblMapaOeste.Caption = "Norte" Then LvBCopiarManual(0).Enabled = False
+    If lblMapaSur.Caption = "Sur" Then LvBCopiarManual(3).Visible = False
+    If lblMapaEste.Caption = "Este" Then LvBCopiarManual(2).Visible = False
+    If lblMapaOeste.Caption = "Oeste" Then LvBCopiarManual(1).Visible = False
+    If lblMapaOeste.Caption = "Norte" Then LvBCopiarManual(0).Visible = False
     
     Exit Sub
 
@@ -455,93 +447,42 @@ Form_Load_Err:
     Resume Next
 End Sub
 
-Private Sub LvBCopiar_Click(Index As Integer)
+Private Sub LvBCopiar_Click(index As Integer)
     
-    Select Case Index
+    Select Case index
     
         Case 0 'Norte
-            Call LvBCopiarManual_Click(0)
+            Call Copiar(0)
             Call LvBPegar_Click(0)
-            Call LvBCopiarManual_Click(3)
+            Call Copiar(3)
             Call LvBPegar_Click(3)
             
         Case 1 'Oeste
-            Call LvBCopiarManual_Click(1)
+            Call Copiar(1)
             Call LvBPegar_Click(1)
-            Call LvBCopiarManual_Click(2)
+            Call Copiar(2)
             Call LvBPegar_Click(2)
             
         Case 2 'Este
-            Call LvBCopiarManual_Click(2)
+            Call Copiar(2)
             Call LvBPegar_Click(2)
-            Call LvBCopiarManual_Click(1)
+            Call Copiar(1)
             Call LvBPegar_Click(1)
             
         Case 3 'Sur
-            Call LvBCopiarManual_Click(3)
+            Call Copiar(3)
             Call LvBPegar_Click(3)
-            Call LvBCopiarManual_Click(0)
+            Call Copiar(0)
             Call LvBPegar_Click(0)
     End Select
     
 End Sub
 
-Private Sub LvBCopiarManual_Click(Index As Integer)
+Private Sub LvBCopiarManual_Click(index As Integer)
 
     On Error GoTo LvBCopiarManual_Click_Err
         
-    Select Case Index
-    
-        Case 0 'Norte
-            SeleccionIX = 1
-            SeleccionFX = 100
-            SeleccionIY = 11
-            SeleccionFY = 22
-            LvBPegar(0).Enabled = True
-            LvBPegar(1).Enabled = False
-            LvBPegar(2).Enabled = False
-            LvBPegar(3).Enabled = False
-            
-        Case 1 'Oeste
-            SeleccionIX = 14
-            SeleccionFX = 27
-            SeleccionIY = 1
-            SeleccionFY = 100
-            LvBPegar(0).Enabled = False
-            LvBPegar(1).Enabled = True
-            LvBPegar(2).Enabled = False
-            LvBPegar(3).Enabled = False
-            
-        Case 2 'Este
-            SeleccionIX = 75
-            SeleccionFX = 87
-            SeleccionIY = 1
-            SeleccionFY = 100
-            LvBPegar(0).Enabled = False
-            LvBPegar(1).Enabled = False
-            LvBPegar(2).Enabled = True
-            LvBPegar(3).Enabled = False
-            
-        Case 3 'Sur
-            SeleccionIX = 1
-            SeleccionFX = 100
-            SeleccionIY = 81
-            SeleccionFY = 90
-            LvBPegar(0).Enabled = False
-            LvBPegar(1).Enabled = False
-            LvBPegar(2).Enabled = False
-            LvBPegar(3).Enabled = True
-    
-    End Select
-    
-    LvBCopiarManual(0).Enabled = False
-    LvBCopiarManual(1).Enabled = False
-    LvBCopiarManual(2).Enabled = False
-    LvBCopiarManual(3).Enabled = False
-
-    Call CopiarSeleccion
-    MapInfo.Changed = 1
-    frmMain.mnuGuardarMapa_Click
+    Call Copiar(index)
     
     Exit Sub
 
@@ -550,11 +491,89 @@ LvBCopiarManual_Click_Err:
     Resume Next
 End Sub
 
-Private Sub LvBPegar_Click(Index As Integer)
+Private Sub Copiar(index As Integer)
+    On Error GoTo Copiar_Err
+
+    Select Case index
+    
+        Case 0 'Norte
+            SeleccionIX = 1
+            SeleccionFX = 100
+            SeleccionIY = 11
+            SeleccionFY = 22
+            LvBPegar(0).Visible = True
+            LvBPegar(1).Visible = False
+            LvBPegar(2).Visible = False
+            LvBPegar(3).Visible = False
+
+            
+        Case 1 'Oeste
+            SeleccionIX = 14
+            SeleccionFX = 27
+            SeleccionIY = 1
+            SeleccionFY = 100
+            LvBPegar(0).Visible = False
+            LvBPegar(1).Visible = True
+            LvBPegar(2).Visible = False
+            LvBPegar(3).Visible = False
+            
+        Case 2 'Este
+            SeleccionIX = 75
+            SeleccionFX = 87
+            SeleccionIY = 1
+            SeleccionFY = 100
+            LvBPegar(0).Visible = False
+            LvBPegar(1).Visible = False
+            LvBPegar(2).Visible = True
+            LvBPegar(3).Visible = False
+            
+        Case 3 'Sur
+            SeleccionIX = 1
+            SeleccionFX = 100
+            SeleccionIY = 81
+            SeleccionFY = 90
+            LvBPegar(0).Visible = False
+            LvBPegar(1).Visible = False
+            LvBPegar(2).Visible = False
+            LvBPegar(3).Visible = True
+    
+    End Select
+    
+    LvBCopiarManual(0).Visible = False
+    LvBCopiarManual(1).Visible = False
+    LvBCopiarManual(2).Visible = False
+    LvBCopiarManual(3).Visible = False
+
+    Call CopiarSeleccion
+    MapInfo.Changed = 1
+    frmMain.mnuGuardarMapa_Click
+    
+    Exit Sub
+
+Copiar_Err:
+    Call LogError(Err.Number, Err.Description, "frmCopiarBordes.Copiar", Erl)
+    Resume Next
+End Sub
+
+Private Sub LvBPegar_Click(index As Integer)
 
     On Error GoTo LvBPegar_Click_Err
 
-    Select Case Index
+    Call Pegar(index)
+    
+Exit Sub
+
+LvBPegar_Click_Err:
+Call LogError(Err.Number, Err.Description, "frmCopiarBordes.LvBPegar_Click", Erl)
+
+Resume Next
+
+End Sub
+
+Private Sub Pegar(index As Integer)
+    On Error GoTo Pegar_Err
+
+    Select Case index
     
         Case 0
 
@@ -637,11 +656,10 @@ Private Sub LvBPegar_Click(Index As Integer)
     
 Exit Sub
 
-LvBPegar_Click_Err:
-Call LogError(Err.Number, Err.Description, "frmCopiarBordes.LvBPegar_Click", Erl)
+Pegar_Err:
+Call LogError(Err.Number, Err.Description, "frmCopiarBordes.Pegar", Erl)
 
 Resume Next
-
 End Sub
 
 Private Sub VerMapaTraslado()
@@ -649,27 +667,27 @@ Private Sub VerMapaTraslado()
     On Error GoTo VerMapaTraslado_Err
     
     Dim X As Integer
-    Dim Y As Integer
+    Dim y As Integer
 
     'Izquierda
     X = 13
 
-    For Y = (11) To (90)
+    For y = (11) To (90)
 
-        If MapData(X, Y).TileExit.Map <> 0 Then
-            lblMapaOeste.Caption = MapData(X, Y).TileExit.Map
+        If MapData(X, y).TileExit.Map <> 0 Then
+            lblMapaOeste.Caption = MapData(X, y).TileExit.Map
             Exit For
         End If
 
     Next
     
     'arriba
-    Y = 10
+    y = 10
 
     For X = (14) To (87)
 
-        If MapData(X, Y).TileExit.Map <> 0 Then
-            lblMapaNorte.Caption = MapData(X, Y).TileExit.Map
+        If MapData(X, y).TileExit.Map <> 0 Then
+            lblMapaNorte.Caption = MapData(X, y).TileExit.Map
             Exit For
         End If
 
@@ -678,22 +696,22 @@ Private Sub VerMapaTraslado()
     'Derecha
     X = 88
 
-    For Y = (11) To (90)
+    For y = (11) To (90)
 
-        If MapData(X, Y).TileExit.Map <> 0 Then
-            lblMapaEste.Caption = MapData(X, Y).TileExit.Map
+        If MapData(X, y).TileExit.Map <> 0 Then
+            lblMapaEste.Caption = MapData(X, y).TileExit.Map
             Exit For
         End If
 
     Next
     
     'Abajo
-    Y = 91
+    y = 91
 
     For X = (14) To (87)
 
-        If MapData(X, Y).TileExit.Map <> 0 Then
-            lblMapaSur.Caption = MapData(X, Y).TileExit.Map
+        If MapData(X, y).TileExit.Map <> 0 Then
+            lblMapaSur.Caption = MapData(X, y).TileExit.Map
             Exit For
         End If
 

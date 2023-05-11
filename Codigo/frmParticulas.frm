@@ -172,6 +172,24 @@ cSeleccionarParticula_Click_Err:
     
 End Sub
 
+Private Sub lListado_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 22/05/06
+    '*************************************************
+    
+    On Error GoTo lListado_MouseMove_Err
+
+    HotKeysAllow = False
+
+    Exit Sub
+
+lListado_MouseMove_Err:
+    Call LogError(Err.Number, Err.Description, "FrmParticulas.lListado_MouseMove", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub lListado_Click()
 '**********************************
 'Author: Lorwik

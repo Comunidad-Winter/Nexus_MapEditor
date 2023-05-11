@@ -367,11 +367,32 @@ Private Sub Form_Load()
 
 End Sub
 
+Private Sub lListado_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
+    '*************************************************
+    'Author: ^[GS]^
+    'Last modified: 22/05/06
+    '*************************************************
+    
+    On Error GoTo lListado_MouseMove_Err
+
+    HotKeysAllow = False
+
+    Exit Sub
+
+lListado_MouseMove_Err:
+    Call LogError(Err.Number, Err.Description, "FrmSuperficies.lListado_MouseMove", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub lListado_Click()
     '*************************************************
     'Author: Lorwik
     'Last modified: ?????
     '*************************************************
+    
+    If HotKeysAllow = False Then _
+        lListado.Tag = lListado.ListIndex
     
     cGrh.Text = DameGrhIndex(ReadField(2, lListado.Text, Asc("#")))
                 
