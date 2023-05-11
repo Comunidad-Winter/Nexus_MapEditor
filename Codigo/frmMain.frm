@@ -824,8 +824,11 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuHerrSeleccion 
          Caption         =   "Herramientas de Selección"
       End
+      Begin VB.Menu mnuvergraficos 
+         Caption         =   "Ver Graficos"
+      End
    End
-   Begin VB.Menu mnuVer 
+   Begin VB.Menu mnuver 
       Caption         =   "&Ver"
       Begin VB.Menu mnuCapas 
          Caption         =   "&Capas"
@@ -1999,6 +2002,17 @@ Private Sub mnuReAbrirMapa_Click()
     
 ErrHandler:
 
+End Sub
+
+Private Sub mnuvergraficos_Click()
+    On Error GoTo mnuvergraficos_Click_Err
+    
+    frmGraficos.Show , frmMain
+    
+    Exit Sub
+mnuvergraficos_Click_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.mnuvergraficos_Click", Erl)
+    Resume Next
 End Sub
 
 Public Sub SelectPanel_Click(Index As Integer)
