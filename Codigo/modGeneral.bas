@@ -131,7 +131,6 @@ Sub Main()
     ChDrive App.Path
     ChDir App.Path
     Windows_Temp_Dir = General_Get_Temp_Dir
-    Form_Caption = "Nexus MapEditor v" & App.Major & "." & App.Minor & "." & App.Revision
     
     '##############
     ' MOTOR GRAFICO
@@ -463,7 +462,7 @@ Public Sub ToggleWalkMode()
 
         'MakeCharacter
         If Map_LegalPos(UserPos.X, UserPos.y) Then
-            Call Char_Make(NextOpenChar(), 1, 1, SOUTH, UserPos.X, UserPos.y, 0, 0, 0, 0, 0)
+            Call Char_Make(NextOpenChar(), 1, 4, SOUTH, UserPos.X, UserPos.y, 0, 0, 0, 0, 0)
             UserCharIndex = MapData(UserPos.X, UserPos.y).CharIndex
             frmMain.mnuModoCaminata.Checked = True
         Else

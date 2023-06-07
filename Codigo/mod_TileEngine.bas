@@ -175,6 +175,7 @@ Public Type MapBlock
     Trigger As Integer
     
     Engine_Light(0 To 3) As Long
+    Particle_Index As Integer
     Light As tLight
     
     Particle_Group_Index As Long 'Particle Engine
@@ -240,10 +241,10 @@ Public DeSeleccionando       As Boolean
 Public DeSeleccionMap()      As MapBlock
 
 'Bordes del mapa
-Public MinXBorder As Byte
-Public MaxXBorder As Byte
-Public MinYBorder As Byte
-Public MaxYBorder As Byte
+Public MinXBorder As Integer
+Public MaxXBorder As Integer
+Public MinYBorder As Integer
+Public MaxYBorder As Integer
 
 'Status del user
 Public CurMap As Integer 'Mapa actual

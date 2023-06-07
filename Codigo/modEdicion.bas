@@ -222,13 +222,13 @@ Sub DobleClick(tX As Integer, tY As Integer)
         If LenB(frmMain.Dialog.FileName) <> 0 Then
             If FileExist(PATH_Save & NameMap_Save & tTrans.Map & MapFormat, vbArchive) = True Then
                 Call modMapIO.NuevoMapa
-                frmMain.Dialog.FileName = PATH_Save & NameMap_Save & tTrans.Map & ".csm"
-                modMapIO.AbrirMapa frmMain.Dialog.FileName
-                UserPos.x = tTrans.x
+                frmMain.Dialog.FileName = PATH_Save & NameMap_Save & tTrans.Map & MapFormat
+                modMapIO.AbrirMapa frmMain.Dialog.FileName, MapFormat
+                UserPos.X = tTrans.X
                 UserPos.y = tTrans.y
 
                 If WalkMode = True Then
-                    Call Char_MovebyPos(UserCharIndex, UserPos.x, UserPos.y - 7)
+                    Call Char_MovebyPos(UserCharIndex, UserPos.X, UserPos.y - 7)
                     charlist(UserCharIndex).Heading = SOUTH
 
                 End If
@@ -259,7 +259,7 @@ Public Sub Superficie_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As
     If EditWarning Then Exit Sub
     
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
     If Not MapaCargado Then _
         Exit Sub
@@ -267,25 +267,25 @@ Public Sub Superficie_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As
     modEdicion.Deshacer_Add "Superficie en area" ' Hago deshacer
 
     For y = y1 To y2
-        For x = x1 To x2
+        For X = x1 To x2
             If Poner = True Then
                 If frmConfigSup.MOSAICO.value = vbChecked Then
                     Dim aux As Integer
                     aux = Val(frmSuperficies.cGrh.Text) + _
-                    ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (x Mod frmConfigSup.mAncho)
-                     MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
+                    ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (X Mod frmConfigSup.mAncho)
+                     MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
                     'Setup GRH
-                    InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
+                    InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
                 Else
                     'Else Place graphic
-                    MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
+                    MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
                     'Setup GRH
-                    InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
+                    InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
                 End If
             Else
-                MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = 0
+                MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = 0
             End If
-        Next x
+        Next X
     Next y
     
     'Set changed flag
@@ -302,7 +302,7 @@ Public Sub Bloqueos_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As I
     If EditWarning Then Exit Sub
     
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
     If Not MapaCargado Then
         Exit Sub
@@ -311,15 +311,15 @@ Public Sub Bloqueos_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As I
     modEdicion.Deshacer_Add "Bloqueo en Area" ' Hago deshacer
 
     For y = y1 To y2
-        For x = x1 To x2
+        For X = x1 To x2
     
             If Inserta = True Then
-                MapData(x, y).Blocked = 1
+                MapData(X, y).Blocked = 1
             Else
-                MapData(x, y).Blocked = 0
+                MapData(X, y).Blocked = 0
             End If
     
-        Next x
+        Next X
     Next y
     
     'Set changed flag
@@ -336,7 +336,7 @@ Public Sub Triggers_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As I
     If EditWarning Then Exit Sub
     
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
     If Not MapaCargado Then
         Exit Sub
@@ -345,23 +345,23 @@ Public Sub Triggers_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As I
     modEdicion.Deshacer_Add "Triggers en Area" ' Hago deshacer
 
     For y = y1 To y2
-        For x = x1 To x2
+        For X = x1 To x2
             If Poner = True Then
                 If frmConfigSup.MOSAICO.value = vbChecked Then
                     MapInfo.Changed = 1 'Set changed flag
-                    MapData(x, y).Trigger = frmTriggers.lListado.ListIndex
+                    MapData(X, y).Trigger = frmTriggers.lListado.ListIndex
                 Else
                     MapInfo.Changed = 1
                     'Else Place trigger
-                    MapData(x, y).Trigger = 0
+                    MapData(X, y).Trigger = 0
 
                 End If
             Else
                 MapInfo.Changed = 1
-                MapData(x, y).Trigger = 0
+                MapData(X, y).Trigger = 0
                 
             End If
-        Next x
+        Next X
     Next y
     
     'Set changed flag
@@ -382,7 +382,7 @@ Public Sub Superficie_Azar()
 
     On Error Resume Next
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     Dim Cuantos As Integer
     Dim k As Integer
     
@@ -397,7 +397,7 @@ Public Sub Superficie_Azar()
         modEdicion.Deshacer_Add "Insertar Superficie al Azar" ' Hago deshacer
         
         For k = 1 To Cuantos
-            x = RandomNumber(10, 90)
+            X = RandomNumber(10, 90)
             y = RandomNumber(10, 90)
             
             If frmConfigSup.MOSAICO.value = vbChecked Then
@@ -414,17 +414,17 @@ Public Sub Superficie_Azar()
                     
               If frmMain.mnuAutoCompletarSuperficies.Checked = False Then
                     aux = Val(frmSuperficies.cGrh.Text) + _
-                    (((y + dy) Mod frmConfigSup.mLargo.Text) * frmConfigSup.mAncho.Text) + ((x + dX) Mod frmConfigSup.mAncho.Text)
+                    (((y + dy) Mod frmConfigSup.mLargo.Text) * frmConfigSup.mAncho.Text) + ((X + dX) Mod frmConfigSup.mAncho.Text)
                     If frmBloqueos.cInsertarBloqueo.value = True Then
-                        MapData(x, y).Blocked = 1
+                        MapData(X, y).Blocked = 1
                     Else
-                        MapData(x, y).Blocked = 0
+                        MapData(X, y).Blocked = 0
                     End If
-                    MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
-                    InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
+                    MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
+                    InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
               Else
                     Dim tXX As Integer, tYY As Integer, i As Integer, j As Integer, desptile As Integer
-                    tXX = x
+                    tXX = X
                     tYY = y
                     desptile = 0
                     For i = 1 To frmConfigSup.mLargo.Text
@@ -443,7 +443,7 @@ Public Sub Superficie_Azar()
                              tXX = tXX + 1
                              desptile = desptile + 1
                         Next
-                        tXX = x
+                        tXX = X
                         tYY = tYY + 1
                     Next
                     tYY = y
@@ -468,7 +468,7 @@ Public Sub Superficie_Bordes()
 '*************************************************
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
     If Not MapaCargado Then
         Exit Sub
@@ -477,55 +477,55 @@ Public Sub Superficie_Bordes()
     modEdicion.Deshacer_Add "Insertar Superficie en todos los bordes" ' Hago deshacer
     
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
     
-            If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
+            If X < MinXBorder Or X > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
     
               If frmConfigSup.MOSAICO.value = vbChecked Then
                 Dim aux As Integer
                 aux = Val(frmSuperficies.cGrh.Text) + _
-                ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (x Mod frmConfigSup.mAncho)
+                ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (X Mod frmConfigSup.mAncho)
                 If frmBloqueos.cInsertarBloqueo.value = True Then
-                    MapData(x, y).Blocked = 1
+                    MapData(X, y).Blocked = 1
                 Else
-                    MapData(x, y).Blocked = 0
+                    MapData(X, y).Blocked = 0
                 End If
-                MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
+                MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
                 'Setup GRH
-                InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
+                InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
               Else
                 'Else Place graphic
                 If frmBloqueos.cInsertarBloqueo.value = True Then
-                    MapData(x, y).Blocked = 1
+                    MapData(X, y).Blocked = 1
                 Else
-                    MapData(x, y).Blocked = 0
+                    MapData(X, y).Blocked = 0
                 End If
                 
-                MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
+                MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
                 
                 'Setup GRH
         
-                InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
+                InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
             End If
                  'Erase NPCs
-                If MapData(x, y).NPCIndex > 0 Then
-                    Call Char_Erase(MapData(x, y).CharIndex)
-                    MapData(x, y).NPCIndex = 0
+                If MapData(X, y).NPCIndex > 0 Then
+                    Call Char_Erase(MapData(X, y).CharIndex)
+                    MapData(X, y).NPCIndex = 0
                 End If
     
                 'Erase Objs
-                MapData(x, y).OBJInfo.objindex = 0
-                MapData(x, y).OBJInfo.Amount = 0
-                MapData(x, y).ObjGrh.GrhIndex = 0
+                MapData(X, y).OBJInfo.objindex = 0
+                MapData(X, y).OBJInfo.Amount = 0
+                MapData(X, y).ObjGrh.GrhIndex = 0
     
                 'Clear exits
-                MapData(x, y).TileExit.Map = 0
-                MapData(x, y).TileExit.x = 0
-                MapData(x, y).TileExit.y = 0
+                MapData(X, y).TileExit.Map = 0
+                MapData(X, y).TileExit.X = 0
+                MapData(X, y).TileExit.y = 0
     
             End If
     
-        Next x
+        Next X
     Next y
     
     'Set changed flag
@@ -546,7 +546,7 @@ Public Sub Superficie_Todo()
     If EditWarning Then Exit Sub
     
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
     If Not MapaCargado Then
         Exit Sub
@@ -555,23 +555,23 @@ Public Sub Superficie_Todo()
     modEdicion.Deshacer_Add "Insertar Superficie en todo el mapa" ' Hago deshacer
     
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
     
             If frmConfigSup.MOSAICO.value = vbChecked Then
                 Dim aux As Integer
                 aux = Val(frmSuperficies.cGrh.Text) + _
-                ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (x Mod frmConfigSup.mAncho)
-                 MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
+                ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (X Mod frmConfigSup.mAncho)
+                 MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
                 'Setup GRH
-                InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
+                InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), aux
             Else
                 'Else Place graphic
-                MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
+                MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = Val(frmSuperficies.cGrh.Text)
                 'Setup GRH
-                InitGrh MapData(x, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
+                InitGrh MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)), Val(frmSuperficies.cGrh.Text)
             End If
     
-        Next x
+        Next X
     Next y
     
     'Set changed flag
@@ -645,12 +645,12 @@ Sub ClickEdit(Button As Integer, _
         If MapData(tX, tY).TileExit.Map <> 0 Then
             If frmMain.mnuAutoCapturarTranslados.Checked = True Then
                 frmTraslados.tTMapa.Text = MapData(tX, tY).TileExit.Map
-                frmTraslados.tTX.Text = MapData(tX, tY).TileExit.x
+                frmTraslados.tTX.Text = MapData(tX, tY).TileExit.X
                 frmTraslados.tTY = MapData(tX, tY).TileExit.y
 
             End If
 
-            frmConsola.StatTxt.Text = frmConsola.StatTxt.Text & " (Trans.: " & MapData(tX, tY).TileExit.Map & "," & MapData(tX, tY).TileExit.x & "," & MapData(tX, tY).TileExit.y & ")"
+            frmConsola.StatTxt.Text = frmConsola.StatTxt.Text & " (Trans.: " & MapData(tX, tY).TileExit.Map & "," & MapData(tX, tY).TileExit.X & "," & MapData(tX, tY).TileExit.y & ")"
 
         End If
         
@@ -876,20 +876,20 @@ Sub ClickEdit(Button As Integer, _
                 MapData(tX, tY).TileExit.Map = Val(frmTraslados.tTMapa.Text)
 
                 If tX >= 90 Then ' 21 ' derecha
-                    MapData(tX, tY).TileExit.x = 12
+                    MapData(tX, tY).TileExit.X = 12
                     MapData(tX, tY).TileExit.y = tY
                 ElseIf tX <= 11 Then ' 9 ' izquierda
-                    MapData(tX, tY).TileExit.x = 91
+                    MapData(tX, tY).TileExit.X = 91
                     MapData(tX, tY).TileExit.y = tY
 
                 End If
 
                 If tY >= 91 Then ' 94 '''' hacia abajo
                     MapData(tX, tY).TileExit.y = 11
-                    MapData(tX, tY).TileExit.x = tX
+                    MapData(tX, tY).TileExit.X = tX
                 ElseIf tY <= 10 Then ''' hacia arriba
                     MapData(tX, tY).TileExit.y = 90
-                    MapData(tX, tY).TileExit.x = tX
+                    MapData(tX, tY).TileExit.X = tX
 
                 End If
 
@@ -898,7 +898,7 @@ Sub ClickEdit(Button As Integer, _
                 If Deshacer Then modEdicion.Deshacer_Add "Insertar Translado" ' Hago deshacer
                 MapInfo.Changed = 1 'Set changed flag
                 MapData(tX, tY).TileExit.Map = Val(frmTraslados.tTMapa.Text)
-                MapData(tX, tY).TileExit.x = Val(frmTraslados.tTX.Text)
+                MapData(tX, tY).TileExit.X = Val(frmTraslados.tTX.Text)
                 MapData(tX, tY).TileExit.y = Val(frmTraslados.tTY.Text)
 
             End If
@@ -908,7 +908,7 @@ Sub ClickEdit(Button As Integer, _
             If Deshacer Then modEdicion.Deshacer_Add "Quitar Translado" ' Hago deshacer
             MapInfo.Changed = 1 'Set changed flag
             MapData(tX, tY).TileExit.Map = 0
-            MapData(tX, tY).TileExit.x = 0
+            MapData(tX, tY).TileExit.X = 0
             MapData(tX, tY).TileExit.y = 0
 
         End If
@@ -1031,6 +1031,7 @@ Sub ClickEdit(Button As Integer, _
             If Deshacer Then modEdicion.Deshacer_Add "Insertar Particula" ' Hago deshacer
             MapInfo.Changed = 1
             MapData(tX, tY).Particle_Group_Index = General_Particle_Create(CLng(frmParticulas.cParticula.Text), tX, tY)
+            MapData(tX, tY).Particle_Index = Val(frmParticulas.cParticula.Text)
                 
         ElseIf frmParticulas.cQuitarParticula.value = True Then ' Quitar Particle
 
@@ -1056,7 +1057,7 @@ Sub ClickEdit(Button As Integer, _
                     
             End With
                 
-            If Deshacer Then modEdicion.Deshacer_Add "Insertar LÑuz" ' Hago deshacer
+            If Deshacer Then modEdicion.Deshacer_Add "Insertar Luz" ' Hago deshacer
             MapInfo.Changed = 1 'Set changed flag
                 
         ElseIf frmLuces.cQuitarLuz.value Then
@@ -1100,20 +1101,18 @@ Public Sub Bloquear_Bordes(Optional ByVal ac As Byte = 1)
     On Error GoTo Bloquear_Bordes_Err
     
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
     
-    If Not MapaCargado Then
-        Exit Sub
-    End If
-    
+    If Not MapaCargado Then Exit Sub
+        
     modEdicion.Deshacer_Add "Bloquear los bordes" ' Hago deshacer
     
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
-            If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
-                MapData(x, y).Blocked = ac
+        For X = XMinMapSize To XMaxMapSize
+            If X < MinXBorder Or X > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
+                MapData(X, y).Blocked = ac
             End If
-        Next x
+        Next X
     Next y
     
     MapData(MinXBorder, MinYBorder).Blocked = ac
@@ -1148,7 +1147,7 @@ Public Sub Bloqueo_Todo(ByVal Valor As Byte)
     On Error GoTo Bloqueo_Todo_Err
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     If Not MapaCargado Then
         Exit Sub
@@ -1158,9 +1157,9 @@ Public Sub Bloqueo_Todo(ByVal Valor As Byte)
     modEdicion.Deshacer_Add "Bloquear todo el mapa" ' Hago deshacer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
-            MapData(x, y).Blocked = Valor
-        Next x
+        For X = XMinMapSize To XMaxMapSize
+            MapData(X, y).Blocked = Valor
+        Next X
     Next y
 
     'Set changed flag
@@ -1191,19 +1190,19 @@ Public Sub Quitar_Translados()
     modEdicion.Deshacer_Add "Quitar todos los Translados" ' Hago deshacer
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            If MapData(x, y).TileExit.Map <> 0 Then
-                MapData(x, y).TileExit.Map = 0
-                MapData(x, y).TileExit.x = 0
-                MapData(x, y).TileExit.y = 0
+            If MapData(X, y).TileExit.Map <> 0 Then
+                MapData(X, y).TileExit.Map = 0
+                MapData(X, y).TileExit.X = 0
+                MapData(X, y).TileExit.y = 0
 
             End If
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1235,17 +1234,17 @@ Public Sub Quitar_Triggers()
     modEdicion.Deshacer_Add "Quitar todos los Triggers" ' Hago deshacer
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            If MapData(x, y).Trigger > 0 Then
-                MapData(x, y).Trigger = 0
+            If MapData(X, y).Trigger > 0 Then
+                MapData(X, y).Trigger = 0
 
             End If
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1275,18 +1274,18 @@ Public Sub Quitar_NPCs(ByVal Hostiles As Boolean)
     modEdicion.Deshacer_Add "Quitar todos los NPCs" & IIf(Hostiles = True, " Hostiles", "") ' Hago deshacer
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            If MapData(x, y).NPCIndex > 0 Then
-                Call Char_Erase(MapData(x, y).CharIndex)
-                MapData(x, y).NPCIndex = 0
+            If MapData(X, y).NPCIndex > 0 Then
+                Call Char_Erase(MapData(X, y).CharIndex)
+                MapData(X, y).NPCIndex = 0
 
             End If
         
-        Next x
+        Next X
     Next y
 
     bRefreshRadar = True ' Radar
@@ -1319,19 +1318,19 @@ Public Sub Quitar_Objetos()
     modEdicion.Deshacer_Add "Quitar todos los Objetos" ' Hago deshacer
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            If MapData(x, y).OBJInfo.objindex > 0 Then
-                If MapData(x, y).Graphic(3).GrhIndex = MapData(x, y).ObjGrh.GrhIndex Then MapData(x, y).Graphic(3).GrhIndex = 0
-                MapData(x, y).OBJInfo.objindex = 0
-                MapData(x, y).OBJInfo.Amount = 0
+            If MapData(X, y).OBJInfo.objindex > 0 Then
+                If MapData(X, y).Graphic(3).GrhIndex = MapData(X, y).ObjGrh.GrhIndex Then MapData(X, y).Graphic(3).GrhIndex = 0
+                MapData(X, y).OBJInfo.objindex = 0
+                MapData(X, y).OBJInfo.Amount = 0
 
             End If
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1364,44 +1363,44 @@ Public Sub Quitar_Bordes()
     '*****************************************************************
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     If Not MapaCargado Then Exit Sub
 
     modEdicion.Deshacer_Add "Quitar todos los Bordes" ' Hago deshacer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
+            If X < MinXBorder Or X > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         
-                MapData(x, y).Graphic(1).GrhIndex = 1
-                InitGrh MapData(x, y).Graphic(1), 1
-                MapData(x, y).Blocked = 0
+                MapData(X, y).Graphic(1).GrhIndex = 1
+                InitGrh MapData(X, y).Graphic(1), 1
+                MapData(X, y).Blocked = 0
             
                 'Erase NPCs
-                If MapData(x, y).NPCIndex > 0 Then
-                    Char_Erase MapData(x, y).CharIndex
-                    MapData(x, y).NPCIndex = 0
+                If MapData(X, y).NPCIndex > 0 Then
+                    Char_Erase MapData(X, y).CharIndex
+                    MapData(X, y).NPCIndex = 0
 
                 End If
 
                 'Erase Objs
-                MapData(x, y).OBJInfo.objindex = 0
-                MapData(x, y).OBJInfo.Amount = 0
-                MapData(x, y).ObjGrh.GrhIndex = 0
+                MapData(X, y).OBJInfo.objindex = 0
+                MapData(X, y).OBJInfo.Amount = 0
+                MapData(X, y).ObjGrh.GrhIndex = 0
 
                 'Clear exits
-                MapData(x, y).TileExit.Map = 0
-                MapData(x, y).TileExit.x = 0
-                MapData(x, y).TileExit.y = 0
+                MapData(X, y).TileExit.Map = 0
+                MapData(X, y).TileExit.X = 0
+                MapData(X, y).TileExit.y = 0
             
                 ' Triggers
-                MapData(x, y).Trigger = 0
+                MapData(X, y).Trigger = 0
 
             End If
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1435,23 +1434,23 @@ Public Sub Quitar_Capa(ByVal Capa As Byte)
     '*****************************************************************
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     If Not MapaCargado Then Exit Sub
 
     modEdicion.Deshacer_Add "Quitar Capa " & Capa ' Hago deshacer
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
             If Capa = 1 Then
-                MapData(x, y).Graphic(Capa).GrhIndex = 1
+                MapData(X, y).Graphic(Capa).GrhIndex = 1
             Else
-                MapData(x, y).Graphic(Capa).GrhIndex = 0
+                MapData(X, y).Graphic(Capa).GrhIndex = 0
 
             End If
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1480,7 +1479,7 @@ Public Sub Borrar_Mapa()
     If EditWarning Then Exit Sub
 
     Dim y As Integer
-    Dim x As Integer
+    Dim X As Integer
 
     If Not MapaCargado Then Exit Sub
 
@@ -1493,40 +1492,40 @@ Public Sub Borrar_Mapa()
     Call LightRemoveAll
 
     For y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
-            MapData(x, y).Graphic(1).GrhIndex = 1
+        For X = XMinMapSize To XMaxMapSize
+            MapData(X, y).Graphic(1).GrhIndex = 1
             'Change blockes status
-            MapData(x, y).Blocked = 0
+            MapData(X, y).Blocked = 0
 
             'Erase layer 2 and 3
-            MapData(x, y).Graphic(2).GrhIndex = 0
-            MapData(x, y).Graphic(3).GrhIndex = 0
-            MapData(x, y).Graphic(4).GrhIndex = 0
+            MapData(X, y).Graphic(2).GrhIndex = 0
+            MapData(X, y).Graphic(3).GrhIndex = 0
+            MapData(X, y).Graphic(4).GrhIndex = 0
 
             'Erase NPCs
-            If MapData(x, y).NPCIndex > 0 Then
-                Char_Erase MapData(x, y).CharIndex
-                MapData(x, y).NPCIndex = 0
+            If MapData(X, y).NPCIndex > 0 Then
+                Char_Erase MapData(X, y).CharIndex
+                MapData(X, y).NPCIndex = 0
             End If
 
             'Erase Objs
-            MapData(x, y).OBJInfo.objindex = 0
-            MapData(x, y).OBJInfo.Amount = 0
-            MapData(x, y).ObjGrh.GrhIndex = 0
+            MapData(X, y).OBJInfo.objindex = 0
+            MapData(X, y).OBJInfo.Amount = 0
+            MapData(X, y).ObjGrh.GrhIndex = 0
 
             'Clear exits
-            MapData(x, y).TileExit.Map = 0
-            MapData(x, y).TileExit.x = 0
-            MapData(x, y).TileExit.y = 0
+            MapData(X, y).TileExit.Map = 0
+            MapData(X, y).TileExit.X = 0
+            MapData(X, y).TileExit.y = 0
         
-            InitGrh MapData(x, y).Graphic(1), 1
+            InitGrh MapData(X, y).Graphic(1), 1
             
-            MapData(x, y).Light.active = False
-            MapData(x, y).Particle_Group_Index = 0
+            MapData(X, y).Light.active = False
+            MapData(X, y).Particle_Group_Index = 0
             
-            MapData(x, y).Trigger = 0
+            MapData(X, y).Trigger = 0
 
-        Next x
+        Next X
     Next y
 
     'Set changed flag
@@ -1540,7 +1539,7 @@ Borrar_Mapa_Err:
     
 End Sub
 
-Public Sub CopiarSeleccion()
+Public Sub CopiarSeleccion(Optional ByVal Borde As Boolean = False)
     '*************************************************
     'Author: Loopzer
     'Last modified: 21/11/07
@@ -1549,26 +1548,29 @@ Public Sub CopiarSeleccion()
     
     On Error GoTo CopiarSeleccion_Err
     
-    Dim x As Integer
+    Dim X As Integer
     Dim y As Integer
-    Debug.Print
+
     Seleccionando = False
     SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
     SeleccionAlto = Abs(SeleccionIY - SeleccionFY) + 1
     
-    Debug.Print SeleccionIX
-    Debug.Print SeleccionFX
-    
-    Debug.Print SeleccionIY
-    Debug.Print SeleccionFY
-    
     ReDim SeleccionMap(SeleccionAncho, SeleccionAlto) As MapBlock
 
-    For x = 0 To SeleccionAncho - 1
-        For y = 0 To SeleccionAlto - 1
-            SeleccionMap(x, y) = MapData(x + SeleccionIX, y + SeleccionIY)
+    If Not Borde Then
+        For X = 0 To SeleccionAncho - 1
+            For y = 0 To SeleccionAlto - 1
+                SeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+            Next
         Next
-    Next
+        
+    Else
+        For X = 0 To SeleccionAncho - 1
+            For y = 0 To SeleccionAlto - 1
+                SeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
+            Next
+        Next
+    End If
     MapInfo.Changed = 1
 
     Exit Sub
@@ -1588,7 +1590,7 @@ Public Sub CortarSeleccion()
     On Error GoTo CortarSeleccion_Err
     
     CopiarSeleccion
-    Dim x     As Integer
+    Dim X     As Integer
     Dim y     As Integer
     Dim Vacio As MapBlock
     DeSeleccionAncho = SeleccionAncho
@@ -1597,15 +1599,15 @@ Public Sub CortarSeleccion()
     DeSeleccionOY = SeleccionIY
     ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
     
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
-            DeSeleccionMap(x, y) = MapData(x + SeleccionIX, y + SeleccionIY)
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
         Next
     Next
 
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
-            MapData(x + SeleccionIX, y + SeleccionIY) = Vacio
+            MapData(X + SeleccionIX, y + SeleccionIY) = Vacio
         Next
     Next
     Seleccionando = False
@@ -1627,7 +1629,7 @@ Public Sub BlockearSeleccion()
     
     On Error GoTo BlockearSeleccion_Err
     
-    Dim x     As Integer
+    Dim X     As Integer
     Dim y     As Integer
     Dim Vacio As MapBlock
     SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
@@ -1638,19 +1640,19 @@ Public Sub BlockearSeleccion()
     DeSeleccionOY = SeleccionIY
     ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
     
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
-            DeSeleccionMap(x, y) = MapData(x + SeleccionIX, y + SeleccionIY)
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
         Next
     Next
 
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
 
-            If MapData(x + SeleccionIX, y + SeleccionIY).Blocked > 0 Then
-                MapData(x + SeleccionIX, y + SeleccionIY).Blocked = 0
+            If MapData(X + SeleccionIX, y + SeleccionIY).Blocked > 0 Then
+                MapData(X + SeleccionIX, y + SeleccionIY).Blocked = 0
             Else
-                MapData(x + SeleccionIX, y + SeleccionIY).Blocked = &HF
+                MapData(X + SeleccionIX, y + SeleccionIY).Blocked = &HF
 
             End If
 
@@ -1676,7 +1678,7 @@ Public Sub AccionSeleccion()
     '*************************************************
     On Error Resume Next
 
-    Dim x As Integer
+    Dim X As Integer
     Dim y As Integer
     SeleccionAncho = Abs(SeleccionIX - SeleccionFX) + 1
     SeleccionAlto = Abs(SeleccionIY - SeleccionFY) + 1
@@ -1686,17 +1688,17 @@ Public Sub AccionSeleccion()
     DeSeleccionOY = SeleccionIY
     ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
     
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
-            DeSeleccionMap(x, y) = MapData(x + SeleccionIX, y + SeleccionIY)
+            DeSeleccionMap(X, y) = MapData(X + SeleccionIX, y + SeleccionIY)
         Next
     Next
 
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
-            ClickEdit vbLeftButton, SeleccionIX + x, SeleccionIY + y, False
+            ClickEdit vbLeftButton, SeleccionIX + X, SeleccionIY + y, False
         Next y
-    Next x
+    Next X
     
     Seleccionando = False
     
@@ -1722,7 +1724,7 @@ Public Sub PegarSeleccion() '(mx As Integer, my As Integer)
     'If UltimoX = SobreX And UltimoY = SobreY Then Exit Sub
     UltimoX = SobreX
     UltimoY = SobreY
-    Dim x As Integer
+    Dim X As Integer
     Dim y As Integer
     DeSeleccionAncho = SeleccionAncho
     DeSeleccionAlto = SeleccionAlto
@@ -1733,34 +1735,34 @@ Public Sub PegarSeleccion() '(mx As Integer, my As Integer)
     Debug.Print SobreY
     ReDim DeSeleccionMap(DeSeleccionAncho, DeSeleccionAlto) As MapBlock
     
-    For x = 0 To DeSeleccionAncho - 1
+    For X = 0 To DeSeleccionAncho - 1
         For y = 0 To DeSeleccionAlto - 1
 
             If y + SobreY > 100 Then Exit For
-            If x + SobreX > 100 Then Exit For
+            If X + SobreX > 100 Then Exit For
             'NO copia tile exit - LADDER
   
-            DeSeleccionMap(x, y).TileExit.Map = MapData(x + SobreX, y + SobreY).TileExit.Map
-            DeSeleccionMap(x, y).TileExit.x = MapData(x + SobreX, y + SobreY).TileExit.x
-            DeSeleccionMap(x, y).TileExit.y = MapData(x + SobreX, y + SobreY).TileExit.y
-            DeSeleccionMap(x, y) = MapData(x + SobreX, y + SobreY)
+            DeSeleccionMap(X, y).TileExit.Map = MapData(X + SobreX, y + SobreY).TileExit.Map
+            DeSeleccionMap(X, y).TileExit.X = MapData(X + SobreX, y + SobreY).TileExit.X
+            DeSeleccionMap(X, y).TileExit.y = MapData(X + SobreX, y + SobreY).TileExit.y
+            DeSeleccionMap(X, y) = MapData(X + SobreX, y + SobreY)
 
-            MapData(x + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
+            MapData(X + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
         Next
     Next
 
-    For x = 0 To SeleccionAncho - 1
+    For X = 0 To SeleccionAncho - 1
         For y = 0 To SeleccionAlto - 1
 
             If y + SobreY > 100 Then Exit For
-            If x + SobreX > 100 Then Exit For
+            If X + SobreX > 100 Then Exit For
             'NO copia tile exit - LADDER
-            SeleccionMap(x, y).TileExit.Map = MapData(x + SobreX, y + SobreY).TileExit.Map
-            SeleccionMap(x, y).TileExit.x = MapData(x + SobreX, y + SobreY).TileExit.x
-            SeleccionMap(x, y).TileExit.y = MapData(x + SobreX, y + SobreY).TileExit.y
+            SeleccionMap(X, y).TileExit.Map = MapData(X + SobreX, y + SobreY).TileExit.Map
+            SeleccionMap(X, y).TileExit.X = MapData(X + SobreX, y + SobreY).TileExit.X
+            SeleccionMap(X, y).TileExit.y = MapData(X + SobreX, y + SobreY).TileExit.y
         
-            MapData(x + SobreX, y + SobreY) = SeleccionMap(x, y)
-            MapData(x + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
+            MapData(X + SobreX, y + SobreY) = SeleccionMap(X, y)
+            MapData(X + SobreX, y + SobreY).NPCIndex = 0 'NO copia NPC
 
         Next
     Next
@@ -1783,12 +1785,12 @@ Public Sub DePegar()
     
     On Error GoTo DePegar_Err
     
-    Dim x As Integer
+    Dim X As Integer
     Dim y As Integer
 
-    For x = 0 To DeSeleccionAncho - 1
+    For X = 0 To DeSeleccionAncho - 1
         For y = 0 To DeSeleccionAlto - 1
-            MapData(x + DeSeleccionOX, y + DeSeleccionOY) = DeSeleccionMap(x, y)
+            MapData(X + DeSeleccionOX, y + DeSeleccionOY) = DeSeleccionMap(X, y)
         Next
     Next
     

@@ -42,18 +42,18 @@ Private Type tMapHeader
 End Type
 
 Private Type tDatosBloqueados
-    x As Integer
+    X As Integer
     y As Integer
 End Type
 
 Private Type tDatosGrh
-    x As Integer
+    X As Integer
     y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
-    x As Integer
+    X As Integer
     y As Integer
     Trigger As Integer
 End Type
@@ -63,31 +63,31 @@ Private Type tDatosLuces
     G As Integer
     B As Integer
     range As Byte
-    x As Integer
+    X As Integer
     y As Integer
 End Type
 
 Private Type tDatosParticulas
-    x As Integer
+    X As Integer
     y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
-    x As Integer
+    X As Integer
     y As Integer
     NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
-    x As Integer
+    X As Integer
     y As Integer
     objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
-    x As Integer
+    X As Integer
     y As Integer
     DestM As Integer
     DestX As Integer
@@ -228,7 +228,7 @@ Public Sub CargarConfiguracion()
         
         ' MOSTRAR
         tStr = Lector.GetValue("MOSTRAR", "LastPos") ' x-y
-        UserPos.x = Val(ReadField(1, tStr, Asc("-")))
+        UserPos.X = Val(ReadField(1, tStr, Asc("-")))
         UserPos.y = Val(ReadField(2, tStr, Asc("-")))
         frmMain.mnuVerAutomatico.Checked = Val(Lector.GetValue("MOSTRAR", "ControlAutomatico"))
         frmMain.mnuVerCapa2.Checked = Val(Lector.GetValue("MOSTRAR", "Capa2"))
@@ -581,7 +581,7 @@ On Error GoTo ErrHandler:
                 Call InitGrh(BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0)
                 Call InitGrh(BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0)
                 
-                BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
+                BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
                 BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
             End If
         Next i
@@ -810,11 +810,11 @@ Public Sub CargarMinimapa()
     Dim buffer()    As Byte
     Dim i           As Long
     
-    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("minimap.ind"))
+    InfoHead = File_Find(DirRecursos & "Scripts" & Formato, LCase$("minimap.bin"))
     
     If InfoHead.lngFileSize <> 0 Then
     
-        Extract_File_Memory Scripts, LCase$("minimap.ind"), buffer()
+        Extract_File_Memory Scripts, LCase$("minimap.bin"), buffer()
         
         Set fileBuff = New clsByteBuffer
         

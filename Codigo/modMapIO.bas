@@ -17,18 +17,18 @@ End Type
 
 Private Type tDatosBloqueados
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosGrh
     X As Integer
-    Y As Integer
+    y As Integer
     GrhIndex As Long
 End Type
 
 Private Type tDatosTrigger
     X As Integer
-    Y As Integer
+    y As Integer
     Trigger As Integer
 End Type
 
@@ -38,31 +38,31 @@ Private Type tDatosLuces
     B As Integer
     range As Byte
     X As Integer
-    Y As Integer
+    y As Integer
 End Type
 
 Private Type tDatosParticulas
     X As Integer
-    Y As Integer
+    y As Integer
     Particula As Long
 End Type
 
 Private Type tDatosNPC
     X As Integer
-    Y As Integer
+    y As Integer
     NPCIndex As Integer
 End Type
 
 Private Type tDatosObjs
     X As Integer
-    Y As Integer
+    y As Integer
     objindex As Integer
     ObjAmmount As Integer
 End Type
 
 Private Type tDatosTE
     X As Integer
-    Y As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -104,7 +104,7 @@ Private MapTitulo As String     ' GS > Almacena el titulo del mapa para el .dat
 '
 ' @param Path Especifica el path del mapa
 
-Public Sub AbrirMapa(ByVal Path As String, Optional ByVal MapaTipo As Byte)
+Public Sub AbrirMapa(ByVal Path As String, Optional ByVal MapaTipo As String)
     
     '*************************************************
     'Author: Lorwik
@@ -115,17 +115,17 @@ Public Sub AbrirMapa(ByVal Path As String, Optional ByVal MapaTipo As Byte)
 
     Select Case MapaTipo
     
-        Case 0
+        Case ".csm"
             Call MapaCSM_Cargar(Path)
             
-        Case 1
+        Case ".map"
             Call MapaAO_Cargar(Path)
             
-        Case 2
-            Call MapaAO_Cargar(Path, False)
-            
-        Case 3
+        Case ".mcl"
             Call MapaMCL_Cargar(Path)
+            
+        Case Else
+            Call MapaCSM_Cargar(Path)
     
     End Select
     
@@ -177,7 +177,7 @@ Public Sub NuevoMapa()
 
     Dim LoopC As Integer
 
-    Dim Y     As Integer
+    Dim y     As Integer
 
     Dim X     As Integer
 
@@ -196,10 +196,10 @@ Public Sub NuevoMapa()
     
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
 
-    For Y = YMinMapSize To YMaxMapSize
+    For y = YMinMapSize To YMaxMapSize
         For X = XMinMapSize To XMaxMapSize
     
-            With MapData(X, Y)
+            With MapData(X, y)
                 ' Capa 1
                 .Graphic(1).GrhIndex = 1
             
@@ -226,7 +226,7 @@ Public Sub NuevoMapa()
                 ' Translados
                 .TileExit.Map = 0
                 .TileExit.X = 0
-                .TileExit.Y = 0
+                .TileExit.y = 0
             
                 ' Triggers
                 .Trigger = 0
@@ -245,7 +245,7 @@ Public Sub NuevoMapa()
             End With
             
         Next X
-    Next Y
+    Next y
     
     'Limpieza adicional del mapa. PARCHE: Solucion a bug de clones.
     Call Char_CleanAll
@@ -272,8 +272,6 @@ Public Sub NuevoMapa()
         .LuzBase = 0
     
     End With
-    
-    MapFormat = ".csm"
 
     Call MapInfo_Actualizar
     Call DibujarMinimapa
@@ -349,7 +347,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , Blqs
 
             For i = 1 To .NumeroBloqueados
-                MapData(Blqs(i).X, Blqs(i).Y).Blocked = 1
+                MapData(Blqs(i).X, Blqs(i).y).Blocked = 1
             Next i
 
         End If
@@ -359,7 +357,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , L2
 
             For i = 1 To .NumeroLayers(2)
-                Call InitGrh(MapData(L2(i).X, L2(i).Y).Graphic(2), L2(i).GrhIndex)
+                Call InitGrh(MapData(L2(i).X, L2(i).y).Graphic(2), L2(i).GrhIndex)
             Next i
 
         End If
@@ -369,7 +367,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , L3
 
             For i = 1 To .NumeroLayers(3)
-                Call InitGrh(MapData(L3(i).X, L3(i).Y).Graphic(3), L3(i).GrhIndex)
+                Call InitGrh(MapData(L3(i).X, L3(i).y).Graphic(3), L3(i).GrhIndex)
             Next i
 
         End If
@@ -379,7 +377,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                Call InitGrh(MapData(L4(i).X, L4(i).Y).Graphic(4), L4(i).GrhIndex)
+                Call InitGrh(MapData(L4(i).X, L4(i).y).Graphic(4), L4(i).GrhIndex)
             Next i
 
         End If
@@ -389,7 +387,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , Triggers
 
             For i = 1 To .NumeroTriggers
-                MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+                MapData(Triggers(i).X, Triggers(i).y).Trigger = Triggers(i).Trigger
             Next i
 
         End If
@@ -402,7 +400,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
     
                 With Particulas(i)
                     
-                    MapData(.X, .Y).Particle_Group_Index = General_Particle_Create(.Particula, .X, .Y)
+                    MapData(.X, .y).Particle_Group_Index = General_Particle_Create(.Particula, .X, .y)
     
                 End With
     
@@ -416,7 +414,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 
             For i = 1 To .NumeroLuces
     
-                With MapData(Luces(i).X, Luces(i).Y)
+                With MapData(Luces(i).X, Luces(i).y)
                     .Light.range = Luces(i).range
                     .Light.RGBCOLOR.a = 255
                     .Light.RGBCOLOR.R = Luces(i).R
@@ -427,7 +425,7 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
                 End With
     
                 With Luces(i)
-                    Call Create_Light_To_Map(.X, .Y, .range, .R, .G, .B)
+                    Call Create_Light_To_Map(.X, .y, .range, .R, .G, .B)
 
                 End With
     
@@ -442,13 +440,13 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , Objetos
 
             For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.objindex = Objetos(i).objindex
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
+                MapData(Objetos(i).X, Objetos(i).y).OBJInfo.objindex = Objetos(i).objindex
+                MapData(Objetos(i).X, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
 
-                If MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.objindex > NumOBJs Then
-                    InitGrh MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, 20299
+                If MapData(Objetos(i).X, Objetos(i).y).OBJInfo.objindex > NumOBJs Then
+                    InitGrh MapData(Objetos(i).X, Objetos(i).y).ObjGrh, 20299
                 Else
-                    InitGrh MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, ObjData(MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.objindex).GrhIndex
+                    InitGrh MapData(Objetos(i).X, Objetos(i).y).ObjGrh, ObjData(MapData(Objetos(i).X, Objetos(i).y).OBJInfo.objindex).GrhIndex
 
                 End If
 
@@ -462,13 +460,13 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
 
             For i = 1 To .NumeroNPCs
                 
-                MapData(NPCs(i).X, NPCs(i).Y).NPCIndex = NPCs(i).NPCIndex
+                MapData(NPCs(i).X, NPCs(i).y).NPCIndex = NPCs(i).NPCIndex
     
-                If MapData(NPCs(i).X, NPCs(i).Y).NPCIndex > 0 Then
-                    Body = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Body
-                    Head = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Head
-                    Heading = NpcData(MapData(NPCs(i).X, NPCs(i).Y).NPCIndex).Heading
-                    Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).Y, 2, 2, 2, 0, 0)
+                If MapData(NPCs(i).X, NPCs(i).y).NPCIndex > 0 Then
+                    Body = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Body
+                    Head = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Head
+                    Heading = NpcData(MapData(NPCs(i).X, NPCs(i).y).NPCIndex).Heading
+                    Call Char_Make(NextOpenChar(), Body, Head, Heading, NPCs(i).X, NPCs(i).y, 2, 2, 2, 0, 0)
 
                 End If
 
@@ -481,9 +479,9 @@ Public Sub MapaCSM_Cargar(ByVal RutaMapa As String)
             Get #fh, , TEs
 
             For i = 1 To .NumeroTE
-                MapData(TEs(i).X, TEs(i).Y).TileExit.Map = TEs(i).DestM
-                MapData(TEs(i).X, TEs(i).Y).TileExit.X = TEs(i).DestX
-                MapData(TEs(i).X, TEs(i).Y).TileExit.Y = TEs(i).DestY
+                MapData(TEs(i).X, TEs(i).y).TileExit.Map = TEs(i).DestM
+                MapData(TEs(i).X, TEs(i).y).TileExit.X = TEs(i).DestX
+                MapData(TEs(i).X, TEs(i).y).TileExit.y = TEs(i).DestY
             Next i
 
         End If
@@ -536,33 +534,49 @@ Public Function MapaCSM_Guardar(ByVal RutaMapa As String) As Boolean
     'Last Modification: 14/03/2021
     '***************************************************
     
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-    Dim fh As Integer
-    Dim MH As tMapHeader
-    Dim Blqs() As tDatosBloqueados
-    Dim L1() As Long
-    Dim L2() As tDatosGrh
-    Dim L3() As tDatosGrh
-    Dim L4() As tDatosGrh
-    Dim Triggers() As tDatosTrigger
-    Dim Luces() As tDatosLuces
+    Dim fh           As Integer
+
+    Dim MH           As tMapHeader
+
+    Dim Blqs()       As tDatosBloqueados
+
+    Dim L1()         As Long
+
+    Dim L2()         As tDatosGrh
+
+    Dim L3()         As tDatosGrh
+
+    Dim L4()         As tDatosGrh
+
+    Dim Triggers()   As tDatosTrigger
+
+    Dim Luces()      As tDatosLuces
+
     Dim Particulas() As tDatosParticulas
-    Dim Objetos() As tDatosObjs
-    Dim NPCs() As tDatosNPC
-    Dim TEs() As tDatosTE
+
+    Dim Objetos()    As tDatosObjs
+
+    Dim NPCs()       As tDatosNPC
+
+    Dim TEs()        As tDatosTE
     
-    Dim i As Integer
-    Dim j As Integer
+    Dim i            As Integer
+
+    Dim j            As Integer
     
     If NoSobreescribir = False Then
         If FileExist(RutaMapa, vbNormal) = True Then
             If MsgBox("¿Desea sobrescribir " & RutaMapa & "?", vbCritical + vbYesNo) = vbNo Then
                 Exit Function
             Else
+
                 'Kill MapRoute
             End If
+
         End If
+
     End If
     
     frmMain.MousePointer = 11
@@ -574,12 +588,15 @@ On Error GoTo ErrorHandler
     
     For j = MapSize.YMin To MapSize.YMax
         For i = MapSize.XMin To MapSize.XMax
+
             With MapData(i, j)
+
                 If .Blocked Then
                     MH.NumeroBloqueados = MH.NumeroBloqueados + 1
                     ReDim Preserve Blqs(1 To MH.NumeroBloqueados)
                     Blqs(MH.NumeroBloqueados).X = i
-                    Blqs(MH.NumeroBloqueados).Y = j
+                    Blqs(MH.NumeroBloqueados).y = j
+
                 End If
                 
                 L1(i, j) = .Graphic(1).GrhIndex
@@ -588,54 +605,59 @@ On Error GoTo ErrorHandler
                     MH.NumeroLayers(2) = MH.NumeroLayers(2) + 1
                     ReDim Preserve L2(1 To MH.NumeroLayers(2))
                     L2(MH.NumeroLayers(2)).X = i
-                    L2(MH.NumeroLayers(2)).Y = j
+                    L2(MH.NumeroLayers(2)).y = j
                     L2(MH.NumeroLayers(2)).GrhIndex = .Graphic(2).GrhIndex
+
                 End If
                 
                 If .Graphic(3).GrhIndex > 0 Then
                     MH.NumeroLayers(3) = MH.NumeroLayers(3) + 1
                     ReDim Preserve L3(1 To MH.NumeroLayers(3))
                     L3(MH.NumeroLayers(3)).X = i
-                    L3(MH.NumeroLayers(3)).Y = j
+                    L3(MH.NumeroLayers(3)).y = j
                     L3(MH.NumeroLayers(3)).GrhIndex = .Graphic(3).GrhIndex
+
                 End If
                 
                 If .Graphic(4).GrhIndex > 0 Then
                     MH.NumeroLayers(4) = MH.NumeroLayers(4) + 1
                     ReDim Preserve L4(1 To MH.NumeroLayers(4))
                     L4(MH.NumeroLayers(4)).X = i
-                    L4(MH.NumeroLayers(4)).Y = j
+                    L4(MH.NumeroLayers(4)).y = j
                     L4(MH.NumeroLayers(4)).GrhIndex = .Graphic(4).GrhIndex
+
                 End If
                 
                 If .Trigger > 0 Then
                     MH.NumeroTriggers = MH.NumeroTriggers + 1
                     ReDim Preserve Triggers(1 To MH.NumeroTriggers)
                     Triggers(MH.NumeroTriggers).X = i
-                    Triggers(MH.NumeroTriggers).Y = j
+                    Triggers(MH.NumeroTriggers).y = j
                     Triggers(MH.NumeroTriggers).Trigger = .Trigger
+
                 End If
                 
                 If .Particle_Group_Index > 0 Then
                     MH.NumeroParticulas = MH.NumeroParticulas + 1
                     ReDim Preserve Particulas(1 To MH.NumeroParticulas)
                     Particulas(MH.NumeroParticulas).X = i
-                    Particulas(MH.NumeroParticulas).Y = j
-                    Particulas(MH.NumeroParticulas).Particula = .Particle_Group_Index
+                    Particulas(MH.NumeroParticulas).y = j
+                    Particulas(MH.NumeroParticulas).Particula = .Particle_Index
     
                 End If
                
-               '¿Hay luz activa en este punto?
-                If .Light.active Then
+                '¿Hay luz activa en este punto?
+                If .Light.range > 0 Then
                     MH.NumeroLuces = MH.NumeroLuces + 1
                     ReDim Preserve Luces(1 To MH.NumeroLuces)
-
+                        
                     Luces(MH.NumeroLuces).R = .Light.RGBCOLOR.R
                     Luces(MH.NumeroLuces).G = .Light.RGBCOLOR.G
                     Luces(MH.NumeroLuces).B = .Light.RGBCOLOR.B
                     Luces(MH.NumeroLuces).range = .Light.range
-                    Luces(MH.NumeroLuces).X = .Light.map_x
-                    Luces(MH.NumeroLuces).Y = .Light.map_y
+                    Luces(MH.NumeroLuces).X = i
+                    Luces(MH.NumeroLuces).y = j
+
                 End If
                 
                 If .OBJInfo.objindex > 0 Then
@@ -644,7 +666,8 @@ On Error GoTo ErrorHandler
                     Objetos(MH.NumeroOBJs).objindex = .OBJInfo.objindex
                     Objetos(MH.NumeroOBJs).ObjAmmount = .OBJInfo.Amount
                     Objetos(MH.NumeroOBJs).X = i
-                    Objetos(MH.NumeroOBJs).Y = j
+                    Objetos(MH.NumeroOBJs).y = j
+
                 End If
                 
                 If .NPCIndex > 0 Then
@@ -652,7 +675,8 @@ On Error GoTo ErrorHandler
                     ReDim Preserve NPCs(1 To MH.NumeroNPCs)
                     NPCs(MH.NumeroNPCs).NPCIndex = .NPCIndex
                     NPCs(MH.NumeroNPCs).X = i
-                    NPCs(MH.NumeroNPCs).Y = j
+                    NPCs(MH.NumeroNPCs).y = j
+
                 End If
                 
                 If .TileExit.Map > 0 Then
@@ -660,11 +684,14 @@ On Error GoTo ErrorHandler
                     ReDim Preserve TEs(1 To MH.NumeroTE)
                     TEs(MH.NumeroTE).DestM = .TileExit.Map
                     TEs(MH.NumeroTE).DestX = .TileExit.X
-                    TEs(MH.NumeroTE).DestY = .TileExit.Y
+                    TEs(MH.NumeroTE).DestY = .TileExit.y
                     TEs(MH.NumeroTE).X = i
-                    TEs(MH.NumeroTE).Y = j
+                    TEs(MH.NumeroTE).y = j
+
                 End If
+
             End With
+
         Next i
     Next j
     
@@ -673,35 +700,36 @@ On Error GoTo ErrorHandler
     fh = FreeFile
     Open RutaMapa For Binary As fh
         
-        Put #fh, , MiCabecera
+    Put #fh, , MiCabecera
         
-        Put #fh, , MH
-        Put #fh, , MapSize
-        Put #fh, , MapDat
-        Put #fh, , L1
+    Put #fh, , MH
+    Put #fh, , MapSize
+    Put #fh, , MapDat
+    Put #fh, , L1
     
-        With MH
-            If .NumeroBloqueados > 0 Then _
-                Put #fh, , Blqs
-            If .NumeroLayers(2) > 0 Then _
-                Put #fh, , L2
-            If .NumeroLayers(3) > 0 Then _
-                Put #fh, , L3
-            If .NumeroLayers(4) > 0 Then _
-                Put #fh, , L4
-            If .NumeroTriggers > 0 Then _
-                Put #fh, , Triggers
-            If .NumeroParticulas > 0 Then _
-                Put #fh, , Particulas
-            If .NumeroLuces > 0 Then _
-                Put #fh, , Luces
-            If .NumeroOBJs > 0 Then _
-                Put #fh, , Objetos
-            If .NumeroNPCs > 0 Then _
-                Put #fh, , NPCs
-            If .NumeroTE > 0 Then _
-                Put #fh, , TEs
-        End With
+    With MH
+
+        If .NumeroBloqueados > 0 Then Put #fh, , Blqs
+
+        If .NumeroLayers(2) > 0 Then Put #fh, , L2
+
+        If .NumeroLayers(3) > 0 Then Put #fh, , L3
+
+        If .NumeroLayers(4) > 0 Then Put #fh, , L4
+
+        If .NumeroTriggers > 0 Then Put #fh, , Triggers
+
+        If .NumeroParticulas > 0 Then Put #fh, , Particulas
+
+        If .NumeroLuces > 0 Then Put #fh, , Luces
+
+        If .NumeroOBJs > 0 Then Put #fh, , Objetos
+
+        If .NumeroNPCs > 0 Then Put #fh, , NPCs
+
+        If .NumeroTE > 0 Then Put #fh, , TEs
+
+    End With
     
     Close fh
     
@@ -715,12 +743,13 @@ On Error GoTo ErrorHandler
     
     MapaCSM_Guardar = True
     
-    If frmConsola.Visible Then _
-        Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa " & RutaMapa & " guardado...", 0, 255, 0)
+    If frmConsola.Visible Then Call AddtoRichTextBox(frmConsola.StatTxt, "Mapa " & RutaMapa & " guardado...", 0, 255, 0)
     Exit Function
 
 ErrorHandler:
+
     If fh <> 0 Then Close fh
+
 End Function
 
 ''
@@ -746,7 +775,7 @@ Public Sub MapaAO_Cargar(ByVal Map As String, Optional ByVal EsInteger As Boolea
 
     Dim Heading     As Byte
 
-    Dim Y           As Integer
+    Dim y           As Integer
 
     Dim X           As Integer
 
@@ -793,10 +822,10 @@ Public Sub MapaAO_Cargar(ByVal Map As String, Optional ByVal EsInteger As Boolea
     Get FreeFileInf, , tempint
 
     'Load arrays
-    For Y = YMinMapSize To 100
+    For y = YMinMapSize To 100
         For X = XMinMapSize To 100
             
-            With MapData(X, Y)
+            With MapData(X, y)
             
                 Get FreeFileMap, , ByFlags
                 .Blocked = (ByFlags And 1)
@@ -878,7 +907,7 @@ Public Sub MapaAO_Cargar(ByVal Map As String, Optional ByVal EsInteger As Boolea
 
                         Get FreeFileInf, , .Map
                         Get FreeFileInf, , .X
-                        Get FreeFileInf, , .Y
+                        Get FreeFileInf, , .y
 
                     End With
 
@@ -895,7 +924,7 @@ Public Sub MapaAO_Cargar(ByVal Map As String, Optional ByVal EsInteger As Boolea
                         Body = NpcData(.NPCIndex).Body
                         Head = NpcData(.NPCIndex).Head
                         Heading = NpcData(.NPCIndex).Heading
-                        Call Char_Make(NextOpenChar(), Body, Head, Heading, X, Y, 0, 0, 0, 0, 0)
+                        Call Char_Make(NextOpenChar(), Body, Head, Heading, X, y, 0, 0, 0, 0, 0)
 
                     End If
 
@@ -917,7 +946,7 @@ Public Sub MapaAO_Cargar(ByVal Map As String, Optional ByVal EsInteger As Boolea
             End With
     
         Next X
-    Next Y
+    Next y
     
     'Close files
     Close FreeFileMap
@@ -965,7 +994,7 @@ Public Sub MapaAO_Guardar(ByVal SaveAs As String)
     Dim FreeFileInf As Long
     Dim LoopC       As Long
     Dim tempint     As Integer
-    Dim Y           As Long
+    Dim y           As Long
     Dim X           As Long
     Dim ByFlags     As Byte
 
@@ -1027,10 +1056,10 @@ Public Sub MapaAO_Guardar(ByVal SaveAs As String)
     Put FreeFileInf, , tempint
     
     'Write .map file
-    For Y = YMinMapSize To 100
+    For y = YMinMapSize To 100
         For X = XMinMapSize To 100
             
-            With MapData(X, Y)
+            With MapData(X, y)
             
                 ByFlags = 0
                 
@@ -1068,7 +1097,7 @@ Public Sub MapaAO_Guardar(ByVal SaveAs As String)
                 If .TileExit.Map Then
                     Put FreeFileInf, , .TileExit.Map
                     Put FreeFileInf, , .TileExit.X
-                    Put FreeFileInf, , .TileExit.Y
+                    Put FreeFileInf, , .TileExit.y
                 End If
                     
                 If .NPCIndex Then
@@ -1084,7 +1113,7 @@ Public Sub MapaAO_Guardar(ByVal SaveAs As String)
             
             
         Next X
-    Next Y
+    Next y
     
     'Close .map file
     Close FreeFileMap
@@ -1116,57 +1145,72 @@ Public Sub MapaMCL_Cargar(ByVal RutaMapa As String)
     On Error Resume Next
 
     Dim LoopC    As Integer
-
-    Dim Y        As Integer
-
+    Dim y        As Integer
     Dim X        As Integer
-
     Dim tempint  As Integer
-
     Dim InfoTile As Byte
-
     Dim i        As Integer
+    
+    DoEvents
+    
+    'Change mouse icon
+    frmMain.MousePointer = 11
+    
+    MapFormat = ".mcl"
 
     Open RutaMapa For Binary As #1
     Seek #1, 1
 
     Get #1, , MapInfo.MapVersion
 
-    For Y = 1 To 100
+    For y = 1 To 100
         For X = 1 To 100
 
             Get #1, , InfoTile
         
-            MapData(X, Y).Blocked = (InfoTile And 1)
+            MapData(X, y).Blocked = (InfoTile And 1)
         
-            Get #1, , MapData(X, Y).Graphic(1).GrhIndexInt
+            Get #1, , MapData(X, y).Graphic(1).GrhIndexInt
         
             For i = 2 To 4
 
                 If InfoTile And (2 ^ (i - 1)) Then
-                    Get #1, , MapData(X, Y).Graphic(i).GrhIndexInt
-                    Call InitGrh(MapData(X, Y).Graphic(i), MapData(X, Y).Graphic(i).GrhIndexInt)
-                    Else: MapData(X, Y).Graphic(i).GrhIndex = 0
+                    Get #1, , MapData(X, y).Graphic(i).GrhIndexInt
+                    Call InitGrh(MapData(X, y).Graphic(i), MapData(X, y).Graphic(i).GrhIndexInt)
+                    Else: MapData(X, y).Graphic(i).GrhIndex = 0
 
                 End If
 
             Next
         
-            MapData(X, Y).Trigger = 0
+            MapData(X, y).Trigger = 0
         
             For i = 4 To 6
 
-                If (InfoTile And 2 ^ i) Then MapData(X, Y).Trigger = MapData(X, Y).Trigger Or 2 ^ (i - 4)
+                If (InfoTile And 2 ^ i) Then MapData(X, y).Trigger = MapData(X, y).Trigger Or 2 ^ (i - 4)
             Next
         
-            Call InitGrh(MapData(X, Y).Graphic(1), MapData(X, Y).Graphic(1).GrhIndexInt)
+            Call InitGrh(MapData(X, y).Graphic(1), MapData(X, y).Graphic(1).GrhIndexInt)
     
-            If MapData(X, Y).CharIndex > 0 Then Call Char_Erase(MapData(X, Y).CharIndex)
-            MapData(X, Y).ObjGrh.GrhIndex = 0
+            If MapData(X, y).CharIndex > 0 Then Call Char_Erase(MapData(X, y).CharIndex)
+            MapData(X, y).ObjGrh.GrhIndex = 0
         Next X
-    Next Y
-
+    Next y
+    
     Close #1
+    
+    Call Pestanias(RutaMapa)
+    
+    'Set changed flag
+    MapInfo.Changed = 0
+        
+    ' Vacia el Deshacer
+    Call modEdicion.Deshacer_Clear
+        
+    'Change mouse icon
+    frmMain.MousePointer = 0
+    
+    MapaCargado = True
 
 End Sub
 

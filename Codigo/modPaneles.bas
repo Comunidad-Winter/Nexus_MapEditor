@@ -63,11 +63,11 @@ Public Sub EstSelectPanel(ByVal Numero As Byte, ByVal Activado As Boolean)
                 Case 0
                     If frmSuperficies.cCapas.Text = 4 Then
                         If LenB(frmMain.mnuVerCapa3.Tag) <> 0 Then frmMain.mnuVerCapa4.Checked = CBool(frmMain.mnuVerCapa4.Tag)
+                        
                     ElseIf frmSuperficies.cCapas.Text = 3 Then
-
                         If LenB(frmMain.mnuVerCapa3.Tag) <> 0 Then frmMain.mnuVerCapa3.Checked = CBool(frmMain.mnuVerCapa3.Tag)
+                        
                     ElseIf frmSuperficies.cCapas.Text = 2 Then
-
                         If LenB(frmMain.mnuVerCapa2.Tag) <> 0 Then frmMain.mnuVerCapa2.Checked = CBool(frmMain.mnuVerCapa2.Tag)
 
                     End If

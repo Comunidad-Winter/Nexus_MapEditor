@@ -35,7 +35,7 @@ Begin VB.Form frmMapInfo
       Height          =   315
       ItemData        =   "frmMapInfo.frx":000C
       Left            =   1650
-      List            =   "frmMapInfo.frx":0022
+      List            =   "frmMapInfo.frx":001F
       TabIndex        =   30
       Top             =   2310
       Width           =   2655
@@ -282,9 +282,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":0054
+      ItemData        =   "frmMapInfo.frx":0046
       Left            =   1650
-      List            =   "frmMapInfo.frx":0061
+      List            =   "frmMapInfo.frx":0053
       TabIndex        =   9
       Top             =   1950
       Width           =   2655
@@ -300,9 +300,9 @@ Begin VB.Form frmMapInfo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      ItemData        =   "frmMapInfo.frx":007E
+      ItemData        =   "frmMapInfo.frx":0070
       Left            =   1650
-      List            =   "frmMapInfo.frx":008B
+      List            =   "frmMapInfo.frx":007D
       TabIndex        =   8
       Top             =   1590
       Width           =   2655
@@ -850,7 +850,7 @@ Public Function Selected_Color()
   
         ' Set initial flags to open the full palette and allow an
         ' initial default color selection.
-        .flags = cdlCCFullOpen + cdlCCRGBInit
+        .FLAGS = cdlCCFullOpen + cdlCCRGBInit
       
         .color = RGB(255, 255, 255)
       

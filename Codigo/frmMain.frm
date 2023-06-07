@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H80000006&
    Caption         =   "Nexus MapEditor"
@@ -16,6 +16,7 @@ Begin VB.Form frmMain
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
+   Icon            =   "frmMain.frx":0000
    LinkTopic       =   "Form1"
    ScaleHeight     =   768
    ScaleMode       =   0  'User
@@ -43,7 +44,7 @@ Begin VB.Form frmMain
       EndProperty
       Mode            =   0
       Value           =   0   'False
-      Image           =   "frmMain.frx":0000
+      Image           =   "frmMain.frx":10CA
       cBack           =   -2147483643
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -70,7 +71,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":30052
+      Image           =   "frmMain.frx":3111C
       cBack           =   -2147483633
    End
    Begin VB.PictureBox MainViewPic 
@@ -125,7 +126,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":30CA4
+      Image           =   "frmMain.frx":31D6E
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -152,7 +153,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":318F6
+      Image           =   "frmMain.frx":329C0
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -179,7 +180,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":32548
+      Image           =   "frmMain.frx":33612
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -206,7 +207,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":3319A
+      Image           =   "frmMain.frx":34264
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -233,7 +234,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":33DEC
+      Image           =   "frmMain.frx":34EB6
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -260,7 +261,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":34A3E
+      Image           =   "frmMain.frx":35B08
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -287,7 +288,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":350C0
+      Image           =   "frmMain.frx":3618A
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -314,7 +315,7 @@ Begin VB.Form frmMain
       cGradient       =   0
       Mode            =   1
       Value           =   0   'False
-      Image           =   "frmMain.frx":35562
+      Image           =   "frmMain.frx":3662C
       cBack           =   -2147483633
    End
    Begin Nexus_MapEditor.lvButtons_H SelectPanel 
@@ -339,7 +340,7 @@ Begin VB.Form frmMain
       EndProperty
       Mode            =   0
       Value           =   0   'False
-      Image           =   "frmMain.frx":361B4
+      Image           =   "frmMain.frx":3727E
       cBack           =   -2147483643
    End
    Begin VB.Line Line1 
@@ -630,8 +631,8 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuAbrirMapa 
          Caption         =   "&Abrir Mapa"
       End
-      Begin VB.Menu mnuAbrirMapaAO 
-         Caption         =   "&Abrir Mapa de Argentum"
+      Begin VB.Menu mnuAbrirotrosMapas 
+         Caption         =   "&Abrir otros Mapas"
          Begin VB.Menu mnuAbrirMapaArgentum 
             Caption         =   "&Abrir Mapa Argentum"
             Index           =   0
@@ -640,9 +641,9 @@ Begin VB.Form frmMain
             Caption         =   "&Abrir Mapa Argentum (Long)"
             Index           =   1
          End
-      End
-      Begin VB.Menu mnuAbrirMapaFurius 
-         Caption         =   "&Abrir Mapa de Furius"
+         Begin VB.Menu mnuAbrirMapaFurius 
+            Caption         =   "&Abrir Mapa de Furius"
+         End
       End
       Begin VB.Menu mnuReAbrirMapa 
          Caption         =   "&Re-Abrir Mapa"
@@ -918,6 +919,7 @@ Public UltPos As Integer
 
 Private Sub Form_Load()
 
+    Form_Caption = "Nexus MapEditor v" & App.Major & "." & App.Minor & "." & App.Revision
     Me.Caption = Form_Caption
     
 End Sub
@@ -992,6 +994,8 @@ Private Sub Form_Resize()
     'Last modified: ????
     '*************************************************
     
+    On Error GoTo Form_Resize_Err
+    
     With MainViewPic
     
         .Height = Me.ScaleHeight - 40
@@ -1006,6 +1010,11 @@ Private Sub Form_Resize()
     
     Call ChangeView
     
+    Exit Sub
+    
+Form_Resize_Err:
+    Call LogError(Err.Number, Err.Description, "FrmMain.Form_Resize", Erl)
+    Resume Next
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -1048,7 +1057,7 @@ Private Sub MapPest_Click(Index As Integer)
     If FileExist(Dialog.FileName, vbArchive) = False Then Exit Sub
     Call modMapIO.NuevoMapa
     DoEvents
-    modMapIO.AbrirMapa Dialog.FileName
+    Call modMapIO.AbrirMapa(Dialog.FileName, MapFormat)
     EngineRun = True
     Exit Sub
 
@@ -1149,16 +1158,17 @@ Private Sub AbrirMapaDialog(ByVal Modo As String)
     Select Case Modo
     
         Case "CSM"
-            Call modMapIO.AbrirMapa(Dialog.FileName, 0)
+            Call modMapIO.AbrirMapa(Dialog.FileName, ".csm")
             
         Case "AO"
-            Call modMapIO.AbrirMapa(Dialog.FileName, 1)
+            Call modMapIO.AbrirMapa(Dialog.FileName, ".map")
             
         Case "AOLong"
-            Call modMapIO.AbrirMapa(Dialog.FileName, 2)
+            Call modMapIO.AbrirMapa(Dialog.FileName, ".map")
         
         Case "Furius"
-            Call modMapIO.AbrirMapa(Dialog.FileName, 3)
+            Call modMapIO.AbrirMapa(Dialog.FileName, ".mcl")
+    
             
     End Select
     
@@ -1667,12 +1677,12 @@ Public Sub ObtenerNombreArchivo(ByVal Guardar As Boolean)
             .DialogTitle = "Guardar"
             .DefaultExt = ".txt"
             .FileName = vbNullString
-            .flags = cdlOFNPathMustExist
+            .FLAGS = cdlOFNPathMustExist
             .ShowSave
         Else
             .DialogTitle = "Cargar"
             .FileName = vbNullString
-            .flags = cdlOFNFileMustExist
+            .FLAGS = cdlOFNFileMustExist
             .ShowOpen
 
         End If

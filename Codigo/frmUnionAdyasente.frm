@@ -328,7 +328,7 @@ Begin VB.Form frmUnionAdyacente
       Index           =   2
       Left            =   4800
       TabIndex        =   12
-      Text            =   "88"
+      Text            =   "89"
       Top             =   120
       Width           =   375
    End
@@ -456,7 +456,7 @@ Begin VB.Form frmUnionAdyacente
    End
    Begin Nexus_MapEditor.lvButtons_H cmdDefault 
       Height          =   405
-      Left            =   60
+      Left            =   90
       TabIndex        =   42
       Top             =   4080
       Width           =   1215
@@ -1301,9 +1301,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Call mnuBasica_Click
+    Call mnuLegal_Click
     frmUnionAdyacente.lblMapaAct.Caption = MapaActual
-
     
     Exit Sub
 
@@ -1322,7 +1321,6 @@ Private Sub Mapa_Change(Index As Integer)
     On Error GoTo Mapa_Change_Err
     
     Aplicar(Index).value = 1
-
     
     Exit Sub
 
@@ -1333,20 +1331,18 @@ Mapa_Change_Err:
 End Sub
 
 Private Sub Mapa_KeyPress(Index As Integer, KeyAscii As Integer)
-    
-    On Error GoTo Mapa_KeyPress_Err
-    
-
     '*************************************************
     'Author: ^[GS]^
     'Last modified: 20/05/06
     '*************************************************
+    
+    On Error GoTo Mapa_KeyPress_Err
+    
     If IsNumeric(Chr(KeyAscii)) = False And KeyAscii <> 8 Then
         KeyAscii = 0
         Exit Sub
 
     End If
-
     
     Exit Sub
 
@@ -1357,18 +1353,16 @@ Mapa_KeyPress_Err:
 End Sub
 
 Private Sub Mapa_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
-    
-    On Error GoTo Mapa_KeyUp_Err
-    
-
     '*************************************************
     'Author: ^[GS]^
     'Last modified: 15/10/06
     '*************************************************
+    
+    On Error GoTo Mapa_KeyUp_Err
+    
     If LenB(Mapa(Index).Text) = 0 Then Mapa(Index).Text = 0
     If Mapa(Index).Text > 1024 Then Mapa(Index).Text = 1024
 
-    
     Exit Sub
 
 Mapa_KeyUp_Err:
@@ -1385,10 +1379,8 @@ Private Sub mnuBasica_Click()
     
     On Error GoTo mnuBasica_Click_Err
     
-
     Call LeerMapaExit
 
-    
     Exit Sub
 
 mnuBasica_Click_Err:
@@ -1415,7 +1407,6 @@ Private Sub mnuLegal_Click()
     PosLim(7).Text = MaxXBorder - 1
     Call LeerMapaExit
 
-    
     Exit Sub
 
 mnuLegal_Click_Err:
@@ -1441,7 +1432,6 @@ Private Sub mnuUlla_Click()
     PosLim(6).Text = 10
     PosLim(7).Text = 91
     Call LeerMapaExit
-
     
     Exit Sub
 
@@ -1459,13 +1449,11 @@ Private Sub PosLim_KeyPress(Index As Integer, KeyAscii As Integer)
     
     On Error GoTo PosLim_KeyPress_Err
     
-
     If IsNumeric(Chr(KeyAscii)) = False And KeyAscii <> 8 Then
         KeyAscii = 0
         Exit Sub
 
     End If
-
     
     Exit Sub
 
