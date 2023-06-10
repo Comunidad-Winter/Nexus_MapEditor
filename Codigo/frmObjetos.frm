@@ -30,6 +30,7 @@ Begin VB.Form frmObjetos
       Height          =   315
       Left            =   3120
       TabIndex        =   9
+      Text            =   "1"
       Top             =   3720
       Width           =   855
    End
@@ -122,7 +123,7 @@ Begin VB.Form frmObjetos
          Strikethrough   =   0   'False
       EndProperty
       cGradient       =   0
-      Mode            =   1
+      Mode            =   0
       Value           =   0   'False
       cBack           =   -2147483633
    End

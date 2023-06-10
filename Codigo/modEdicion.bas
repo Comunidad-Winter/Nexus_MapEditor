@@ -270,7 +270,7 @@ Public Sub Superficie_Area(ByVal x1 As Integer, ByVal x2 As Integer, ByVal y1 As
         For X = x1 To x2
             If Poner = True Then
                 If frmConfigSup.MOSAICO.value = vbChecked Then
-                    Dim aux As Integer
+                    Dim aux As Long
                     aux = Val(frmSuperficies.cGrh.Text) + _
                     ((y Mod frmConfigSup.mLargo) * frmConfigSup.mAncho) + (X Mod frmConfigSup.mAncho)
                      MapData(X, y).Graphic(Val(frmSuperficies.cCapas.Text)).GrhIndex = aux
